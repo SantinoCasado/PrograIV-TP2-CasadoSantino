@@ -1,25 +1,95 @@
 <section class="login-scene">
-  <app-cinematic-login-background></app-cinematic-login-background>
+  <div class="simple-login-bg" aria-hidden="true"></div>
 
-  <div class="login-overlay">
-    <article class="login-card">
-      <p class="eyebrow">AURA SOCIAL</p>
-      <h1>Volver a entrar</h1>
-      <p class="subtitle">Tu comunidad te esta esperando.</p>
+  <div class="login-overlay container py-4">
+    <div class="row justify-content-center w-100 m-0">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-5">
+        <article class="login-card card border-0 ani-fade-up ani-soft-pulse">
+          <div class="card-body p-4 p-md-5">
+            <p class="eyebrow text-uppercase small fw-bold mb-1 ani-fade-up ani-d1">AURA</p>
+            <h1 class="h2 fw-bold mb-2 ani-fade-up ani-d2">Ingresar</h1>
+            <p class="subtitle text-secondary mb-4 ani-fade-up ani-d3">
+              Tu comunidad te esta esperando.
+            </p>
 
-      <form class="login-form" autocomplete="on">
-        <label>
-          <span>Usuario o correo</span>
-          <input type="text" name="usuario" placeholder="santi123" />
-        </label>
+            <form
+              class="login-form d-grid gap-3"
+              [formGroup]="form"
+              (ngSubmit)="enviar()"
+              autocomplete="on"
+              novalidate
+            >
+              <div class="ani-fade-up ani-d3">
+                <label class="form-label fw-semibold mb-2">Usuario o correo</label>
+                <input
+                  type="text"
+                  formControlName="usuario"
+                  placeholder="santi123 o santi@mail.com"
+                  class="form-control form-control-lg"
+                  [class.is-invalid]="intentoEnvio && usuarioControl?.hasError('required')"
+                />
+                @if (intentoEnvio && usuarioControl?.hasError('required')) {
+                  <div class="invalid-feedback d-block">Debes ingresar un usuario o correo.</div>
+                }
+              </div>
 
-        <label>
-          <span>Contrasena</span>
-          <input type="password" name="contrasena" placeholder="********" />
-        </label>
+              <div class="ani-fade-up ani-d4">
+                <label class="form-label fw-semibold mb-2">Contraseña</label>
+                <input
+                  type="password"
+                  formControlName="contrasena"
+                  placeholder="********"
+                  class="form-control form-control-lg"
+                  [class.is-invalid]="
+                    intentoEnvio &&
+                    (contrasenaControl?.hasError('required') ||
+                      contrasenaControl?.hasError('minlength') ||
+                      contrasenaControl?.hasError('pattern'))
+                  "
+                />
+                @if (intentoEnvio && contrasenaControl?.hasError('required')) {
+                  <div class="invalid-feedback d-block">La contraseña es obligatoria.</div>
+                }
+                @if (intentoEnvio && contrasenaControl?.hasError('minlength')) {
+                  <div class="invalid-feedback d-block">
+                    La contraseña debe tener al menos 8 caracteres.
+                  </div>
+                }
+                @if (intentoEnvio && contrasenaControl?.hasError('pattern')) {
+                  <div class="invalid-feedback d-block">
+                    La contraseña debe tener una mayúscula y un número.
+                  </div>
+                }
+              </div>
 
-        <button type="button">Ingresar</button>
-      </form>
-    </article>
+              @if (mensajeError) {
+                <div class="alert alert-danger py-2 px-3 mb-0 ani-fade">{{ mensajeError }}</div>
+              }
+              @if (mensajeExito) {
+                <div class="alert alert-success py-2 px-3 mb-0 ani-fade">{{ mensajeExito }}</div>
+              }
+
+              <button
+                type="submit"
+                [disabled]="cargando"
+                class="btn btn-info btn-lg w-100 fw-semibold text-white mt-1 ani-fade-up ani-d5"
+              >
+                {{ cargando ? 'Ingresando...' : 'Ingresar' }}
+              </button>
+
+              <p
+                class="text-center small mb-0 mt-2 ani-fade-up ani-d6"
+                style="color: var(--aura-text-muted)"
+              >
+                ¿No tienes cuenta?
+                <a routerLink="/registro" class="text-info fw-semibold text-decoration-none"
+                  >Regístrate</a
+                >
+              </p>
+            </form>
+          </div>
+        </article>
+      </div>
+    </div>
   </div>
 </section>

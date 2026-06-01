@@ -1,1 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import './styles/animatios.css';
+
+:root {
+  /* Paleta principal Aura */
+  --aura-bg-deep: #04162e; /* fondo oscuro inputs / escenas */
+  --aura-bg-card: #061e3a; /* fondo card principal */
+  --aura-bg-card-2: #082e52; /* fondo card degradado secundario */
+  --aura-border: rgba(56, 180, 230, 0.22); /* borde interior cards */
+  --aura-cyan: #55d4ff; /* acento primario / links */
+  --aura-cyan-hover: #a8eaff; /* acento hover */
+  --aura-blue: #0a8fd3; /* botón / gradiente */
+  --aura-blue-light: #38b4e6; /* focus / borde inputs */
+  --aura-text: #c8eaf8; /* texto principal sobre fondo oscuro */
+  --aura-text-muted: #8ecde8; /* texto secundario */
+  --aura-label: #9dd6ef; /* labels de formularios */
+  --aura-ink: #e8f6ff; /* headings */
+}
+
+body {
+  margin: 0;
+  color: var(--aura-ink);
+}

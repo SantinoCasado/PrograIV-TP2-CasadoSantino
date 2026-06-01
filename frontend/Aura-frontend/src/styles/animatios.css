@@ -1,0 +1,85 @@
+@keyframes aura-fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(22px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes aura-soft-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 18px 42px rgba(1, 8, 22, 0.55),
+      inset 0 0 0 1px rgba(56, 180, 230, 0.22);
+  }
+  50% {
+    box-shadow:
+      0 24px 56px rgba(4, 75, 116, 0.55),
+      inset 0 0 0 1px rgba(85, 212, 255, 0.38),
+      0 0 32px rgba(56, 180, 230, 0.12);
+  }
+}
+
+@keyframes aura-fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes aura-btn-glow {
+  0%,
+  100% {
+    box-shadow: 0 10px 20px rgba(4, 75, 116, 0.36);
+  }
+  50% {
+    box-shadow:
+      0 10px 32px rgba(85, 212, 255, 0.45),
+      0 0 0 3px rgba(85, 212, 255, 0.15);
+  }
+}
+
+/* Clases base */
+.ani-fade-up {
+  animation: aura-fade-up 750ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.ani-soft-pulse {
+  animation: aura-soft-pulse 5.5s ease-in-out infinite;
+}
+
+.ani-fade {
+  animation: aura-fade 400ms ease-out both;
+}
+
+.ani-btn-glow {
+  animation: aura-btn-glow 2.8s ease-in-out infinite;
+}
+
+/* Delays escalonados para aparición en cascada */
+.ani-d1 {
+  animation-delay: 120ms;
+}
+.ani-d2 {
+  animation-delay: 260ms;
+}
+.ani-d3 {
+  animation-delay: 400ms;
+}
+.ani-d4 {
+  animation-delay: 540ms;
+}
+.ani-d5 {
+  animation-delay: 680ms;
+}
+.ani-d6 {
+  animation-delay: 820ms;
+}
