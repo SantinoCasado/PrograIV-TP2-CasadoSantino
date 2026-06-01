@@ -1,0 +1,27 @@
+<div class="cinematic-sky" aria-hidden="true">
+  <div class="cloud-layer cloud-a"></div>
+  <div class="cloud-layer cloud-b"></div>
+  <div class="cloud-layer cloud-c"></div>
+
+  @for (row of rows; track $index) {
+    <div
+      class="film-row"
+      [class.row-right]="row.direction === 'right'"
+      [class.row-left]="row.direction === 'left'"
+      [class.tint-1]="row.tint === 'tint-1'"
+      [class.tint-2]="row.tint === 'tint-2'"
+      [class.tint-3]="row.tint === 'tint-3'"
+    >
+      <div class="film-track">
+        @for (img of row.images; track $index) {
+          <figure class="frame">
+            <img [src]="img" alt="recuerdo visual" loading="lazy" />
+          </figure>
+        }
+      </div>
+    </div>
+  }
+
+  <div class="cool-flare flare-top"></div>
+  <div class="cool-flare flare-bottom"></div>
+</div>
