@@ -94,8 +94,9 @@ export class AuthService {
     return 'This action adds a new auth';
   }
 
-  findAll() {
-    return `This action returns all auth`;
+  async findAll() {
+    // Listado basico de usuarios para pruebas, sin exponer contraseñas.
+    return this.usuarioModel.find().select('-contraseña').lean();
   }
 
   findOne(id: number) {
