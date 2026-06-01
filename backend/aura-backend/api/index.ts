@@ -1,35 +1,34 @@
-import { NestFactory } from '@nestjs/core'; // Importa el módulo principal de la aplicación
-import { ExpressAdapter } from '@nestjs/platform-express';  // Importa el adaptador para Express, que permite usar NestJS con Express
-import { ValidationPipe } from '@nestjs/common';    // Importa el pipe de validación, que se utiliza para validar las solicitudes entrantes
-import express from 'express';      // Importa Express, que es el framework de servidor web utilizado para manejar las solicitudes HTTP
-import serverless from 'serverless-http';   // Importa el módulo serverless-http, que permite ejecutar la aplicación NestJS en un entorno sin servidor (serverless)
-import { AppModule } from '../src/app.module';  // Importa el módulo principal de la aplicación, que contiene la configuración y los controladores
+import { NestFactory } from '@nestjs/core'; // Importa NestFactory para crear la aplicación NestJS
+import { ExpressAdapter } from '@nestjs/platform-express'; // Importa ExpressAdapter para adaptar la aplicación NestJS a Express
+import { ValidationPipe } from '@nestjs/common'; // Importa ValidationPipe para validar las solicitudes entrantes
+import express, { Express } from 'express'; // Importa Express para crear una aplicación Express y definir su tipo
+import { AppModule } from '../src/app.module'; // Importa el módulo principal de la aplicación NestJS
 
-let cachedHandler: any; // Variable para almacenar el handler de la aplicación, lo que permite reutilizarlo en llamadas posteriores y mejorar el rendimiento en entornos serverless
+let cachedApp: Express | null = null;   // Variable para almacenar la instancia de la aplicación Express y evitar reinicializaciones innecesarias
 
-async function bootstrap() {
-    const expressApp = express(); // Crea una instancia de Express
+async function createApp(): Promise<Express> {
+  if (cachedApp) return cachedApp;  // Si la aplicación ya ha sido creada, devuelve la instancia almacenada en caché
 
-    const app = await NestFactory.create(AppModule, new ExpressAdapter(expressApp));    // Crea una aplicación NestJS utilizando el módulo principal y el adaptador de Express
-    app.useGlobalPipes(new ValidationPipe());   // Configura el pipe de validación global para validar todas las solicitudes entrantes
+  const expressApp = express(); // Crea una nueva instancia de la aplicación Express
+  const app = await NestFactory.create(AppModule, new ExpressAdapter(expressApp));  // Crea la aplicación NestJS utilizando el módulo principal y adaptándola a Express
 
-    app.enableCors({
-        origin: [
-            'http://localhost:4200',
-            'https://progra-iv-tp-2-casado-santino.vercel.app',
-        ],
-        credentials: true,
-    }); // Habilita CORS para permitir solicitudes desde diferentes orígenes
+  app.useGlobalPipes(new ValidationPipe()); // Configura la aplicación para usar ValidationPipe globalmente, lo que permite validar las solicitudes entrantes según los DTOs definidos
 
-    await app.init(); // Inicializa la aplicación NestJS
+  app.enableCors({  // Configura CORS para permitir solicitudes desde el frontend, especificando los orígenes permitidos y habilitando el envío de credenciales (cookies, headers de autenticación, etc.)
+    origin: [
+      'http://localhost:4200',
+      'https://progra-iv-tp-2-casado-santino.vercel.app',
+    ],
+    credentials: true,
+  });
 
-    return serverless(expressApp); // Devuelve el handler de la aplicación Express envuelta en serverless, lo que permite ejecutarla en un entorno sin servidor
+  await app.init(); // Inicializa la aplicación NestJS, lo que prepara los controladores, servicios y otros componentes para manejar las solicitudes entrantes
+  cachedApp = expressApp;   // Almacena la instancia de la aplicación Express en caché para futuras solicitudes, evitando la necesidad de reinicializar toda la aplicación NestJS en cada solicitud
+  return cachedApp; // Devuelve la instancia de la aplicación Express adaptada con NestJS, lista para manejar las solicitudes entrantes
 }
 
-// El handler se exporta como la función predeterminada, lo que permite que sea invocado por el entorno serverless cada vez que se recibe una solicitud HTTP. Si el handler ya está almacenado en caché, se reutiliza para mejorar el rendimiento.
-export default async function handler(req: any, res: any) {
-    if (!cachedHandler) {   // Si el handler no está almacenado en caché, se llama a la función bootstrap para crear la aplicación y almacenar el handler en caché
-        cachedHandler = await bootstrap();
-    }
-    return cachedHandler(req, res); // Se invoca el handler con la solicitud y la respuesta, lo que permite que la aplicación NestJS maneje la solicitud HTTP entrante
+// Exporta una función de manejo de solicitudes que se ejecutará cada vez que se reciba una solicitud HTTP. Esta función crea o reutiliza la aplicación Express adaptada con NestJS y la utiliza para manejar la solicitud entrante y enviar la respuesta correspondiente.
+export default async function handler(req: any, res: any) { 
+  const app = await createApp();
+  return app(req, res);
 }

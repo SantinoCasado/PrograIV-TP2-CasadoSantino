@@ -11,7 +11,17 @@ import * as dotenv from 'dotenv';
 dotenv.config();  // Carga las variables de entorno desde el archivo .env
 
 @Module({
-  imports: [MongooseModule.forRoot(process.env.MONGODB_URI), UsuariosModule, PublicacionesModule, AuthModule],
+  imports: [
+    MongooseModule.forRoot(process.env.MONGODB_URI, {
+      serverSelectionTimeoutMS: 8000,
+      connectTimeoutMS: 8000,
+      socketTimeoutMS: 20000,
+      maxPoolSize: 10,
+    }),
+    UsuariosModule,
+    PublicacionesModule,
+    AuthModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
