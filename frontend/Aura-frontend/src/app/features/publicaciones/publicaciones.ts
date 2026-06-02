@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-publicaciones',
+  standalone: true,
   imports: [],
   templateUrl: './publicaciones.html',
   styleUrl: './publicaciones.css',

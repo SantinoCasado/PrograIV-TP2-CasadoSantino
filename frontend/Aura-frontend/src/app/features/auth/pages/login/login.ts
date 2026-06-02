@@ -18,8 +18,8 @@ export class Login implements OnInit {
   mensajeError = '';
   mensajeExito = '';
   form!: FormGroup;
-  
-  private readonly apiUrl = 'http://localhost:3000/auth/login';
+  // Backend forzado a producción (sin fallback local).
+  private readonly apiUrl = 'https://progra-iv-tp-2-casado-santino.vercel.app/auth/login';
 
   constructor(
     private fb: FormBuilder,
@@ -69,7 +69,7 @@ export class Login implements OnInit {
     // Playload que se envía al backend. 
     const payload = {
       usuario: (this.form.value.usuario ?? '').trim(),
-      'contraseña': this.form.value.contrasena ?? '',
+      contrasena: this.form.value.contrasena ?? '',
     };
 
     // Se hace la petición al backend para iniciar sesión. Se espera un mensaje de éxito y los datos del usuario.
