@@ -58,6 +58,9 @@
                     @if (intentoEnvio && f['apellido'].hasError('pattern')) {
                       <div class="invalid-feedback d-block">Solo letras y espacios.</div>
                     }
+                    @if (intentoEnvio && f['apellido'].hasError('maxlength')) {
+                      <div class="invalid-feedback d-block">Máximo 15 caracteres.</div>
+                    }
                   </div>
 
                   <div>
@@ -74,6 +77,9 @@
                     }
                     @if (intentoEnvio && f['usuario'].hasError('minlength')) {
                       <div class="invalid-feedback d-block">Mínimo 4 caracteres.</div>
+                    }
+                    @if (intentoEnvio && f['usuario'].hasError('maxlength')) {
+                      <div class="invalid-feedback d-block">Máximo 20 caracteres.</div>
                     }
                   </div>
 
@@ -135,6 +141,9 @@
                         Necesita una mayúscula y un número.
                       </div>
                     }
+                    @if (intentoEnvio && f['contrasena'].hasError('maxlength')) {
+                      <div class="invalid-feedback d-block">Máximo 20 caracteres.</div>
+                    }
                   </div>
 
                   <div>
@@ -169,6 +178,9 @@
                     </div>
                     @if (intentoEnvio && f['repetirContrasena'].hasError('required')) {
                       <div class="invalid-feedback d-block">Repetí la contraseña.</div>
+                    }
+                    @if (intentoEnvio && f['repetirContrasena'].hasError('maxlength')) {
+                      <div class="invalid-feedback d-block">Máximo 20 caracteres.</div>
                     }
                     @if (intentoEnvio && form.hasError('noCoincide')) {
                       <div class="invalid-feedback d-block">Las contraseñas no coinciden.</div>

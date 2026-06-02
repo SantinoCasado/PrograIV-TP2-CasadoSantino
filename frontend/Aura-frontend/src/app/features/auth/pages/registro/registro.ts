@@ -42,7 +42,7 @@ export class Registro implements OnInit {
         usuario: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]],
         correo: ['', [Validators.required, Validators.email]],
         contrasena: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20), Validators.pattern(/^(?=.*[A-Z])(?=.*\d).+$/)]],
-        repetirContrasena: ['', [Validators.required]],
+        repetirContrasena: ['', [Validators.required, Validators.maxLength(20)]],
         fechaNacimiento: ['', [Validators.required]],
         descripcion: ['', [Validators.required, Validators.maxLength(200)]],
       },
