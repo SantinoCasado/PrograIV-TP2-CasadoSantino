@@ -35,18 +35,31 @@
 
               <div class="ani-fade-up ani-d4">
                 <label class="form-label fw-semibold mb-2">Contraseña</label>
-                <input
-                  type="password"
-                  formControlName="contrasena"
-                  placeholder="********"
-                  class="form-control form-control-lg"
-                  [class.is-invalid]="
-                    intentoEnvio &&
-                    (contrasenaControl?.hasError('required') ||
-                      contrasenaControl?.hasError('minlength') ||
-                      contrasenaControl?.hasError('pattern'))
-                  "
-                />
+                <div class="password-wrap">
+                  <input
+                    [type]="mostrarContrasena ? 'text' : 'password'"
+                    formControlName="contrasena"
+                    placeholder="********"
+                    class="form-control form-control-lg pe-5"
+                    [class.is-invalid]="
+                      intentoEnvio &&
+                      (contrasenaControl?.hasError('required') ||
+                        contrasenaControl?.hasError('minlength') ||
+                        contrasenaControl?.hasError('pattern'))
+                    "
+                  />
+                  <button
+                    type="button"
+                    class="password-toggle"
+                    (click)="alternarContrasena()"
+                    [attr.aria-label]="
+                      mostrarContrasena ? 'Ocultar contraseña' : 'Mostrar contraseña'
+                    "
+                    [attr.aria-pressed]="mostrarContrasena"
+                  >
+                    {{ mostrarContrasena ? 'Ocultar' : 'Ver' }}
+                  </button>
+                </div>
                 @if (intentoEnvio && contrasenaControl?.hasError('required')) {
                   <div class="invalid-feedback d-block">La contraseña es obligatoria.</div>
                 }

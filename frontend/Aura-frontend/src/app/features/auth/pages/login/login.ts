@@ -17,6 +17,7 @@ export class Login implements OnInit {
   intentoEnvio = false;
   mensajeError = '';
   mensajeExito = '';
+  mostrarContrasena = false;
   form!: FormGroup;
 
   private readonly apiUrl = 'https://progra-iv-tp-2-casado-santino.vercel.app/auth/login';
@@ -52,6 +53,10 @@ export class Login implements OnInit {
   
   get contrasenaControl() {
     return this.form.get('contrasena');
+  }
+
+  alternarContrasena(): void {
+    this.mostrarContrasena = !this.mostrarContrasena;
   }
 
   enviar(): void {
