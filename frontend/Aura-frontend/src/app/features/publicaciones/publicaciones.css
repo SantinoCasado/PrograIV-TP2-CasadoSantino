@@ -1,0 +1,157 @@
+.pub-scene {
+  min-height: 100dvh;
+  padding: calc(72px + 1.25rem) 0 2rem;
+  background: #061a32;
+}
+
+.pub-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 290px;
+  gap: 1rem;
+  max-width: 1050px;
+}
+
+.pub-feed {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.pub-box {
+  background: #0c2d4f;
+  border: 2px solid #7fd9ff;
+  border-radius: 8px;
+  box-shadow: 5px 5px 0 #04203b;
+}
+
+.pub-header {
+  padding: 0.9rem;
+}
+
+.pub-header h1 {
+  margin: 0 0 0.2rem;
+  font-size: 1.2rem;
+  color: #ecf8ff;
+}
+
+.pub-header p {
+  margin: 0;
+  color: #badff3;
+  font-size: 0.9rem;
+}
+
+.post-card {
+  padding: 0.9rem;
+}
+
+.post-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.65rem;
+}
+
+.tag {
+  color: #ecf8ff;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.meta {
+  color: #9dcce6;
+  font-size: 0.8rem;
+}
+
+.post-image {
+  height: 270px;
+  border: 2px solid #7fd9ff;
+  border-radius: 7px;
+  margin-bottom: 0.7rem;
+}
+
+.img-a {
+  background: #1b4e78;
+}
+
+.img-b {
+  background: #304f71;
+}
+
+.post-text {
+  margin: 0 0 0.7rem;
+  color: #d4ecf9;
+}
+
+.post-bar {
+  display: flex;
+  gap: 0.55rem;
+}
+
+.post-bar button {
+  border: 2px solid #7fd9ff;
+  border-radius: 6px;
+  background: #114066;
+  color: #eaf7ff;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.8rem;
+  font-family: 'Courier New', monospace;
+}
+
+.pub-side {
+  padding: 0.9rem;
+  height: fit-content;
+  position: sticky;
+  top: calc(72px + 1rem);
+}
+
+.pub-side h2,
+.pub-side h3 {
+  margin: 0 0 0.5rem;
+  color: #eaf7ff;
+  font-size: 1rem;
+}
+
+.pub-side p {
+  margin: 0 0 0.4rem;
+  color: #cae7f7;
+  font-size: 0.9rem;
+}
+
+.pub-side hr {
+  border: 0;
+  border-top: 2px solid #5cbce4;
+  margin: 0.7rem 0;
+}
+
+.pub-side ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: #cae7f7;
+}
+
+.pub-side li {
+  margin-bottom: 0.3rem;
+}
+
+@media (max-width: 992px) {
+  .pub-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .pub-side {
+    position: static;
+  }
+}
+
+@media (max-width: 576px) {
+  .pub-scene {
+    padding-top: calc(112px + 0.8rem);
+  }
+
+  .post-image {
+    height: 220px;
+  }
+
+  .post-bar {
+    flex-wrap: wrap;
+  }
+}

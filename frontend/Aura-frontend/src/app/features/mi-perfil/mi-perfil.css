@@ -1,0 +1,155 @@
+.perfil-scene {
+  min-height: 100dvh;
+  padding: calc(72px + 1.25rem) 0 2rem;
+  background: #071d36;
+}
+
+.perfil-wrap {
+  max-width: 980px;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.perfil-box {
+  background: #0d2f53;
+  border: 2px solid #7fd9ff;
+  border-radius: 8px;
+  box-shadow: 5px 5px 0 #04203b;
+}
+
+.perfil-head {
+  display: grid;
+  grid-template-columns: 70px 1fr auto;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.9rem;
+}
+
+.avatar {
+  width: 62px;
+  height: 62px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: #ecf8ff;
+  background: #14476f;
+  border: 2px solid #7fd9ff;
+}
+
+.info h1 {
+  margin: 0;
+  color: #ecf8ff;
+  font-size: 1.1rem;
+}
+
+.info p {
+  margin: 0.15rem 0 0;
+  color: #d1eaf8;
+}
+
+.info small {
+  color: #9dcce6;
+}
+
+.perfil-head button {
+  border: 2px solid #7fd9ff;
+  background: #114066;
+  color: #ecf8ff;
+  border-radius: 7px;
+  padding: 0.3rem 0.7rem;
+  font-family: 'Courier New', monospace;
+}
+
+.stats {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 0.8rem 0.9rem;
+}
+
+.stats p {
+  margin: 0;
+  color: #d1eaf8;
+}
+
+.bio {
+  padding: 0.8rem 0.9rem;
+}
+
+.bio h2 {
+  margin: 0 0 0.3rem;
+  font-size: 1rem;
+  color: #ecf8ff;
+}
+
+.bio p {
+  margin: 0;
+  color: #d1eaf8;
+}
+
+.perfil-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.item {
+  min-height: 160px;
+  border: 2px solid #7fd9ff;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  color: #ecf8ff;
+}
+
+.a {
+  background: #1c4f79;
+}
+
+.b {
+  background: #395572;
+}
+
+.c {
+  background: #2e6288;
+}
+
+.d {
+  background: #234866;
+}
+
+.e {
+  background: #2c557a;
+}
+
+.f {
+  background: #426384;
+}
+
+@media (max-width: 900px) {
+  .perfil-head {
+    grid-template-columns: 70px 1fr;
+  }
+
+  .perfil-head button {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+}
+
+@media (max-width: 576px) {
+  .perfil-scene {
+    padding-top: calc(112px + 0.8rem);
+  }
+
+  .perfil-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .item {
+    min-height: 130px;
+  }
+}
