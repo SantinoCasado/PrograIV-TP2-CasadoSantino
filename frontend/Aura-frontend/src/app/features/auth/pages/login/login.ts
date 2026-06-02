@@ -5,11 +5,12 @@ import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 import { Footer } from "../../../../layouts/footer/footer";
+import { Navbar } from "../../../../layouts/navbar/navbar";
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, Footer],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, Footer, Navbar],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })

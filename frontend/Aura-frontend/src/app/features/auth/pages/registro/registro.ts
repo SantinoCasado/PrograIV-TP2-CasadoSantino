@@ -6,11 +6,12 @@ import { Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 import { contrasenaCoincide } from '../../../../shared/utils/contraseñasCoinciden';
 import { Footer } from '../../../../layouts/footer/footer';
+import { Navbar } from '../../../../layouts/navbar/navbar';
 
 @Component({
   selector: 'app-registro',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, Footer],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, Footer, Navbar],
   templateUrl: './registro.html',
   styleUrl: './registro.css',
 })

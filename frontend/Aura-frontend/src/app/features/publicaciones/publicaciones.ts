@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+import { Navbar } from "../../layouts/navbar/navbar";
 
 @Component({
   selector: 'app-publicaciones',
   standalone: true,
-  imports: [],
+  imports: [Navbar],
   templateUrl: './publicaciones.html',
   styleUrl: './publicaciones.css',
 })
