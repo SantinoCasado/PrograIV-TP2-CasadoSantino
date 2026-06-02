@@ -7,10 +7,10 @@ export class BaseAuthDto {
   @MaxLength(20)
   usuario: string;
 
-  @Transform(({ value, obj }) => value ?? obj?.contrasena)
+  @Transform(({ value, obj }) => value ?? obj?.['contraseña'])
   @IsNotEmpty()
   @MinLength(8)
   @MaxLength(20)
   @Matches(/^(?=.*[A-Z])(?=.*[0-9]).*$/, { message: 'La contraseña debe tener al menos una mayúscula y un número.' })
-  contraseña: string;
+  contrasena: string;
 }

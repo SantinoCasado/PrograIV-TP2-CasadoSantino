@@ -21,7 +21,7 @@ export class AuthService {
   async registro(createAuthDto: CreateAuthDto, imagen: Express.Multer.File) {
     // --------- Validacion de la contraseña ----------
       // Si las contraseñas no coinciden, lanza una excepción
-    if (createAuthDto.contraseña !== createAuthDto.repetirContraseña) {
+    if (createAuthDto.contrasena !== createAuthDto.repetirContrasena) {
       throw new BadRequestException('Las contraseñas no coinciden.');
     }
 
@@ -38,7 +38,7 @@ export class AuthService {
 
     // --------- Encriptar la contraseña antes de guardarla ----------
       // Encripta la contraseña usando bcrypt con un salt de 10 rondas (salts = encriptación adicional para hacer el hash más seguro)
-    const hash = await bcrypt.hash(createAuthDto.contraseña, 10);
+    const hash = await bcrypt.hash(createAuthDto.contrasena, 10);
 
     // --------- Guardar imagen ----------
     const imagenPerfil = await this.storageService.uploadProfileImage(imagen);
@@ -57,7 +57,7 @@ export class AuthService {
     });
 
     await nuevoUsuario.save();
-    const { contraseña, repetirContraseña, ...usuarioSinPassword } = nuevoUsuario.toObject() as any;
+    const { contraseña, ...usuarioSinPassword } = nuevoUsuario.toObject() as any;
 
     // Devuelve el usuario sin la contraseña ni el repetirContraseña para guardar la seguridad de los datos sensibles
     return usuarioSinPassword;
@@ -80,7 +80,7 @@ export class AuthService {
 
     // Valida la contraseña comparando el hash almacenado con la contraseña proporcionada
     const usuarioObj = usuario.toObject() as any; // Convierte el documento de Mongoose a un objeto JavaScript para acceder a sus propiedades
-    const passwordValida = await bcrypt.compare(loginAuthDto.contraseña, usuarioObj.contraseña);
+    const passwordValida = await bcrypt.compare(loginAuthDto.contrasena, usuarioObj.contraseña);
     if (!passwordValida) {
       throw new BadRequestException('Contraseña incorrecta.');
     }

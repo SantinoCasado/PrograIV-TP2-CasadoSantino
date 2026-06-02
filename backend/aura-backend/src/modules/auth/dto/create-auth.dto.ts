@@ -17,9 +17,9 @@ export class CreateAuthDto extends BaseAuthDto {
   @IsNotEmpty()
   correo: string;
 
-  @Transform(({ value, obj }) => value ?? obj?.repetirContrasena)
+  @Transform(({ value, obj }) => value ?? obj?.['repetirContraseña'])
   @IsNotEmpty()
-  repetirContraseña: string;
+  repetirContrasena: string;
 
   @IsDateString()
   @IsNotEmpty()
