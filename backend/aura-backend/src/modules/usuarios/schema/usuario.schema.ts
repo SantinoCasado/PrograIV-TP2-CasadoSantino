@@ -3,22 +3,31 @@ import { Document } from 'mongoose';
 
 @Schema()
 export class Usuario extends Document {
-  @Prop({ required: true, unique: true })
-  usuario: string;
+  @Prop({ required: true })
+  nombre: string;
+
+  @Prop({ required: true })
+  apellido: string;
 
   @Prop({ required: true, unique: true })
   correo: string;
 
+  @Prop({ required: true, unique: true })
+  usuario: string;
+
   @Prop({ required: true })
   contraseña: string;
 
-  @Prop()
-  nombre: string;
+  @Prop({ required: true })
+  fechaNacimiento: Date;
 
-  @Prop()
-  apellido: string;
+  @Prop({ required: true })
+  descripcion: string;
 
-  @Prop()
+  @Prop({ default: 'usuario' })
+  perfil: string;
+
+  @Prop({ required: true })
   imagenPerfil: string;
 }
 

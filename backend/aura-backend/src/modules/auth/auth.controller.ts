@@ -4,8 +4,7 @@ import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { LoginAuthDto } from './dto/login-auth.dto';
-import type { Express, Request } from 'express';
-import type { Multer } from 'multer';
+import type { Express } from 'express';
 /*
 Dependencias necesarias para el módulo de autenticación:
 npm install bcrypt @types/bcrypt multer @types/multer

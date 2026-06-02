@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UsuariosModule } from './modules/usuarios/usuarios.module';
 import { PublicacionesModule } from './modules/publicaciones/publicaciones.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { StorageModule } from './common/storage/storage.module';
 import * as dotenv from 'dotenv';
 
 
@@ -21,6 +22,7 @@ dotenv.config();  // Carga las variables de entorno desde el archivo .env
     UsuariosModule,
     PublicacionesModule,
     AuthModule,
+    StorageModule,
   ],
   controllers: [AppController],
   providers: [AppService],

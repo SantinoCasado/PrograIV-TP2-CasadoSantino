@@ -6,12 +6,15 @@ import * as bcrypt from 'bcrypt';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { LoginAuthDto } from './dto/login-auth.dto';
+import { StorageService } from '../../common/storage/storage/storage.service';
 
+// Libreria utilizada para el hasheo de contraseñas es bcrypt: genera hashes seguros de contrasenas. npm install bcrypt @types/bcrypt
 @Injectable()
 export class AuthService {
-    constructor(
+  constructor(
     // Inyectamos el modelo de Usuario para poder interactuar con la base de datos
     @InjectModel(Usuario.name) private readonly usuarioModel: Model<Usuario>,
+    private readonly storageService: StorageService,
   ) {}
 
   // --------------------- REGISTRO DE USUARIOS ----------------------
@@ -38,10 +41,7 @@ export class AuthService {
     const hash = await bcrypt.hash(createAuthDto.contraseña, 10);
 
     // --------- Guardar imagen ----------
-    let imagenUrl = '';
-    if (imagen) {
-      imagenUrl = `/uploads/${imagen.filename}`; // Guarda la ruta de la imagen
-    }
+    const imagenPerfil = await this.storageService.uploadProfileImage(imagen);
 
     // --------- Crear el nuevo usuario en la base de datos ----------
     const nuevoUsuario = new this.usuarioModel({
@@ -53,7 +53,7 @@ export class AuthService {
       fechaNacimiento: createAuthDto.fechaNacimiento,
       descripcion: createAuthDto.descripcion,
       perfil: createAuthDto.perfil || 'usuario',
-      imagen: imagenUrl,
+      imagenPerfil,
     });
 
     await nuevoUsuario.save();
