@@ -15,7 +15,15 @@
   z-index: 10;
   min-height: 100dvh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  padding-top: calc(72px + 4.5rem);
+  padding-bottom: 2rem;
+}
+
+@media (max-width: 576px) {
+  .registro-overlay {
+    padding-top: calc(112px + 2.5rem);
+  }
 }
 
 .registro-card {
