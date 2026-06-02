@@ -1,4 +1,5 @@
 import { IsNotEmpty, MinLength, Matches, MaxLength } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class BaseAuthDto {
   @IsNotEmpty()
@@ -6,6 +7,7 @@ export class BaseAuthDto {
   @MaxLength(20)
   usuario: string;
 
+  @Transform(({ value, obj }) => value ?? obj?.contrasena)
   @IsNotEmpty()
   @MinLength(8)
   @MaxLength(20)

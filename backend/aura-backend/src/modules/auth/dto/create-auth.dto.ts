@@ -1,5 +1,6 @@
-import { IsNotEmpty, IsEmail, MinLength, MaxLength, Matches, IsOptional, IsIn } from 'class-validator';
+import { IsNotEmpty, IsEmail, MinLength, MaxLength, Matches, IsOptional, IsIn, IsDateString } from 'class-validator';
 import { BaseAuthDto } from './base-auth.dto';
+import { Transform } from 'class-transformer';
 
 export class CreateAuthDto extends BaseAuthDto {
   @IsNotEmpty()
@@ -16,9 +17,11 @@ export class CreateAuthDto extends BaseAuthDto {
   @IsNotEmpty()
   correo: string;
 
+  @Transform(({ value, obj }) => value ?? obj?.repetirContrasena)
   @IsNotEmpty()
   repetirContraseña: string;
 
+  @IsDateString()
   @IsNotEmpty()
   fechaNacimiento: Date;
 
