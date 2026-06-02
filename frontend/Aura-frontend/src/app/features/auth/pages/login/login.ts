@@ -4,11 +4,12 @@ import { HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
+import { Footer } from "../../../../layouts/footer/footer";
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, Footer],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })

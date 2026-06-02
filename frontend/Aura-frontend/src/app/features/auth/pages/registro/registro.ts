@@ -5,11 +5,12 @@ import { ReactiveFormsModule, FormBuilder, Validators, FormGroup, AbstractContro
 import { Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 import { contrasenaCoincide } from '../../../../shared/utils/contraseñasCoinciden';
+import { Footer } from '../../../../layouts/footer/footer';
 
 @Component({
   selector: 'app-registro',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, Footer],
   templateUrl: './registro.html',
   styleUrl: './registro.css',
 })

@@ -1,0 +1,59 @@
+.topbar {
+  background: linear-gradient(180deg, rgba(6, 30, 58, 0.92), rgba(4, 22, 46, 0.88));
+  border-bottom: 1px solid var(--aura-border);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 24px rgba(1, 8, 22, 0.35);
+  z-index: 1000;
+}
+
+.brand {
+  font-size: 1.1rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: var(--aura-ink);
+}
+
+.brand span {
+  color: var(--aura-cyan);
+  text-shadow: 0 0 16px rgba(85, 212, 255, 0.28);
+}
+
+.menu .nav-link {
+  color: var(--aura-text);
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: 220ms ease;
+}
+
+.menu .nav-link:hover,
+.menu .nav-link.active {
+  color: var(--aura-cyan-hover);
+  border-color: rgba(85, 212, 255, 0.5);
+  background: rgba(85, 212, 255, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(85, 212, 255, 0.12);
+}
+
+@media (max-width: 576px) {
+  /* Responsive: apila marca y navegación para que no se compriman en una sola fila. */
+  .topbar .container-fluid {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 10px;
+  }
+
+  .brand {
+    text-align: center;
+  }
+
+  .menu {
+    justify-content: center;
+  }
+
+  .menu .nav-link {
+    font-size: 0.86rem;
+    padding: 7px 10px;
+  }
+}

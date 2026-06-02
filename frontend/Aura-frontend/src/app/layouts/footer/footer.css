@@ -1,0 +1,6 @@
+.site-footer {
+  border-top: 1px solid rgba(220, 30, 30, 0.2);
+  background: linear-gradient(140deg, rgba(6, 30, 58, 0.82), rgba(8, 46, 82, 0.75));
+  color: #ffffff;
+  font-size: 0.9rem;
+}
