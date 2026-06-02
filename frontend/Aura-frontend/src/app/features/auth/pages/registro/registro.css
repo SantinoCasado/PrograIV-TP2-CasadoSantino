@@ -1,0 +1,198 @@
+.registro-scene {
+  position: relative;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+.simple-registro-bg {
+  position: absolute;
+  inset: 0;
+  background: url('/assets/images/background.jpg') center / cover no-repeat;
+}
+
+.registro-overlay {
+  position: relative;
+  z-index: 10;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+}
+
+.registro-card {
+  border-radius: 26px;
+  background: linear-gradient(140deg, rgba(6, 30, 58, 0.88), rgba(8, 46, 82, 0.8));
+  box-shadow:
+    0 18px 42px rgba(1, 8, 22, 0.55),
+    inset 0 0 0 1px var(--aura-border);
+  backdrop-filter: blur(14px);
+  color: var(--aura-text);
+}
+
+.registro-card h2 {
+  color: var(--aura-ink);
+}
+
+.registro-subtitle {
+  color: var(--aura-text-muted);
+  font-size: 0.95rem;
+}
+
+.form-control {
+  border-radius: 12px;
+  border: 1px solid rgba(56, 160, 210, 0.35);
+  background: rgba(4, 22, 46, 0.72);
+  color: var(--aura-text);
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.form-control::placeholder {
+  color: rgba(140, 200, 225, 0.45);
+}
+
+.form-control:focus {
+  border-color: var(--aura-blue-light);
+  background: rgba(4, 22, 46, 0.92);
+  color: var(--aura-text);
+  box-shadow:
+    0 0 0 0.2rem rgba(56, 180, 230, 0.28),
+    0 0 12px rgba(56, 180, 230, 0.12);
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-label {
+  color: var(--aura-label);
+}
+
+/* Ojito contraseña */
+.password-wrap {
+  position: relative;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.7rem;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem;
+  border-radius: 8px;
+}
+
+.password-toggle:hover {
+  background: rgba(56, 180, 230, 0.12);
+}
+
+.password-eye {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: block;
+  opacity: 0.88;
+}
+
+.password-toggle:hover .password-eye {
+  opacity: 1;
+}
+
+/* Upload de imagen */
+.upload-zone {
+  border: 1.5px dashed rgba(56, 180, 230, 0.45);
+  border-radius: 16px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease;
+  background: rgba(4, 22, 46, 0.45);
+  max-width: 360px;
+  margin-inline: auto;
+}
+
+.upload-zone:hover {
+  border-color: var(--aura-cyan);
+  background: rgba(56, 180, 230, 0.07);
+}
+
+.upload-placeholder p {
+  color: var(--aura-text-muted);
+}
+
+.upload-icon {
+  width: 2rem;
+  height: 2rem;
+  opacity: 0.65;
+}
+
+.upload-preview {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--aura-cyan);
+}
+
+/* Botón */
+.btn-info {
+  background: linear-gradient(120deg, var(--aura-blue) 0%, var(--aura-cyan) 100%);
+  border: 0;
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease,
+    box-shadow 0.3s ease;
+  animation: aura-btn-glow 2.8s ease-in-out infinite;
+}
+
+.btn-info:hover {
+  transform: translateY(-2px) scale(1.01);
+  filter: brightness(1.1);
+  box-shadow:
+    0 14px 32px rgba(4, 75, 116, 0.5),
+    0 0 0 3px rgba(85, 212, 255, 0.2);
+  animation: none;
+}
+
+.btn-info:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn:disabled {
+  cursor: wait;
+  opacity: 0.7;
+  animation: none;
+}
+
+.registro-card a {
+  color: var(--aura-cyan);
+}
+
+.registro-card a:hover {
+  color: var(--aura-cyan-hover);
+}
+
+.invalid-feedback {
+  font-size: 12px;
+}
+
+/* Date input en tema oscuro */
+input[type='date']::-webkit-calendar-picker-indicator {
+  filter: invert(0.7);
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .registro-card {
+    border-radius: 20px;
+  }
+}

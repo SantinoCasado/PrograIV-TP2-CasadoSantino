@@ -1,1 +1,275 @@
-<p>registro works!</p>
+<section class="registro-scene">
+  <div class="simple-registro-bg" aria-hidden="true"></div>
+
+  <div class="registro-overlay container py-5">
+    <div class="row justify-content-center w-100 m-0">
+      <div class="col-12 col-md-10 col-xl-8">
+        <article class="registro-card card border-0 ani-fade-up ani-soft-pulse">
+          <div class="card-body p-4 p-md-5">
+            <h2 class="h2 fw-bold mb-1 ani-fade-up ani-d1">Crear cuenta</h2>
+            <p class="registro-subtitle mb-4 ani-fade-up ani-d2">
+              Completá tus datos para unirte a Aura.
+            </p>
+
+            <form
+              class="d-grid gap-3"
+              [formGroup]="form"
+              (ngSubmit)="enviar()"
+              autocomplete="on"
+              novalidate
+              enctype="multipart/form-data"
+            >
+              <!-- Dos columnas: datos personales + credenciales -->
+              <div class="row g-3 ani-fade-up ani-d2">
+                <!-- Columna izquierda -->
+                <div class="col-12 col-md-6 d-grid gap-3">
+                  <div>
+                    <label class="form-label fw-semibold mb-1">Nombre</label>
+                    <input
+                      type="text"
+                      formControlName="nombre"
+                      placeholder="Santino"
+                      class="form-control form-control-lg"
+                      [class.is-invalid]="intentoEnvio && f['nombre'].invalid"
+                    />
+                    @if (intentoEnvio && f['nombre'].hasError('required')) {
+                      <div class="invalid-feedback d-block">El nombre es obligatorio.</div>
+                    }
+                    @if (intentoEnvio && f['nombre'].hasError('pattern')) {
+                      <div class="invalid-feedback d-block">Solo letras y espacios.</div>
+                    }
+                    @if (intentoEnvio && f['nombre'].hasError('maxlength')) {
+                      <div class="invalid-feedback d-block">Máximo 15 caracteres.</div>
+                    }
+                  </div>
+
+                  <div>
+                    <label class="form-label fw-semibold mb-1">Apellido</label>
+                    <input
+                      type="text"
+                      formControlName="apellido"
+                      placeholder="Casado"
+                      class="form-control form-control-lg"
+                      [class.is-invalid]="intentoEnvio && f['apellido'].invalid"
+                    />
+                    @if (intentoEnvio && f['apellido'].hasError('required')) {
+                      <div class="invalid-feedback d-block">El apellido es obligatorio.</div>
+                    }
+                    @if (intentoEnvio && f['apellido'].hasError('pattern')) {
+                      <div class="invalid-feedback d-block">Solo letras y espacios.</div>
+                    }
+                  </div>
+
+                  <div>
+                    <label class="form-label fw-semibold mb-1">Nombre de usuario</label>
+                    <input
+                      type="text"
+                      formControlName="usuario"
+                      placeholder="santi123"
+                      class="form-control form-control-lg"
+                      [class.is-invalid]="intentoEnvio && f['usuario'].invalid"
+                    />
+                    @if (intentoEnvio && f['usuario'].hasError('required')) {
+                      <div class="invalid-feedback d-block">El usuario es obligatorio.</div>
+                    }
+                    @if (intentoEnvio && f['usuario'].hasError('minlength')) {
+                      <div class="invalid-feedback d-block">Mínimo 4 caracteres.</div>
+                    }
+                  </div>
+
+                  <div>
+                    <label class="form-label fw-semibold mb-1">Correo electrónico</label>
+                    <input
+                      type="email"
+                      formControlName="correo"
+                      placeholder="santi@mail.com"
+                      class="form-control form-control-lg"
+                      [class.is-invalid]="intentoEnvio && f['correo'].invalid"
+                    />
+                    @if (intentoEnvio && f['correo'].hasError('required')) {
+                      <div class="invalid-feedback d-block">El correo es obligatorio.</div>
+                    }
+                    @if (intentoEnvio && f['correo'].hasError('email')) {
+                      <div class="invalid-feedback d-block">Ingresá un correo válido.</div>
+                    }
+                  </div>
+                </div>
+
+                <!-- Columna derecha -->
+                <div class="col-12 col-md-6 d-grid gap-3">
+                  <div>
+                    <label class="form-label fw-semibold mb-1">Contraseña</label>
+                    <div class="password-wrap">
+                      <input
+                        [type]="mostrarContrasena ? 'text' : 'password'"
+                        formControlName="contrasena"
+                        placeholder="********"
+                        class="form-control form-control-lg pe-5"
+                        [class.is-invalid]="intentoEnvio && f['contrasena'].invalid"
+                      />
+                      <button
+                        type="button"
+                        class="password-toggle"
+                        (click)="alternarContrasena()"
+                        [attr.aria-label]="mostrarContrasena ? 'Ocultar' : 'Mostrar'"
+                      >
+                        <img
+                          [src]="
+                            mostrarContrasena
+                              ? '/assets/icons/eye-open.svg'
+                              : '/assets/icons/eye-closed.svg'
+                          "
+                          [alt]="mostrarContrasena ? 'Ocultar' : 'Mostrar'"
+                          class="password-eye"
+                        />
+                      </button>
+                    </div>
+                    @if (intentoEnvio && f['contrasena'].hasError('required')) {
+                      <div class="invalid-feedback d-block">La contraseña es obligatoria.</div>
+                    }
+                    @if (intentoEnvio && f['contrasena'].hasError('minlength')) {
+                      <div class="invalid-feedback d-block">Mínimo 8 caracteres.</div>
+                    }
+                    @if (intentoEnvio && f['contrasena'].hasError('pattern')) {
+                      <div class="invalid-feedback d-block">
+                        Necesita una mayúscula y un número.
+                      </div>
+                    }
+                  </div>
+
+                  <div>
+                    <label class="form-label fw-semibold mb-1">Repetir contraseña</label>
+                    <div class="password-wrap">
+                      <input
+                        [type]="mostrarRepetir ? 'text' : 'password'"
+                        formControlName="repetirContrasena"
+                        placeholder="********"
+                        class="form-control form-control-lg pe-5"
+                        [class.is-invalid]="
+                          intentoEnvio &&
+                          (f['repetirContrasena'].invalid || form.hasError('noCoincide'))
+                        "
+                      />
+                      <button
+                        type="button"
+                        class="password-toggle"
+                        (click)="alternarRepetir()"
+                        [attr.aria-label]="mostrarRepetir ? 'Ocultar' : 'Mostrar'"
+                      >
+                        <img
+                          [src]="
+                            mostrarRepetir
+                              ? '/assets/icons/eye-open.svg'
+                              : '/assets/icons/eye-closed.svg'
+                          "
+                          [alt]="mostrarRepetir ? 'Ocultar' : 'Mostrar'"
+                          class="password-eye"
+                        />
+                      </button>
+                    </div>
+                    @if (intentoEnvio && f['repetirContrasena'].hasError('required')) {
+                      <div class="invalid-feedback d-block">Repetí la contraseña.</div>
+                    }
+                    @if (intentoEnvio && form.hasError('noCoincide')) {
+                      <div class="invalid-feedback d-block">Las contraseñas no coinciden.</div>
+                    }
+                  </div>
+
+                  <div>
+                    <label class="form-label fw-semibold mb-1">Fecha de nacimiento</label>
+                    <input
+                      type="date"
+                      formControlName="fechaNacimiento"
+                      class="form-control form-control-lg"
+                      [class.is-invalid]="intentoEnvio && f['fechaNacimiento'].invalid"
+                    />
+                    @if (intentoEnvio && f['fechaNacimiento'].hasError('required')) {
+                      <div class="invalid-feedback d-block">
+                        La fecha de nacimiento es obligatoria.
+                      </div>
+                    }
+                  </div>
+                </div>
+              </div>
+
+              <!-- Imagen de perfil — centrada, fila completa -->
+              <div class="row g-0 ani-fade-up ani-d3">
+                <div class="col-12">
+                  <label class="form-label fw-semibold mb-2 d-block text-center"
+                    >Imagen de perfil
+                    <span class="text-muted small fw-normal">(opcional)</span></label
+                  >
+
+                  <div class="upload-zone text-center" (click)="fileInput.click()">
+                    @if (imagenPreview) {
+                      <img [src]="imagenPreview" alt="Vista previa" class="upload-preview" />
+                    } @else {
+                      <div class="upload-placeholder">
+                        <img src="/assets/icons/eye-open.svg" alt="" class="upload-icon mb-2" />
+                        <p class="mb-0 small">Tocá para subir una foto</p>
+                      </div>
+                    }
+                  </div>
+
+                  <input
+                    #fileInput
+                    type="file"
+                    accept="image/*"
+                    class="d-none"
+                    (change)="onImagenChange($event)"
+                  />
+                </div>
+              </div>
+
+              <!-- Descripción — centrada, fila completa -->
+              <div class="ani-fade-up ani-d4">
+                <label class="form-label fw-semibold mb-1">Descripción breve</label>
+                <textarea
+                  formControlName="descripcion"
+                  rows="3"
+                  placeholder="Contá algo sobre vos..."
+                  class="form-control"
+                  [class.is-invalid]="intentoEnvio && f['descripcion'].invalid"
+                ></textarea>
+                @if (intentoEnvio && f['descripcion'].hasError('required')) {
+                  <div class="invalid-feedback d-block">La descripción es obligatoria.</div>
+                }
+                @if (intentoEnvio && f['descripcion'].hasError('maxlength')) {
+                  <div class="invalid-feedback d-block">Máximo 200 caracteres.</div>
+                }
+                <div class="text-end small mt-1" style="color: var(--aura-text-muted)">
+                  {{ form.value.descripcion?.length ?? 0 }}/200
+                </div>
+              </div>
+
+              @if (mensajeError) {
+                <div class="alert alert-danger py-2 px-3 mb-0 ani-fade">{{ mensajeError }}</div>
+              }
+              @if (mensajeExito) {
+                <div class="alert alert-success py-2 px-3 mb-0 ani-fade">{{ mensajeExito }}</div>
+              }
+
+              <button
+                type="submit"
+                [disabled]="cargando"
+                class="btn btn-info btn-lg w-100 fw-semibold text-white mt-1 ani-fade-up ani-d5"
+              >
+                {{ cargando ? 'Registrando...' : 'Crear cuenta' }}
+              </button>
+
+              <p
+                class="text-center small mb-0 mt-2 ani-fade-up ani-d6"
+                style="color: var(--aura-text-muted)"
+              >
+                ¿Ya tenés cuenta?
+                <a routerLink="/log-in" class="text-info fw-semibold text-decoration-none"
+                  >Ingresá</a
+                >
+              </p>
+            </form>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>

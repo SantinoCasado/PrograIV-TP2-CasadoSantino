@@ -2,15 +2,21 @@
   <div class="simple-login-bg" aria-hidden="true"></div>
 
   <div class="login-overlay container py-4">
-    <div class="row justify-content-center w-100 m-0">
+    <div class="row justify-content-center align-items-center w-100 m-0 g-4 g-lg-5">
+      <div class="col-11 col-lg-5 brand-col">
+        <section class="brand-side ani-fade-up ani-d1">
+          <p class="brand-kicker text-uppercase fw-semibold mb-2">Bienvenido a</p>
+          <h1 class="brand-name ani-white-beacon mb-2">Aura</h1>
+          <p class="brand-subtitle mb-0 ani-fade-up ani-d2">
+            El lugar donde conectas con personas como tú.
+          </p>
+        </section>
+      </div>
+
       <div class="col-12 col-sm-10 col-md-8 col-lg-5">
         <article class="login-card card border-0 ani-fade-up ani-soft-pulse">
           <div class="card-body p-4 p-md-5">
-            <p class="eyebrow text-uppercase small fw-bold mb-1 ani-fade-up ani-d1">AURA</p>
-            <h1 class="h2 fw-bold mb-2 ani-fade-up ani-d2">Ingresar</h1>
-            <p class="subtitle text-secondary mb-4 ani-fade-up ani-d3">
-              Tu comunidad te esta esperando.
-            </p>
+            <h2 class="h2 fw-bold mb-4 ani-fade-up ani-d2">Ingresar</h2>
 
             <form
               class="login-form d-grid gap-3"
@@ -57,7 +63,18 @@
                     "
                     [attr.aria-pressed]="mostrarContrasena"
                   >
-                    {{ mostrarContrasena ? 'Ocultar' : 'Ver' }}
+                    <img
+                      [src]="
+                        mostrarContrasena
+                          ? '/assets/icons/eye-open.svg'
+                          : '/assets/icons/eye-closed.svg'
+                      "
+                      [alt]="mostrarContrasena ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+                      class="password-eye"
+                    />
+                    <span class="visually-hidden">
+                      {{ mostrarContrasena ? 'Ocultar contraseña' : 'Mostrar contraseña' }}
+                    </span>
                   </button>
                 </div>
                 @if (intentoEnvio && contrasenaControl?.hasError('required')) {

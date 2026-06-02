@@ -18,6 +18,34 @@
   align-items: center;
 }
 
+.brand-side {
+  color: var(--aura-ink);
+  max-width: 480px;
+  padding-right: clamp(0.25rem, 2vw, 2.2rem);
+}
+
+.brand-kicker {
+  letter-spacing: 0.22em;
+  color: var(--aura-cyan);
+  font-size: 0.86rem;
+}
+
+.brand-name {
+  font-size: clamp(3rem, 8.5vw, 6rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: 0.03em;
+  color: #f8fcff;
+}
+
+.brand-subtitle {
+  color: #d1ecf9;
+  font-size: clamp(1rem, 1.8vw, 1.22rem);
+  max-width: none;
+  line-height: 1.45;
+  white-space: nowrap;
+}
+
 .login-card {
   width: min(94vw, 460px);
   border-radius: 26px;
@@ -27,15 +55,6 @@
     inset 0 0 0 1px var(--aura-border);
   backdrop-filter: blur(14px);
   color: var(--aura-text);
-}
-
-.eyebrow {
-  letter-spacing: 0.18em;
-  color: var(--aura-cyan);
-}
-
-.subtitle {
-  color: var(--aura-text-muted);
 }
 
 .form-control {
@@ -73,16 +92,28 @@
   transform: translateY(-50%);
   border: 0;
   background: transparent;
-  color: var(--aura-cyan);
-  font-size: 0.82rem;
-  font-weight: 600;
-  padding: 0.2rem 0.35rem;
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem;
   border-radius: 8px;
 }
 
+.password-eye {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: block;
+  opacity: 0.92;
+}
+
 .password-toggle:hover {
-  color: var(--aura-cyan-hover);
   background: rgba(56, 180, 230, 0.12);
+}
+
+.password-toggle:hover .password-eye {
+  opacity: 1;
 }
 
 .password-toggle:focus-visible {
@@ -125,6 +156,10 @@
   color: var(--aura-ink);
 }
 
+.login-card h2 {
+  color: var(--aura-ink);
+}
+
 .login-card .form-label {
   color: var(--aura-label);
 }
@@ -141,7 +176,35 @@
   font-size: 12px;
 }
 
+@media (min-width: 992px) {
+  .brand-col {
+    position: relative;
+    top: -68px;
+  }
+
+  .brand-side {
+    margin-top: 0;
+  }
+}
+
 @media (max-width: 600px) {
+  .brand-col {
+    position: static;
+    top: auto;
+  }
+
+  .brand-side {
+    text-align: center;
+    max-width: none;
+    padding-right: 0;
+    margin-top: 0;
+  }
+
+  .brand-subtitle {
+    white-space: normal;
+    margin-inline: auto;
+  }
+
   .login-card {
     border-radius: 20px;
   }

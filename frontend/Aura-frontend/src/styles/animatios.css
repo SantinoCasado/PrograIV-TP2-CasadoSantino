@@ -47,6 +47,24 @@
   }
 }
 
+@keyframes aura-white-beacon {
+  0%,
+  100% {
+    text-shadow:
+      0 0 8px rgba(255, 255, 255, 0.25),
+      0 0 18px rgba(255, 255, 255, 0.18),
+      0 0 34px rgba(168, 234, 255, 0.15);
+    filter: brightness(1);
+  }
+  50% {
+    text-shadow:
+      0 0 14px rgba(255, 255, 255, 0.55),
+      0 0 30px rgba(255, 255, 255, 0.42),
+      0 0 54px rgba(168, 234, 255, 0.35);
+    filter: brightness(1.14);
+  }
+}
+
 /* Clases base */
 .ani-fade-up {
   animation: aura-fade-up 750ms cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -62,6 +80,10 @@
 
 .ani-btn-glow {
   animation: aura-btn-glow 2.8s ease-in-out infinite;
+}
+
+.ani-white-beacon {
+  animation: aura-white-beacon 3.2s ease-in-out infinite;
 }
 
 /* Delays escalonados para aparición en cascada */
