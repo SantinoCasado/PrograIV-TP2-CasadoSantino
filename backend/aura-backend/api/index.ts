@@ -12,7 +12,7 @@ async function createApp(): Promise<Express> {
   const expressApp = express(); // Crea una nueva instancia de la aplicación Express
   const app = await NestFactory.create(AppModule, new ExpressAdapter(expressApp));  // Crea la aplicación NestJS utilizando el módulo principal y adaptándola a Express
 
-  app.useGlobalPipes(new ValidationPipe()); // Configura la aplicación para usar ValidationPipe globalmente, lo que permite validar las solicitudes entrantes según los DTOs definidos
+  app.useGlobalPipes(new ValidationPipe({ transform: true })); // Habilita transform para aplicar @Transform de los DTOs (aliases ASCII/sin ñ)
 
   app.enableCors({  // Configura CORS para permitir solicitudes desde el frontend, especificando los orígenes permitidos y habilitando el envío de credenciales (cookies, headers de autenticación, etc.)
     origin: [
