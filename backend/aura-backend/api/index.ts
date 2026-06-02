@@ -14,12 +14,29 @@ async function createApp(): Promise<Express> {
 
   app.useGlobalPipes(new ValidationPipe({ transform: true })); // Habilita transform para aplicar @Transform de los DTOs (aliases ASCII/sin ñ)
 
-  app.enableCors({  // Configura CORS para permitir solicitudes desde el frontend, especificando los orígenes permitidos y habilitando el envío de credenciales (cookies, headers de autenticación, etc.)
-    origin: [
-      'http://localhost:4200',
-      'https://progra-iv-tp-2-casado-santino.vercel.app',
-    ],
+  // Configuración de CORS para permitir solicitudes desde el frontend y herramientas de desarrollo como Postman o curl. Se permite el acceso a orígenes específicos y se bloquean otros.
+  const allowedOrigins = new Set([
+    'http://localhost:4200',
+    'https://progra-iv-tp-2-casado-santino-angul.vercel.app',
+  ]);
+
+  // Expresión que permite cualquier preview de Vercel del frontend, que tiene un formato como https://progra-iv-tp-2-casado-santino-angul-[preview-id].vercel.app
+  const frontendPreviewRegex = /^https:\/\/progra-iv-tp-2-casado-santino-angul(?:-[a-z0-9-]+)?\.vercel\.app$/i;
+
+  //Configuro CORS para permitir solicitudes desde el frontend y herramientas de desarrollo como Postman o curl. Se permite el acceso a orígenes específicos y se bloquean otros.
+  app.enableCors({
+    origin: (origin, callback) => {
+      // Permite herramientas sin Origin (Postman/curl) y orígenes explícitamente habilitados.
+      if (!origin || allowedOrigins.has(origin) || frontendPreviewRegex.test(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error(`CORS bloqueado para origin: ${origin}`));
+    },
     credentials: true,
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   });
 
   await app.init(); // Inicializa la aplicación NestJS, lo que prepara los controladores, servicios y otros componentes para manejar las solicitudes entrantes

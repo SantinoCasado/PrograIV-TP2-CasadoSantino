@@ -18,7 +18,7 @@ export class Login implements OnInit {
   mensajeError = '';
   mensajeExito = '';
   form!: FormGroup;
-  // Backend forzado a producción (sin fallback local).
+
   private readonly apiUrl = 'https://progra-iv-tp-2-casado-santino.vercel.app/auth/login';
 
   constructor(
