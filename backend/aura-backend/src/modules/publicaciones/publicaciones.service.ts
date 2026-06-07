@@ -1,26 +1,130 @@
-import { Injectable } from '@nestjs/common';
-import { CreatePublicacioneDto } from './dto/create-publicacione.dto';
-import { UpdatePublicacioneDto } from './dto/update-publicacione.dto';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, Types } from 'mongoose';
+import { Publicacion } from './schema/publicacion.schema';
+import { CreatePublicacionDto } from './dto/create-publicacion.dto';
+import { QueryPublicacionDto } from './dto/query-publicacion.dto';
+import { StorageService } from '../../common/storage/storage/storage.service';
 
 @Injectable()
 export class PublicacionesService {
-  create(createPublicacioneDto: CreatePublicacioneDto) {
-    return 'This action adds a new publicacione';
+  constructor(
+    @InjectModel(Publicacion.name) private readonly publicacionModel: Model<Publicacion>,
+    private readonly storageService: StorageService,
+  ) {}
+
+  // --------------------- CREAR PUBLICACIÓN ---------------------
+  async crear(dto: CreatePublicacionDto, usuarioId: string, imagen?: Express.Multer.File) {
+    let imagenUrl: string | null = null;
+
+    // Solo se sube imagen si el usuario mandó una
+    if (imagen) {
+      imagenUrl = await this.storageService.uploadPostImage(imagen);
+    }
+
+    const nueva = new this.publicacionModel({
+      titulo: dto.titulo,
+      mensaje: dto.mensaje,
+      imagenUrl,
+      usuario: new Types.ObjectId(usuarioId),
+    });
+
+    return nueva.save();
   }
 
-  findAll() {
-    return `This action returns all publicaciones`;
+  // --------------------- LISTAR PUBLICACIONES ---------------------
+  async listar(query: QueryPublicacionDto) {
+    const limit = parseInt(query.limit ?? '10');
+    const offset = parseInt(query.offset ?? '0');
+
+    // Filtracion siempre por activa: true (baja lógica)
+    const filtro: any = { activa: true };
+
+    // Si viene usuarioId filtro por autor
+    if (query.usuarioId) {
+      filtro.usuario = new Types.ObjectId(query.usuarioId);
+    }
+
+    // Ordenamiento: por fecha (default) o por cantidad de likes
+    // Para likes uso aggregate, para fecha uso find normal
+    if (query.orden === 'likes') {
+      return this.publicacionModel.aggregate([
+        { $match: filtro },
+        // Agrego campo virtual cantidadLikes para poder ordenar por el
+        { $addFields: { cantidadLikes: { $size: '$likes' } } },
+        { $sort: { cantidadLikes: -1 } },
+        { $skip: offset },
+        { $limit: limit },
+      ]);
+    }
+
+    // Orden por fecha descendente (mas recientes primero)
+    return this.publicacionModel
+      .find(filtro)
+      .sort({ createdAt: -1 })
+      .skip(offset)
+      .limit(limit)
+      .populate('usuario', 'nombre apellido imagenPerfil usuario') // trae solo los datos necesarios del autor
+      .lean();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} publicacione`;
+  // --------------------- BAJA LÓGICA ---------------------
+  async eliminar(publicacionId: string, usuarioId: string, perfil: string) {
+    const publicacion = await this.publicacionModel.findById(publicacionId);
+
+    if (!publicacion) {
+      throw new NotFoundException('Publicación no encontrada.');
+    }
+
+    if (!publicacion.activa) {
+      throw new BadRequestException('La publicación ya fue eliminada.');
+    }
+
+    // Solo el autor o un administrador pueden eliminar
+    const esAutor = publicacion.usuario.toString() === usuarioId;
+    const esAdmin = perfil === 'administrador';
+
+    if (!esAutor && !esAdmin) {
+      throw new ForbiddenException('No tenés permiso para eliminar esta publicación.');
+    }
+
+    publicacion.activa = false;
+    return publicacion.save();
   }
 
-  update(id: number, updatePublicacioneDto: UpdatePublicacioneDto) {
-    return `This action updates a #${id} publicacione`;
+  // --------------------- DAR LIKE ---------------------
+  async darLike(publicacionId: string, usuarioId: string) {
+    const publicacion = await this.publicacionModel.findById(publicacionId);
+
+    if (!publicacion || !publicacion.activa) {
+      throw new NotFoundException('Publicación no encontrada.');
+    }
+
+    const yaLikeo = publicacion.likes.some(id => id.toString() === usuarioId);
+
+    if (yaLikeo) {
+      throw new BadRequestException('Ya le diste me gusta a esta publicación.');
+    }
+
+    publicacion.likes.push(new Types.ObjectId(usuarioId));
+    return publicacion.save();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} publicacione`;
+  // --------------------- QUITAR LIKE ---------------------
+  async quitarLike(publicacionId: string, usuarioId: string) {
+    const publicacion = await this.publicacionModel.findById(publicacionId);
+
+    if (!publicacion || !publicacion.activa) {
+      throw new NotFoundException('Publicación no encontrada.');
+    }
+
+    const index = publicacion.likes.findIndex(id => id.toString() === usuarioId);
+
+    if (index === -1) {
+      throw new BadRequestException('No le habías dado me gusta a esta publicación.');
+    }
+
+    publicacion.likes.splice(index, 1);
+    return publicacion.save();
   }
 }

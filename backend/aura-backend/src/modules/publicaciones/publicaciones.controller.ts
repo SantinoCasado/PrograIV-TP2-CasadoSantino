@@ -1,34 +1,65 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Param, Query, Body, UploadedFile, UseInterceptors, Req, HttpCode } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { memoryStorage } from 'multer';
 import { PublicacionesService } from './publicaciones.service';
-import { CreatePublicacioneDto } from './dto/create-publicacione.dto';
-import { UpdatePublicacioneDto } from './dto/update-publicacione.dto';
+import { CreatePublicacionDto } from './dto/create-publicacion.dto';
+import { QueryPublicacionDto } from './dto/query-publicacion.dto';
+import { Request } from 'express';
 
 @Controller('publicaciones')
 export class PublicacionesController {
   constructor(private readonly publicacionesService: PublicacionesService) {}
 
+  // --------------------- CREAR PUBLICACIÓN ---------------------
+  // POST /publicaciones
   @Post()
-  create(@Body() createPublicacioneDto: CreatePublicacioneDto) {
-    return this.publicacionesService.create(createPublicacioneDto);
+  @UseInterceptors(FileInterceptor('imagen', { storage: memoryStorage() })) // Usamos memoryStorage para procesar la imagen en memoria y luego subirla a Supabase desde el servicio
+  async crear(
+    @Body() dto: CreatePublicacionDto,
+    @UploadedFile() imagen: Express.Multer.File,
+    @Body('usuarioId') usuarioId: string, // sacamos el usuarioId directo del body
+  ) {
+    return this.publicacionesService.crear(dto, usuarioId, imagen);
   }
 
+  // --------------------- LISTAR PUBLICACIONES ---------------------
+  // GET /publicaciones?offset=0&limit=10&orden=fecha&usuarioId=xxx
   @Get()
-  findAll() {
-    return this.publicacionesService.findAll();
+  async listar(@Query() query: QueryPublicacionDto) {
+    return this.publicacionesService.listar(query);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.publicacionesService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePublicacioneDto: UpdatePublicacioneDto) {
-    return this.publicacionesService.update(+id, updatePublicacioneDto);
-  }
-
+  // --------------------- ELIMINAR PUBLICACIÓN ---------------------
+  // DELETE /publicaciones/:id
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.publicacionesService.remove(+id);
+  @HttpCode(200)
+  async eliminar(
+    @Param('id') id: string,
+    @Body('usuarioId') usuarioId: string, // directo del body
+    @Body('perfil') perfil: string = 'usuario',
+  ) {
+    return this.publicacionesService.eliminar(id, usuarioId, perfil);
+  }
+
+  // --------------------- DAR LIKE ---------------------
+  // POST /publicaciones/:id/like
+  @Post(':id/like')
+  @HttpCode(200)
+  async darLike(
+    @Param('id') id: string,
+    @Body('usuarioId') usuarioId: string,
+  ) {
+    return this.publicacionesService.darLike(id, usuarioId);
+  }
+
+  // --------------------- QUITAR LIKE ---------------------
+  // DELETE /publicaciones/:id/like
+  @Delete(':id/like')
+  @HttpCode(200)
+  async quitarLike(
+    @Param('id') id: string,
+    @Body('usuarioId') usuarioId: string,
+  ) {
+    return this.publicacionesService.quitarLike(id, usuarioId);
   }
 }

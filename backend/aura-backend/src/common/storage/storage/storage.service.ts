@@ -57,6 +57,43 @@ export class StorageService {
 		return data.publicUrl;
 	}
 
+	// -------------------------------------------------------------------------------
+	// Funciones auxiliares para manejo de imágenes de publicaciones (similar a las de perfil pero con carpeta y validaciones específicas)
+	async uploadPostImage(file: Express.Multer.File): Promise<string> {
+		if (!this.supabase) {
+			throw new InternalServerErrorException('Supabase no esta configurado en variables de entorno.');
+		}
+
+		const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
+		if (!allowedMimeTypes.includes(file.mimetype)) {
+			throw new BadRequestException('Formato de imagen no permitido. Usa JPG, PNG o WEBP.');
+		}
+
+		const extension = this.getExtension(file.mimetype);
+		const baseName = file.originalname.replace(/\.[^/.]+$/, '');
+		const safeName = baseName.replace(/[^a-zA-Z0-9._-]/g, '_');
+		const filePath = `posts/${Date.now()}-${safeName}.${extension}`; // misma lógica que profiles/ pero en carpeta posts/
+
+		const { error: uploadError } = await this.supabase.storage
+			.from(this.bucket)
+			.upload(filePath, file.buffer, {
+			contentType: file.mimetype,
+			upsert: false,
+			});
+
+		if (uploadError) {
+			throw new InternalServerErrorException(`Error al subir imagen a Supabase: ${uploadError.message}`);
+		}
+
+		const { data } = this.supabase.storage.from(this.bucket).getPublicUrl(filePath);
+
+		if (!data?.publicUrl) {
+			throw new InternalServerErrorException('No se pudo generar la URL publica de la imagen.');
+		}
+
+		return data.publicUrl;
+		}
+
     // El método getExtension es una función auxiliar que toma un tipo MIME como entrada y devuelve la extensión de archivo correspondiente. 
 	private getExtension(mimetype: string): string {
 		switch (mimetype) {
