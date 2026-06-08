@@ -2,34 +2,83 @@
 
 <section class="perfil-scene">
   <div class="container perfil-wrap">
-    <article class="perfil-box perfil-head">
-      <div class="avatar">SC</div>
-      <div class="info">
-        <h1>santino.casado</h1>
-        <p>Santino Casado</p>
-        <small>Programacion IV</small>
-      </div>
-      <button type="button">Editar</button>
-    </article>
+    <!-- CARGANDO -->
+    <div *ngIf="cargando" class="perfil-box perfil-loading">
+      <div class="spinner"></div>
+      <p>Cargando perfil...</p>
+    </div>
 
-    <article class="perfil-box stats">
-      <p><strong>12</strong> publicaciones</p>
-      <p><strong>428</strong> seguidores</p>
-      <p><strong>319</strong> seguidos</p>
-    </article>
+    <ng-container *ngIf="!cargando && usuario">
+      <!-- CABECERA -->
+      <article class="perfil-box perfil-head ani-fade-up ani-d1">
+        <div class="avatar">
+          <img *ngIf="usuario.imagenPerfil" [src]="usuario.imagenPerfil" [alt]="usuario.usuario" />
+          <span *ngIf="!usuario.imagenPerfil">{{ obtenerIniciales() }}</span>
+        </div>
 
-    <article class="perfil-box bio">
-      <h2>Bio</h2>
-      <p>Maqueta simple de perfil. Sin lógica, solo para que la vista no esté vacía.</p>
-    </article>
+        <div class="info">
+          <h1>{{ usuario.usuario }}</h1>
+          <p>{{ usuario.nombre }} {{ usuario.apellido }}</p>
+          <small>{{ usuario.correo }}</small>
+        </div>
 
-    <section class="perfil-grid">
-      <article class="item a">Post 1</article>
-      <article class="item b">Post 2</article>
-      <article class="item c">Post 3</article>
-      <article class="item d">Post 4</article>
-      <article class="item e">Post 5</article>
-      <article class="item f">Post 6</article>
-    </section>
+        <button type="button" class="btn-editar ani-btn-glow">Editar perfil</button>
+      </article>
+
+      <!-- BIO -->
+      <article class="perfil-box bio ani-fade-up ani-d2">
+        <h2>Bio</h2>
+        <p>{{ usuario.descripcion || 'Sin descripción.' }}</p>
+        <small class="fecha"> Nacimiento: {{ formatearFecha(usuario.fechaNacimiento) }} </small>
+      </article>
+
+      <!-- ÚLTIMAS PUBLICACIONES -->
+      <section class="perfil-publicaciones ani-fade-up ani-d3">
+        <h2 class="section-title">Últimas publicaciones</h2>
+
+        <!-- CARGANDO PUBLICACIONES -->
+        <div *ngIf="cargandoPublicaciones" class="perfil-box perfil-loading">
+          <div class="spinner"></div>
+          <p>Cargando publicaciones...</p>
+        </div>
+
+        <!-- ERROR -->
+        <div *ngIf="mensajeError" class="perfil-box perfil-error">
+          <p>{{ mensajeError }}</p>
+        </div>
+
+        <!-- SIN PUBLICACIONES -->
+        <div
+          *ngIf="!cargandoPublicaciones && !mensajeError && publicaciones.length === 0"
+          class="perfil-box perfil-empty"
+        >
+          <p>Todavía no hiciste ninguna publicación.</p>
+        </div>
+
+        <!-- LISTADO -->
+        <div class="perfil-posts-grid">
+          <article *ngFor="let pub of publicaciones" class="perfil-box post-card">
+            <!-- IMAGEN OPCIONAL -->
+            <div
+              *ngIf="pub.imagenUrl"
+              class="post-img"
+              [style.backgroundImage]="'url(' + pub.imagenUrl + ')'"
+            ></div>
+
+            <div class="post-body">
+              <h3 class="post-titulo">{{ pub.titulo }}</h3>
+              <p class="post-mensaje">{{ pub.mensaje }}</p>
+            </div>
+
+            <div class="post-footer">
+              <span class="post-likes"> ♥ {{ pub.likes.length }} </span>
+              <span class="post-fecha">
+                {{ pub.createdAt | date: 'dd/MM/yyyy' }}
+              </span>
+            </div>
+          </article>
+        </div>
+      </section>
+    </ng-container>
   </div>
 </section>

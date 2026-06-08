@@ -6,6 +6,7 @@ import { Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 import { Footer } from "../../../../layouts/footer/footer";
 import { Navbar } from "../../../../layouts/navbar/navbar";
+import { AuthService } from '../../../../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -28,6 +29,7 @@ export class Login implements OnInit {
     private fb: FormBuilder,
     private http: HttpClient,
     private router: Router,
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
@@ -66,6 +68,7 @@ export class Login implements OnInit {
     this.mensajeError = '';
     this.mensajeExito = '';
 
+    // Validación del formulario
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -73,27 +76,25 @@ export class Login implements OnInit {
 
     this.cargando = true;
 
-    // Playload que se envía al backend. 
+    // Preparar payload para login
     const payload = {
       usuario: (this.form.value.usuario ?? '').trim(),
       contrasena: this.form.value.contrasena ?? '',
     };
 
-    // Se hace la petición al backend para iniciar sesión. Se espera un mensaje de éxito y los datos del usuario.
-    this.http
-        .post<{ mensaje: string; usuario: unknown }>(this.apiUrl, payload)  // El tipo de respuesta esperada del backend. Se espera un mensaje y los datos del usuario. El tipo de usuario se deja como unknown porque no se especificó un modelo de usuario en el frontend.
-        .pipe(finalize(() => (this.cargando = false)))  // Se finaliza la carga sin importar el resultado de la petición.
-        .subscribe({
-          next: (respuesta) => {
-            this.mensajeExito = respuesta.mensaje;
-            this.router.navigateByUrl('/publicaciones');  // Se redirige a la página de publicaciones después de un inicio de sesión exitoso.
-          },
-          error: (error) => {
-            this.mensajeError =
-              error?.error?.message?.[0] ??
-              error?.error?.message ??
-              'No se pudo iniciar sesión.';
-          },
-        });
+    // Llamada al servicio de autenticación
+    this.authService.login(payload)
+      .pipe(finalize(() => (this.cargando = false)))  // Finalize para manejar el estado de carga
+      .subscribe({      // Manejo de respuesta exitosa y errores
+        next: () => {
+          this.router.navigateByUrl('/publicaciones');
+        },
+        error: (error) => {
+          this.mensajeError =
+            error?.error?.message?.[0] ??
+            error?.error?.message ??
+            'No se pudo iniciar sesión.';
+        },
+      });
   }
 }

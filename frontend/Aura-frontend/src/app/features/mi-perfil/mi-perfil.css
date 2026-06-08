@@ -1,155 +1,226 @@
+/* --- ESCENA --------------------------- */
 .perfil-scene {
   min-height: 100dvh;
-  padding: calc(72px + 1.25rem) 0 2rem;
-  background: #071d36;
+  padding: calc(72px + 1.5rem) 0 3rem;
 }
 
 .perfil-wrap {
-  max-width: 980px;
-  display: grid;
-  gap: 0.9rem;
+  max-width: 780px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
+/* --- CAJA BASE --------------------------- */
 .perfil-box {
-  background: #0d2f53;
-  border: 2px solid #7fd9ff;
-  border-radius: 8px;
-  box-shadow: 5px 5px 0 #04203b;
+  background: linear-gradient(140deg, rgba(6, 30, 58, 0.82), rgba(8, 46, 82, 0.75));
+  border: 1px solid var(--aura-border);
+  border-radius: 16px;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 18px 42px rgba(1, 8, 22, 0.55);
+  padding: 1.25rem;
 }
 
+/* --- CABECERA --------------------------- */
 .perfil-head {
   display: grid;
-  grid-template-columns: 70px 1fr auto;
+  grid-template-columns: 72px 1fr auto;
   align-items: center;
-  gap: 0.9rem;
-  padding: 0.9rem;
+  gap: 1rem;
 }
 
 .avatar {
-  width: 62px;
-  height: 62px;
-  border-radius: 8px;
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  border: 1px solid var(--aura-border);
+  background: rgba(8, 46, 82, 0.9);
   display: grid;
   place-items: center;
+  overflow: hidden;
   font-weight: 800;
-  font-size: 1.4rem;
-  color: #ecf8ff;
-  background: #14476f;
-  border: 2px solid #7fd9ff;
+  font-size: 1.5rem;
+  color: var(--aura-cyan);
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .info h1 {
   margin: 0;
-  color: #ecf8ff;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
+  color: var(--aura-ink);
 }
 
 .info p {
-  margin: 0.15rem 0 0;
-  color: #d1eaf8;
+  margin: 0.2rem 0 0;
+  color: var(--aura-text);
+  font-size: 0.95rem;
 }
 
 .info small {
-  color: #9dcce6;
+  color: var(--aura-text-muted);
+  font-size: 0.82rem;
 }
 
-.perfil-head button {
-  border: 2px solid #7fd9ff;
-  background: #114066;
-  color: #ecf8ff;
-  border-radius: 7px;
-  padding: 0.3rem 0.7rem;
-  font-family: 'Courier New', monospace;
+.btn-editar {
+  border: 1px solid var(--aura-cyan);
+  background: transparent;
+  color: var(--aura-cyan);
+  border-radius: 10px;
+  padding: 0.4rem 1rem;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+  white-space: nowrap;
 }
 
-.stats {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  padding: 0.8rem 0.9rem;
+.btn-editar:hover {
+  background: var(--aura-cyan);
+  color: #04162e;
 }
 
-.stats p {
-  margin: 0;
-  color: #d1eaf8;
-}
-
-.bio {
-  padding: 0.8rem 0.9rem;
-}
-
+/* --- BIO --------------------------- */
 .bio h2 {
-  margin: 0 0 0.3rem;
-  font-size: 1rem;
-  color: #ecf8ff;
+  margin: 0 0 0.4rem;
+  font-size: 0.95rem;
+  color: var(--aura-cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .bio p {
   margin: 0;
-  color: #d1eaf8;
+  color: var(--aura-text);
+  line-height: 1.6;
 }
 
-.perfil-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.7rem;
+.bio .fecha {
+  display: block;
+  margin-top: 0.6rem;
+  color: var(--aura-text-muted);
+  font-size: 0.82rem;
 }
 
-.item {
-  min-height: 160px;
-  border: 2px solid #7fd9ff;
-  border-radius: 8px;
-  display: grid;
-  place-items: center;
-  font-weight: 700;
-  color: #ecf8ff;
+/* --- SECCIÓN PUBLICACIONES --------------------------- */
+.section-title {
+  font-size: 0.95rem;
+  color: var(--aura-cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 0.75rem;
 }
 
-.a {
-  background: #1c4f79;
+.perfil-posts-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
 }
 
-.b {
-  background: #395572;
+/* --- POST CARD --------------------------- */
+.post-card {
+  padding: 0;
+  overflow: hidden;
 }
 
-.c {
-  background: #2e6288;
+.post-img {
+  width: 100%;
+  height: 180px;
+  background-size: cover;
+  background-position: center;
 }
 
-.d {
-  background: #234866;
+.post-body {
+  padding: 1rem 1.25rem 0.5rem;
 }
 
-.e {
-  background: #2c557a;
+.post-titulo {
+  margin: 0 0 0.3rem;
+  font-size: 1rem;
+  color: var(--aura-ink);
 }
 
-.f {
-  background: #426384;
+.post-mensaje {
+  margin: 0;
+  color: var(--aura-text);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* -webkit-line-clamp es una propiedad específica de WebKit para limitar el número de líneas */
+  -webkit-box-orient: vertical; /* -webkit-box-orient es una propiedad específica de WebKit para definir la orientación del contenedor */
+  line-clamp: 3; /* line-clamp es una propiedad estándar para limitar el número de líneas */
+  overflow: hidden; /* trunca el mensaje a 3 líneas */
 }
 
-@media (max-width: 900px) {
+.post-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 1.25rem 1rem;
+  border-top: 1px solid var(--aura-border);
+  margin-top: 0.5rem;
+}
+
+.post-likes {
+  color: var(--aura-cyan);
+  font-size: 0.88rem;
+}
+
+.post-fecha {
+  color: var(--aura-text-muted);
+  font-size: 0.82rem;
+}
+
+/* --- ESTADOS --------------------------- */
+.perfil-loading,
+.perfil-error,
+.perfil-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2rem;
+  color: var(--aura-text-muted);
+  text-align: center;
+}
+
+.perfil-error {
+  border-color: rgba(255, 80, 80, 0.3);
+  color: #ff8080;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--aura-border);
+  border-top-color: var(--aura-cyan);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- RESPONSIVE --------------------------- */
+@media (max-width: 576px) {
   .perfil-head {
-    grid-template-columns: 70px 1fr;
+    grid-template-columns: 64px 1fr;
   }
 
-  .perfil-head button {
+  .btn-editar {
     grid-column: 1 / -1;
     justify-self: start;
   }
-}
 
-@media (max-width: 576px) {
-  .perfil-scene {
-    padding-top: calc(112px + 0.8rem);
-  }
-
-  .perfil-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .item {
-    min-height: 130px;
+  .post-img {
+    height: 140px;
   }
 }
