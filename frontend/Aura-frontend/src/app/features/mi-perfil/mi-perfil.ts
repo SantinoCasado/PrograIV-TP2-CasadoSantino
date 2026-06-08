@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth/auth.service';
@@ -15,10 +15,10 @@ import { Navbar } from '../../layouts/navbar/navbar';
 
 export class MiPerfil implements OnInit {
   usuario: any = null;  //  el usuario completo obtenido del localStorage
-  publicaciones: any[] = [];  // ultimas 3 publicaciones del usuario
-  cargando = true;
-  cargandoPublicaciones = true;
-  mensajeError = '';
+  publicaciones = signal<any[]>([]);  // ultimas 3 publicaciones del usuario
+  cargando = signal(true);
+  cargandoPublicaciones = signal(true);
+  mensajeError = signal('');
 
   constructor(
     private authService: AuthService,
@@ -36,12 +36,12 @@ export class MiPerfil implements OnInit {
       return;
     }
 
-    this.cargando = false;
+    this.cargando.set(false);
     this.cargarPublicaciones();
   }
 
   cargarPublicaciones(): void {
-    this.cargandoPublicaciones = true;
+    this.cargandoPublicaciones.set(true);
 
     // Trae las ultimas 3 publicaciones del usuario logueado
     this.publicacionesService.listar({
@@ -51,12 +51,12 @@ export class MiPerfil implements OnInit {
       usuarioId: this.usuario._id,
     }).subscribe({
       next: (data) => {
-        this.publicaciones = data;
-        this.cargandoPublicaciones = false;
+        this.publicaciones.set(data);
+        this.cargandoPublicaciones.set(false);
       },
       error: () => {
-        this.mensajeError = 'No se pudieron cargar las publicaciones.';
-        this.cargandoPublicaciones = false;
+        this.mensajeError.set('No se pudieron cargar las publicaciones.');
+        this.cargandoPublicaciones.set(false);
       }
     });
   }

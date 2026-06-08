@@ -1,5 +1,6 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
 @import './styles/animatios.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
 
 :root {
   /* Paleta principal Aura */

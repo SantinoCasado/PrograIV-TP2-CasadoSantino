@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth/auth.service';
@@ -14,14 +14,14 @@ import { Navbar } from '../../layouts/navbar/navbar';
 })
 export class Publicaciones implements OnInit {
   usuario: any = null;
-  publicaciones: any[] = [];
-  cargando = true;
-  mensajeError = '';
+  publicaciones = signal<any[]>([]);
+  cargando = signal(true);
+  mensajeError = signal('');
 
   // Paginación
   offset = 0;
   limit = 10;
-  hayMas = true;
+  hayMas = signal(true);
 
   // Ordenamiento
   orden: 'fecha' | 'likes' = 'fecha';
@@ -46,14 +46,14 @@ export class Publicaciones implements OnInit {
 
   // Carga las publicaciones con la configuración actual de paginación y ordenamiento
   cargarPublicaciones(reiniciar = false): void {
-    if (reiniciar) {  // Si se indica reiniciar, limpia las publicaciones y resetea la paginación
-      this.publicaciones = [];
+    if (reiniciar) {
+      this.publicaciones.set([]);
       this.offset = 0;
-      this.hayMas = true;
+      this.hayMas.set(true);
     }
 
-    this.cargando = true;
-    this.mensajeError = '';
+    this.cargando.set(true);
+    this.mensajeError.set('');
 
     this.publicacionesService.listar({
       offset: this.offset,
@@ -61,21 +61,21 @@ export class Publicaciones implements OnInit {
       orden: this.orden,
     }).subscribe({
       next: (data) => {
-        this.publicaciones = [...this.publicaciones, ...data];
-        // Si vino menos de lo pedido, no hay más páginas
-        this.hayMas = data.length === this.limit;
+        this.publicaciones.update(prev => [...prev, ...data]);
+        this.hayMas.set(data.length === this.limit);
         this.offset += data.length;
-        this.cargando = false;
+        this.cargando.set(false);
       },
       error: () => {
-        this.mensajeError = 'No se pudieron cargar las publicaciones.';
-        this.cargando = false;
+        this.mensajeError.set('No se pudieron cargar las publicaciones.');
+        this.cargando.set(false);
       }
     });
   }
 
+
   cargarMas(): void {
-    if (!this.cargando && this.hayMas) {
+    if (!this.cargando() && this.hayMas()) {
       this.cargarPublicaciones();
     }
   }
@@ -94,34 +94,30 @@ export class Publicaciones implements OnInit {
   // Alterna el like de una publicación dependiendo de si el usuario ya le dio like o no
   toggleLike(pub: any): void {
     const accion = this.yaLikeo(pub)
-      ? this.publicacionesService.quitarLike(pub._id, this.usuario._id) // Si ya le dio like, lo quita
-      : this.publicacionesService.darLike(pub._id, this.usuario._id);   // Si no le dio like, lo agrega
+      ? this.publicacionesService.quitarLike(pub._id, this.usuario._id)
+      : this.publicacionesService.darLike(pub._id, this.usuario._id);
 
+    // Actualiza la publicación localmente con el resultado de la acción sin recargar todo
     accion.subscribe({
       next: (pubActualizada) => {
-        // Reemplaza la publicación actualizada en el array
-        const index = this.publicaciones.findIndex(p => p._id === pub._id);
-        if (index !== -1) this.publicaciones[index] = pubActualizada;
+        this.publicaciones.update(prev =>
+          prev.map(p => p._id === pub._id ? pubActualizada : p)
+        );
       },
-      error: () => {
-        this.mensajeError = 'No se pudo procesar el like.';
-      }
+      error: () => this.mensajeError.set('No se pudo procesar el like.')
     });
   }
 
   // Elimina una publicación si el usuario es el autor
   eliminarPublicacion(pub: any): void {
-    if (!confirm('¿Seguro que querés eliminar esta publicación?')) return;  // Confirmación antes de eliminar
+    if (!confirm('¿Seguro que querés eliminar esta publicación?')) return;
 
     this.publicacionesService.eliminar(pub._id, this.usuario._id, this.usuario.perfil)
       .subscribe({
         next: () => {
-          // La remueve del array local sin recargar todo
-          this.publicaciones = this.publicaciones.filter(p => p._id !== pub._id);
+          this.publicaciones.update(prev => prev.filter(p => p._id !== pub._id));
         },
-        error: () => {
-          this.mensajeError = 'No se pudo eliminar la publicación.';
-        }
+        error: () => this.mensajeError.set('No se pudo eliminar la publicación.')
       });
   }
 

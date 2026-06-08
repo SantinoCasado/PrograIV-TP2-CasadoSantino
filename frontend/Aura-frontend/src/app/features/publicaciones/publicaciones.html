@@ -14,7 +14,7 @@
             [class.activo]="orden === 'fecha'"
             (click)="cambiarOrden('fecha')"
           >
-            Más recientes
+            <i class="bi bi-clock"></i> Más recientes
           </button>
           <button
             type="button"
@@ -22,18 +22,19 @@
             [class.activo]="orden === 'likes'"
             (click)="cambiarOrden('likes')"
           >
-            Más populares
+            <i class="bi bi-fire"></i> Más populares
           </button>
         </div>
       </div>
 
       <!-- ERROR -->
-      <div *ngIf="mensajeError" class="pub-box pub-error ani-fade">
-        <p>{{ mensajeError }}</p>
+      <div *ngIf="mensajeError()" class="pub-box pub-error ani-fade">
+        <i class="bi bi-exclamation-triangle"></i>
+        <p>{{ mensajeError() }}</p>
       </div>
 
       <!-- LISTADO DE PUBLICACIONES -->
-      <article *ngFor="let pub of publicaciones" class="pub-box post-card ani-fade-up">
+      <article *ngFor="let pub of publicaciones()" class="pub-box post-card ani-fade-up">
         <!-- CABECERA DEL POST -->
         <div class="post-top">
           <div class="post-autor">
@@ -61,7 +62,7 @@
             (click)="eliminarPublicacion(pub)"
             title="Eliminar publicación"
           >
-            ✕
+            <i class="bi bi-trash3"></i>
           </button>
         </div>
 
@@ -86,33 +87,38 @@
             [class.likeado]="yaLikeo(pub)"
             (click)="toggleLike(pub)"
           >
-            {{ yaLikeo(pub) ? '♥' : '♡' }} {{ pub.likes?.length }}
+            <i class="bi" [ngClass]="yaLikeo(pub) ? 'bi-heart-fill' : 'bi-heart'"></i>
+            {{ pub.likes?.length }}
           </button>
-          <button type="button" class="btn-comentar">💬 Comentar</button>
+          <button type="button" class="btn-comentar"><i class="bi bi-chat"></i> Comentar</button>
         </div>
       </article>
 
       <!-- CARGANDO -->
-      <div *ngIf="cargando" class="pub-box pub-loading ani-fade">
+      <div *ngIf="cargando()" class="pub-box pub-loading ani-fade">
         <div class="spinner"></div>
         <p>Cargando publicaciones...</p>
       </div>
 
       <!-- SIN PUBLICACIONES -->
       <div
-        *ngIf="!cargando && !mensajeError && publicaciones.length === 0"
+        *ngIf="!cargando() && !mensajeError() && publicaciones().length === 0"
         class="pub-box pub-empty ani-fade"
       >
+        <i class="bi bi-newspaper"></i>
         <p>No hay publicaciones todavía.</p>
       </div>
 
       <!-- CARGAR MÁS -->
-      <div *ngIf="!cargando && hayMas" class="pub-cargar-mas ani-fade">
-        <button type="button" class="btn-cargar-mas" (click)="cargarMas()">Cargar más</button>
+      <div *ngIf="!cargando() && hayMas()" class="pub-cargar-mas ani-fade">
+        <button type="button" class="btn-cargar-mas" (click)="cargarMas()">
+          <i class="bi bi-arrow-down-circle"></i> Cargar más
+        </button>
       </div>
 
       <!-- FIN DE PUBLICACIONES -->
-      <div *ngIf="!cargando && !hayMas && publicaciones.length > 0" class="pub-fin ani-fade">
+      <div *ngIf="!cargando() && !hayMas() && publicaciones().length > 0" class="pub-fin ani-fade">
+        <i class="bi bi-check2-all"></i>
         <p>Ya viste todo por ahora.</p>
       </div>
     </main>
@@ -137,7 +143,10 @@
       </div>
       <hr class="side-divider" />
       <p class="side-label">Ordenando por</p>
-      <p class="side-valor">{{ orden === 'fecha' ? 'Más recientes' : 'Más populares' }}</p>
+      <p class="side-valor">
+        <i class="bi" [ngClass]="orden === 'fecha' ? 'bi-clock' : 'bi-fire'"></i>
+        {{ orden === 'fecha' ? 'Más recientes' : 'Más populares' }}
+      </p>
     </aside>
   </div>
 </section>
