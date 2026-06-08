@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -23,8 +23,8 @@ export class Registro implements OnInit {
   mensajeExito = '';
   mostrarContrasena = false;
   mostrarRepetir = false;
-  imagenSeleccionada: File | null = null;
-  imagenPreview: string | null = null;
+  imagenSeleccionada = signal<File | null>(null);
+  imagenPreview = signal<string | null>(null);
   form!: FormGroup;
 
   private readonly apiUrl = 'https://progra-iv-tp-2-casado-santino.vercel.app/auth/registro';
@@ -67,15 +67,15 @@ export class Registro implements OnInit {
   onImagenChange(event: Event): void {
     const input = event.target as HTMLInputElement; // Asegura que el target sea un input de tipo file
     const archivo = input.files?.[0] ?? null;       // Toma el primer archivo seleccionado o null si no hay archivos
-    this.imagenSeleccionada = archivo;            // Guarda el archivo seleccionado en la propiedad imagenSeleccionada
+    this.imagenSeleccionada.set(archivo);           // Guarda el archivo seleccionado en la propiedad imagenSeleccionada
 
     // Si se seleccionó un archivo, genera una vista previa usando FileReader
     if (archivo) {
       const reader = new FileReader();
-      reader.onload = (e) => (this.imagenPreview = e.target?.result as string);
+      reader.onload = (e) => this.imagenPreview.set(e.target?.result as string);
       reader.readAsDataURL(archivo);
     } else {
-      this.imagenPreview = null;  // Si no hay archivo seleccionado, limpia la vista previa
+      this.imagenPreview.set(null);  // Si no hay archivo seleccionado, limpia la vista previa
     }
   }
 
@@ -106,8 +106,8 @@ export class Registro implements OnInit {
     fd.append('repetirContrasena', v.repetirContrasena);
     fd.append('fechaNacimiento', v.fechaNacimiento);
     fd.append('descripcion', v.descripcion.trim());
-    if (this.imagenSeleccionada) {
-      fd.append('imagen', this.imagenSeleccionada);
+    if (this.imagenSeleccionada()) {
+      fd.append('imagen', this.imagenSeleccionada()!);
     }
 
     this.http

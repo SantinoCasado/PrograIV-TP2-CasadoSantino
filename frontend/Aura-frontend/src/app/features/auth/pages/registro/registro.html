@@ -214,8 +214,8 @@
                   >
 
                   <div class="upload-zone text-center" (click)="fileInput.click()">
-                    @if (imagenPreview) {
-                      <img [src]="imagenPreview" alt="Vista previa" class="upload-preview" />
+                    @if (imagenPreview()) {
+                      <img [src]="imagenPreview()" alt="Vista previa" class="upload-preview" />
                     } @else {
                       <div class="upload-placeholder">
                         <img src="/assets/icons/eye-open.svg" alt="" class="upload-icon mb-2" />
