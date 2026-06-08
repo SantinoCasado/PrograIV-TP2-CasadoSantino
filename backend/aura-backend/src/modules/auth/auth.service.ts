@@ -89,25 +89,4 @@ export class AuthService {
     const { contraseña,  ...usuarioSinPassword } = usuario.toObject() as any;
     return { mensaje: 'Login exitoso', usuario: usuarioSinPassword };
   }
-
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
-  }
-
-  async findAll() {
-    // Listado basico de usuarios para pruebas, sin exponer contraseñas.
-    return this.usuarioModel.find().select('-contraseña').lean();
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
-  }
 }
