@@ -89,4 +89,8 @@ export class AuthService {
     const { contraseña,  ...usuarioSinPassword } = usuario.toObject() as any;
     return { mensaje: 'Login exitoso', usuario: usuarioSinPassword };
   }
+
+  findAll() {
+    return this.usuarioModel.find().select('-contraseña'); // Devuelve todos los usuarios sin la contraseña
+  }
 }

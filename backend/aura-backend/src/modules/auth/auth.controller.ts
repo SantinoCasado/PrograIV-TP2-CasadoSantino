@@ -30,4 +30,9 @@ export class AuthController {
   async login(@Body() dto: LoginAuthDto) {
     return this.authService.login(dto);
   }
+
+  @Get()
+  findAll() {
+    return this.authService.findAll();
+  }
 }
