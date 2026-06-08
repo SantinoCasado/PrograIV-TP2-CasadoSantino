@@ -6,7 +6,7 @@ import * as bcrypt from 'bcrypt';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { LoginAuthDto } from './dto/login-auth.dto';
-import { StorageService } from '../../common/storage/storage/storage.service';
+import { StorageService } from '../../common/storage/storage.service';
 
 // Libreria utilizada para el hasheo de contraseñas es bcrypt: genera hashes seguros de contrasenas. npm install bcrypt @types/bcrypt
 @Injectable()

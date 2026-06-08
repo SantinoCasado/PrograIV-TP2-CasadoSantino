@@ -2,9 +2,7 @@
 
 <section class="pub-scene">
   <div class="container pub-layout">
-    <!-- FEED PRINCIPAL -->
     <main class="pub-feed">
-      <!-- CONTROLES DE ORDENAMIENTO -->
       <div class="pub-box pub-controles ani-fade-up ani-d1">
         <span class="controles-label">Ordenar por</span>
         <div class="controles-btns">
@@ -27,15 +25,12 @@
         </div>
       </div>
 
-      <!-- ERROR -->
       <div *ngIf="mensajeError()" class="pub-box pub-error ani-fade">
         <i class="bi bi-exclamation-triangle"></i>
         <p>{{ mensajeError() }}</p>
       </div>
 
-      <!-- LISTADO DE PUBLICACIONES -->
       <article *ngFor="let pub of publicaciones()" class="pub-box post-card ani-fade-up">
-        <!-- CABECERA DEL POST -->
         <div class="post-top">
           <div class="post-autor">
             <div class="post-avatar">
@@ -54,7 +49,6 @@
             </div>
           </div>
 
-          <!-- BOTÓN ELIMINAR (solo autor) -->
           <button
             *ngIf="esAutor(pub)"
             type="button"
@@ -66,20 +60,16 @@
           </button>
         </div>
 
-        <!-- TÍTULO -->
         <h2 class="post-titulo">{{ pub.titulo }}</h2>
 
-        <!-- IMAGEN OPCIONAL -->
         <div
           *ngIf="pub.imagenUrl"
           class="post-img"
           [style.backgroundImage]="'url(' + pub.imagenUrl + ')'"
         ></div>
 
-        <!-- MENSAJE -->
         <p class="post-mensaje">{{ pub.mensaje }}</p>
 
-        <!-- ACCIONES -->
         <div class="post-bar">
           <button
             type="button"
@@ -94,13 +84,11 @@
         </div>
       </article>
 
-      <!-- CARGANDO -->
       <div *ngIf="cargando()" class="pub-box pub-loading ani-fade">
         <div class="spinner"></div>
         <p>Cargando publicaciones...</p>
       </div>
 
-      <!-- SIN PUBLICACIONES -->
       <div
         *ngIf="!cargando() && !mensajeError() && publicaciones().length === 0"
         class="pub-box pub-empty ani-fade"
@@ -109,21 +97,18 @@
         <p>No hay publicaciones todavía.</p>
       </div>
 
-      <!-- CARGAR MÁS -->
       <div *ngIf="!cargando() && hayMas()" class="pub-cargar-mas ani-fade">
         <button type="button" class="btn-cargar-mas" (click)="cargarMas()">
           <i class="bi bi-arrow-down-circle"></i> Cargar más
         </button>
       </div>
 
-      <!-- FIN DE PUBLICACIONES -->
       <div *ngIf="!cargando() && !hayMas() && publicaciones().length > 0" class="pub-fin ani-fade">
         <i class="bi bi-check2-all"></i>
         <p>Ya viste todo por ahora.</p>
       </div>
     </main>
 
-    <!-- PANEL LATERAL -->
     <aside class="pub-box pub-side ani-fade-up ani-d2">
       <div class="side-perfil">
         <div class="side-avatar">
@@ -141,6 +126,13 @@
           <p class="side-nombre">{{ usuario?.nombre }} {{ usuario?.apellido }}</p>
         </div>
       </div>
+
+      <div class="nueva-publicacion">
+        <button type="button" class="btn-nueva-publicacion" (click)="abrirModal()">
+          <i class="bi bi-plus-lg"></i> Nueva publicación
+        </button>
+      </div>
+
       <hr class="side-divider" />
       <p class="side-label">Ordenando por</p>
       <p class="side-valor">
@@ -150,3 +142,11 @@
     </aside>
   </div>
 </section>
+
+@if (mostrarModal()) {
+  <app-nueva-publicacion
+    (publicacionCreada)="agregarNuevaPublicacion($event)"
+    (cerrar)="cerrarModal()"
+  >
+  </app-nueva-publicacion>
+}

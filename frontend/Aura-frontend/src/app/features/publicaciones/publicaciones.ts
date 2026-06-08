@@ -4,11 +4,12 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth/auth.service';
 import { PublicacionesService } from '../../core/services/publicaciones/publicaciones.service';
 import { Navbar } from '../../layouts/navbar/navbar';
+import { NuevaPublicacion } from '../../shared/components/nueva-publicacion/nueva-publicacion';
 
 @Component({
   selector: 'app-publicaciones',
   standalone: true,
-  imports: [CommonModule, Navbar],
+  imports: [CommonModule, Navbar, NuevaPublicacion],
   templateUrl: './publicaciones.html',
   styleUrl: './publicaciones.css',
 })
@@ -17,6 +18,7 @@ export class Publicaciones implements OnInit {
   publicaciones = signal<any[]>([]);
   cargando = signal(true);
   mensajeError = signal('');
+  mostrarModal = signal(false); //Formulario de nueva publicación modal
 
   // Paginación
   offset = 0;
@@ -136,5 +138,18 @@ export class Publicaciones implements OnInit {
     if (horas < 24) return `hace ${horas} h`;
     const dias = Math.floor(horas / 24);
     return `hace ${dias} d`;
+  }
+
+  abrirModal(): void {
+    this.mostrarModal.set(true);
+  }
+
+  cerrarModal(): void {
+    this.mostrarModal.set(false);
+  }
+
+  agregarNuevaPublicacion(nueva: any): void {
+    // Agrega la nueva publicación al principio de la lista usando update de Signals
+    this.publicaciones.update(prev => [nueva, ...prev]);
   }
 }

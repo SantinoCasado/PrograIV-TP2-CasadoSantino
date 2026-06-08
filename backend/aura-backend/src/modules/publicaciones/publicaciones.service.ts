@@ -4,7 +4,7 @@ import { Model, Types } from 'mongoose';
 import { Publicacion } from './schema/publicacion.schema';
 import { CreatePublicacionDto } from './dto/create-publicacion.dto';
 import { QueryPublicacionDto } from './dto/query-publicacion.dto';
-import { StorageService } from '../../common/storage/storage/storage.service';
+import { StorageService } from '../../common/storage/storage.service';
 
 @Injectable()
 export class PublicacionesService {

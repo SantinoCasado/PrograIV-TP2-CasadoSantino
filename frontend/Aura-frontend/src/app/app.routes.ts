@@ -19,6 +19,10 @@ export const routes: Routes = [
 		loadComponent: () => import('./features/publicaciones/publicaciones').then((m) => m.Publicaciones)
 	},
 	{
+		path: "nueva-publicacion",
+		loadComponent: () => import('./shared/components/nueva-publicacion/nueva-publicacion').then((m) => m.NuevaPublicacion)
+	},
+	{
 		path: "mi-perfil",
 		loadComponent: () => import('./features/mi-perfil/mi-perfil').then((m) => m.MiPerfil)
 	},
