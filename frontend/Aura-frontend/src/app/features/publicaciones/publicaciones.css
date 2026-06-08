@@ -1,3 +1,4 @@
+/* --- ESCENA ---------------------- */
 .pub-scene {
   min-height: 100dvh;
   padding: calc(72px + 1.25rem) 0 2rem;
@@ -16,6 +17,7 @@
   gap: 0.9rem;
 }
 
+/* --- CAJA BASE ---------------------- */
 .pub-box {
   background: #0c2d4f;
   border: 2px solid #7fd9ff;
@@ -23,22 +25,51 @@
   box-shadow: 5px 5px 0 #04203b;
 }
 
-.pub-header {
+/* --- CONTROLES ---------------------- */
+.pub-controles {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   padding: 0.9rem;
+  flex-wrap: wrap;
 }
 
-.pub-header h1 {
-  margin: 0 0 0.2rem;
-  font-size: 1.2rem;
-  color: #ecf8ff;
+.controles-label {
+  color: #9dcce6;
+  font-size: 0.85rem;
+  font-family: 'Courier New', monospace;
 }
 
-.pub-header p {
-  margin: 0;
-  color: #badff3;
-  font-size: 0.9rem;
+.controles-btns {
+  display: flex;
+  gap: 0.5rem;
 }
 
+.btn-orden {
+  border: 2px solid #7fd9ff;
+  border-radius: 6px;
+  background: #114066;
+  color: #eaf7ff;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.8rem;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  transition: background 0.2s;
+  opacity: 0.6;
+}
+
+.btn-orden:hover {
+  background: #1a5a8a;
+  opacity: 1;
+}
+
+.btn-orden.activo {
+  background: #1a5a8a;
+  opacity: 1;
+  box-shadow: 2px 2px 0 #04203b;
+}
+
+/* --- POST CARD ---------------------- */
 .post-card {
   padding: 0.9rem;
 }
@@ -50,43 +81,103 @@
   margin-bottom: 0.65rem;
 }
 
-.tag {
+.post-autor {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.post-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 6px;
+  border: 2px solid #7fd9ff;
+  background: #14476f;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #ecf8ff;
+  flex-shrink: 0;
+}
+
+.post-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.post-username {
+  display: block;
   color: #ecf8ff;
   font-weight: 700;
   font-size: 0.9rem;
 }
 
-.meta {
+.post-fecha {
+  display: block;
   color: #9dcce6;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
 }
 
-.post-image {
+.btn-eliminar {
+  background: #14203a;
+  border: 2px solid rgba(255, 80, 80, 0.5);
+  color: rgba(255, 80, 80, 0.8);
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-family: 'Courier New', monospace;
+  transition: all 0.2s;
+}
+
+.btn-eliminar:hover {
+  border-color: #ff5050;
+  color: #ff5050;
+  box-shadow: 2px 2px 0 #3a0000;
+}
+
+/* TÍTULO */
+.post-titulo {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  color: #ecf8ff;
+}
+
+/* IMAGEN */
+.post-img {
   height: 270px;
   border: 2px solid #7fd9ff;
   border-radius: 7px;
   margin-bottom: 0.7rem;
+  background-size: cover;
+  background-position: center;
 }
 
-.img-a {
-  background: #1b4e78;
-}
-
-.img-b {
-  background: #304f71;
-}
-
-.post-text {
+/* MENSAJE */
+.post-mensaje {
   margin: 0 0 0.7rem;
   color: #d4ecf9;
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
+/* ACCIONES */
 .post-bar {
   display: flex;
   gap: 0.55rem;
+  border-top: 1px solid rgba(127, 217, 255, 0.2);
+  padding-top: 0.7rem;
+  margin-top: 0.3rem;
 }
 
-.post-bar button {
+.btn-like,
+.btn-comentar {
   border: 2px solid #7fd9ff;
   border-radius: 6px;
   background: #114066;
@@ -94,8 +185,87 @@
   padding: 0.3rem 0.7rem;
   font-size: 0.8rem;
   font-family: 'Courier New', monospace;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
+.btn-like:hover,
+.btn-comentar:hover {
+  background: #1a5a8a;
+}
+
+.btn-like.likeado {
+  background: #1a5a8a;
+  box-shadow: 2px 2px 0 #04203b;
+  color: #7fd9ff;
+}
+
+/* --- ESTADOS ---------------------- */
+.pub-loading,
+.pub-error,
+.pub-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2rem;
+  color: #9dcce6;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+}
+
+.pub-error {
+  border-color: rgba(255, 80, 80, 0.5);
+  color: #ff8080;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(127, 217, 255, 0.2);
+  border-top-color: #7fd9ff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- PAGINACIÓN ---------------------- */
+.pub-cargar-mas {
+  display: flex;
+  justify-content: center;
+}
+
+.btn-cargar-mas {
+  border: 2px solid #7fd9ff;
+  border-radius: 6px;
+  background: #114066;
+  color: #eaf7ff;
+  padding: 0.4rem 2rem;
+  font-size: 0.85rem;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 3px 3px 0 #04203b;
+}
+
+.btn-cargar-mas:hover {
+  background: #1a5a8a;
+}
+
+.pub-fin {
+  text-align: center;
+  color: #9dcce6;
+  font-size: 0.85rem;
+  font-family: 'Courier New', monospace;
+  padding: 0.5rem;
+}
+
+/* --- PANEL LATERAL ---------------------- */
 .pub-side {
   padding: 0.9rem;
   height: fit-content;
@@ -103,17 +273,45 @@
   top: calc(72px + 1rem);
 }
 
-.pub-side h2,
-.pub-side h3 {
-  margin: 0 0 0.5rem;
-  color: #eaf7ff;
-  font-size: 1rem;
+.side-perfil {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
-.pub-side p {
-  margin: 0 0 0.4rem;
-  color: #cae7f7;
+.side-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 6px;
+  border: 2px solid #7fd9ff;
+  background: #14476f;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ecf8ff;
+  flex-shrink: 0;
+}
+
+.side-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.side-username {
+  margin: 0;
+  color: #ecf8ff;
+  font-weight: 700;
   font-size: 0.9rem;
+}
+
+.side-nombre {
+  margin: 0.1rem 0 0;
+  color: #9dcce6;
+  font-size: 0.82rem;
 }
 
 .pub-side hr {
@@ -122,16 +320,24 @@
   margin: 0.7rem 0;
 }
 
-.pub-side ul {
+.side-label {
+  margin: 0 0 0.2rem;
+  color: #9dcce6;
+  font-size: 0.78rem;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.side-valor {
   margin: 0;
-  padding-left: 1.1rem;
-  color: #cae7f7;
+  color: #ecf8ff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
 }
 
-.pub-side li {
-  margin-bottom: 0.3rem;
-}
-
+/* --- RESPONSIVE ---------------------- */
 @media (max-width: 992px) {
   .pub-layout {
     grid-template-columns: 1fr;
@@ -147,7 +353,7 @@
     padding-top: calc(112px + 0.8rem);
   }
 
-  .post-image {
+  .post-img {
     height: 220px;
   }
 

@@ -2,50 +2,142 @@
 
 <section class="pub-scene">
   <div class="container pub-layout">
+    <!-- FEED PRINCIPAL -->
     <main class="pub-feed">
-      <header class="pub-box pub-header">
-        <h1>Publicaciones</h1>
-        <p>Vista de muestra simple para que no quede vacia.</p>
-      </header>
-
-      <article class="pub-box post-card">
-        <div class="post-top">
-          <span class="tag">@luz.varela</span>
-          <span class="meta">hace 12 min</span>
+      <!-- CONTROLES DE ORDENAMIENTO -->
+      <div class="pub-box pub-controles ani-fade-up ani-d1">
+        <span class="controles-label">Ordenar por</span>
+        <div class="controles-btns">
+          <button
+            type="button"
+            class="btn-orden"
+            [class.activo]="orden === 'fecha'"
+            (click)="cambiarOrden('fecha')"
+          >
+            Más recientes
+          </button>
+          <button
+            type="button"
+            class="btn-orden"
+            [class.activo]="orden === 'likes'"
+            (click)="cambiarOrden('likes')"
+          >
+            Más populares
+          </button>
         </div>
-        <div class="post-image img-a"></div>
-        <p class="post-text">Salida rápida a caminar. Nada fancy, solo una foto y listo.</p>
+      </div>
+
+      <!-- ERROR -->
+      <div *ngIf="mensajeError" class="pub-box pub-error ani-fade">
+        <p>{{ mensajeError }}</p>
+      </div>
+
+      <!-- LISTADO DE PUBLICACIONES -->
+      <article *ngFor="let pub of publicaciones" class="pub-box post-card ani-fade-up">
+        <!-- CABECERA DEL POST -->
+        <div class="post-top">
+          <div class="post-autor">
+            <div class="post-avatar">
+              <img
+                *ngIf="pub.usuario?.imagenPerfil"
+                [src]="pub.usuario.imagenPerfil"
+                [alt]="pub.usuario.usuario"
+              />
+              <span *ngIf="!pub.usuario?.imagenPerfil">
+                {{ pub.usuario?.nombre?.[0] }}{{ pub.usuario?.apellido?.[0] }}
+              </span>
+            </div>
+            <div>
+              <span class="post-username">&#64;{{ pub.usuario?.usuario }}</span>
+              <span class="post-fecha">{{ formatearFechaRelativa(pub.createdAt) }}</span>
+            </div>
+          </div>
+
+          <!-- BOTÓN ELIMINAR (solo autor) -->
+          <button
+            *ngIf="esAutor(pub)"
+            type="button"
+            class="btn-eliminar"
+            (click)="eliminarPublicacion(pub)"
+            title="Eliminar publicación"
+          >
+            ✕
+          </button>
+        </div>
+
+        <!-- TÍTULO -->
+        <h2 class="post-titulo">{{ pub.titulo }}</h2>
+
+        <!-- IMAGEN OPCIONAL -->
+        <div
+          *ngIf="pub.imagenUrl"
+          class="post-img"
+          [style.backgroundImage]="'url(' + pub.imagenUrl + ')'"
+        ></div>
+
+        <!-- MENSAJE -->
+        <p class="post-mensaje">{{ pub.mensaje }}</p>
+
+        <!-- ACCIONES -->
         <div class="post-bar">
-          <button type="button">Like 120</button>
-          <button type="button">Comentar 18</button>
+          <button
+            type="button"
+            class="btn-like"
+            [class.likeado]="yaLikeo(pub)"
+            (click)="toggleLike(pub)"
+          >
+            {{ yaLikeo(pub) ? '♥' : '♡' }} {{ pub.likes?.length }}
+          </button>
+          <button type="button" class="btn-comentar">💬 Comentar</button>
         </div>
       </article>
 
-      <article class="pub-box post-card">
-        <div class="post-top">
-          <span class="tag">@martin.r</span>
-          <span class="meta">hace 1 h</span>
-        </div>
-        <div class="post-image img-b"></div>
-        <p class="post-text">Probando diseño bruto para la app. Menos vueltas, más claro.</p>
-        <div class="post-bar">
-          <button type="button">Like 89</button>
-          <button type="button">Comentar 9</button>
-        </div>
-      </article>
+      <!-- CARGANDO -->
+      <div *ngIf="cargando" class="pub-box pub-loading ani-fade">
+        <div class="spinner"></div>
+        <p>Cargando publicaciones...</p>
+      </div>
+
+      <!-- SIN PUBLICACIONES -->
+      <div
+        *ngIf="!cargando && !mensajeError && publicaciones.length === 0"
+        class="pub-box pub-empty ani-fade"
+      >
+        <p>No hay publicaciones todavía.</p>
+      </div>
+
+      <!-- CARGAR MÁS -->
+      <div *ngIf="!cargando && hayMas" class="pub-cargar-mas ani-fade">
+        <button type="button" class="btn-cargar-mas" (click)="cargarMas()">Cargar más</button>
+      </div>
+
+      <!-- FIN DE PUBLICACIONES -->
+      <div *ngIf="!cargando && !hayMas && publicaciones.length > 0" class="pub-fin ani-fade">
+        <p>Ya viste todo por ahora.</p>
+      </div>
     </main>
 
-    <aside class="pub-box pub-side">
-      <h2>Panel</h2>
-      <p><strong>Usuario:</strong> santino.casado</p>
-      <p><strong>Curso:</strong> Programacion IV</p>
-      <hr />
-      <h3>Sugerencias</h3>
-      <ul>
-        <li>camila.dev</li>
-        <li>rodrigo_ui</li>
-        <li>fran.codes</li>
-      </ul>
+    <!-- PANEL LATERAL -->
+    <aside class="pub-box pub-side ani-fade-up ani-d2">
+      <div class="side-perfil">
+        <div class="side-avatar">
+          <img
+            *ngIf="usuario?.imagenPerfil"
+            [src]="usuario.imagenPerfil"
+            [alt]="usuario?.usuario"
+          />
+          <span *ngIf="!usuario?.imagenPerfil">
+            {{ usuario?.nombre?.[0] }}{{ usuario?.apellido?.[0] }}
+          </span>
+        </div>
+        <div>
+          <p class="side-username">&#64;{{ usuario?.usuario }}</p>
+          <p class="side-nombre">{{ usuario?.nombre }} {{ usuario?.apellido }}</p>
+        </div>
+      </div>
+      <hr class="side-divider" />
+      <p class="side-label">Ordenando por</p>
+      <p class="side-valor">{{ orden === 'fecha' ? 'Más recientes' : 'Más populares' }}</p>
     </aside>
   </div>
 </section>
