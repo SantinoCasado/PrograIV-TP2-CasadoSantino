@@ -1,10 +1,10 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Usuario } from '../usuarios/schema/usuario.schema';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { StorageService } from '../../common/storage/storage.service';
 
@@ -15,7 +15,49 @@ export class AuthService {
     // Inyectamos el modelo de Usuario para poder interactuar con la base de datos
     @InjectModel(Usuario.name) private readonly usuarioModel: Model<Usuario>,
     private readonly storageService: StorageService,
+    private readonly jwtService: JwtService,  // Inyectamos el servicio de JWT para generar tokens de autenticación
   ) {}
+
+  // --------------------- TOKENS Y VALIDACIONES ----------------------
+  // Genera el payload y firma el token
+  private generarToken(usuario: any): string {
+    const payload = {
+      sub: usuario._id,
+      usuario: usuario.usuario,
+      correo: usuario.correo,
+      perfil: usuario.perfil,
+    };
+    return this.jwtService.sign(payload);
+  }
+
+  // Valida el token JWT y devuelve el usuario asociado si el token es válido
+  async validarToken(token: string) {
+    try {
+      const payload = this.jwtService.verify(token);
+      const usuario = await this.usuarioModel
+      .findById(payload.sub)  // Busca el usuario por su ID (sub es el campo que contiene el ID del usuario en el payload)
+      .select('-contraseña') // Excluye la contraseña del usuario para mayor seguridad
+      .lean();              // Convierte el documento de Mongoose a un objeto JavaScript simple
+      if (!usuario) {
+        throw new UnauthorizedException('Usuario no encontrado.');
+      }
+      return usuario; // Devuelve el usuario encontrado si el token es válido
+    } catch (error) {
+      throw new UnauthorizedException('Token no válido o expirado.');
+    }
+  }
+
+  // Función para refrescar el token JWT, genera un nuevo token con la misma información del usuario
+  async refrescarToken(token: string) {
+    try {
+      const payload = this.jwtService.verify(token);
+      const { sub, usuario, correo, perfil } = payload;
+      const nuevoToken = this.jwtService.sign({ sub, usuario, correo, perfil });
+      return { token: nuevoToken };
+    } catch (error) {
+      throw new UnauthorizedException('Token no válido o expirado.');
+    }
+  } 
 
   // --------------------- REGISTRO DE USUARIOS ----------------------
   async registro(createAuthDto: CreateAuthDto, imagen: Express.Multer.File) {
@@ -58,9 +100,10 @@ export class AuthService {
 
     await nuevoUsuario.save();
     const { contraseña, ...usuarioSinPassword } = nuevoUsuario.toObject() as any;
+    const token = this.generarToken(usuarioSinPassword);  // Genera un token JWT para el nuevo usuario registrado
 
-    // Devuelve el usuario sin la contraseña ni el repetirContraseña para guardar la seguridad de los datos sensibles
-    return usuarioSinPassword;
+    // Devuelve el usuario sin la contraseña y el token de autenticación
+    return { usuario: usuarioSinPassword, token };
   }
 
   // --------------------- LOGIN DE USUARIOS ----------------------
@@ -87,9 +130,12 @@ export class AuthService {
 
     // Si el login es exitoso, devuelve un mensaje de éxito (en un caso real, aquí se generaría un token JWT o similar)
     const { contraseña,  ...usuarioSinPassword } = usuario.toObject() as any;
-    return { mensaje: 'Login exitoso', usuario: usuarioSinPassword };
+    const token = this.generarToken(usuarioSinPassword);  // Genera un token JWT para el usuario que ha iniciado sesión
+
+    return { mensaje: 'Login exitoso', usuario: usuarioSinPassword, token };
   }
 
+  // --------------------- FUNCIONES AUXILIARES ----------------------
   findAll() {
     return this.usuarioModel.find().select('-contraseña'); // Devuelve todos los usuarios sin la contraseña
   }

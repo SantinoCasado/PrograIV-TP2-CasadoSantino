@@ -23,7 +23,7 @@ export class StorageService {
 			throw new InternalServerErrorException('Supabase no esta configurado en variables de entorno.');
 		}
 
-		const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp']; // Se definen los tipos MIME permitidos para las imágenes de perfil. Si el archivo subido no coincide con uno de estos tipos, se lanza una excepción indicando que el formato no es permitido.
+		const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp']; // Se define los tipos MIME permitidos para las imagenes de perfil. Si el archivo subido no coincide con uno de estos tipos, se lanza una excepcion indicando que el formato no es permitido.
 		if (!allowedMimeTypes.includes(file.mimetype)) {    // Se verifica si el tipo MIME del archivo subido está en la lista de tipos permitidos. Si no lo está, se lanza una excepción indicando que el formato de imagen no es permitido.
 			throw new BadRequestException('Formato de imagen no permitido. Usa JPG, PNG o WEBP.');
 		}

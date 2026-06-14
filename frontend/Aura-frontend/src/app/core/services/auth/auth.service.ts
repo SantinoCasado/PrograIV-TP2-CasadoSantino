@@ -9,46 +9,67 @@ import { environment } from '../../../../environments/environment';
 })
 export class AuthService {
   private readonly apiUrl = `${environment.apiUrl}/auth`;
-  private readonly STORAGE_KEY = 'aura_usuario'; // clave para localStorage
+  private readonly TOKEN_KEY = 'aura_token';
+  private readonly USUARIO_KEY = 'aura_usuario';
 
   constructor(
     private http: HttpClient,
     private router: Router,
   ) {}
 
-  login(payload: { usuario: string; contrasena: string }) {
-    return this.http.post<{ mensaje: string; usuario: any }>(`${this.apiUrl}/login`, payload).pipe(
+  // ----------------------- VALIDACIONES DE TOKENS -----------------------
+  // Valida el token contra el back, usado en la pantalla de cargando
+  autorizar() {
+    const token = this.obtenerToken();
+    return this.http.post<any>(`${this.apiUrl}/autorizar`, { token });
+  }
+
+  // Refresca el token cuando quedan 5 minutos
+  refrescar() {
+    const token = this.obtenerToken();
+    return this.http.post<{ token: string }>(`${this.apiUrl}/refrescar`, { token }).pipe(
       tap(respuesta => {
-        // Guardado del usuario completo en localStorage al hacer login
-        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(respuesta.usuario));
+        localStorage.setItem(this.TOKEN_KEY, respuesta.token);
       })
     );
   }
 
-  // Devuelve el usuario guardado en localStorage
+  // ----------------------- FUNCIONES DE LOGIN -----------------------
+  // Realiza el login y guarda el token y usuario en localStorage
+  login(payload: { usuario: string; contrasena: string }) {
+    return this.http.post<{ token: string; usuario: any }>(`${this.apiUrl}/login`, payload).pipe(
+      tap(respuesta => {
+        localStorage.setItem(this.TOKEN_KEY, respuesta.token);
+        localStorage.setItem(this.USUARIO_KEY, JSON.stringify(respuesta.usuario));
+      })
+    );
+  }
+
+  // ----------------------- FUNCIONES DE SESION -----------------------
+  obtenerToken(): string | null {
+    return localStorage.getItem(this.TOKEN_KEY);
+  }
+
   obtenerUsuario(): any {
-    const data = localStorage.getItem(this.STORAGE_KEY);
+    const data = localStorage.getItem(this.USUARIO_KEY);
     return data ? JSON.parse(data) : null;
   }
 
-  // Devuelve el ID del usuario logueado
   obtenerUsuarioId(): string | null {
     return this.obtenerUsuario()?._id ?? null;
   }
 
-  // Devuelve el perfil (usuario/administrador)
   obtenerPerfil(): string {
     return this.obtenerUsuario()?.perfil ?? 'usuario';
   }
 
-  // Verifica si hay un usuario logueado
   estaLogueado(): boolean {
-    return !!localStorage.getItem(this.STORAGE_KEY);
+    return !!this.obtenerToken();
   }
 
-  // Cierra sesión
   cerrarSesion(): void {
-    localStorage.removeItem(this.STORAGE_KEY);
-    this.router.navigateByUrl('/login');
+    localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem(this.USUARIO_KEY);
+    this.router.navigateByUrl('/log-in');
   }
 }

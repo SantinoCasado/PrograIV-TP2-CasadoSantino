@@ -1,9 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { LoginAuthDto } from './dto/login-auth.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 import type { Express } from 'express';
 /*
 Dependencias necesarias para el módulo de autenticación:
@@ -29,6 +28,18 @@ export class AuthController {
   @Post('login')
   async login(@Body() dto: LoginAuthDto) {
     return this.authService.login(dto);
+  }
+
+  // Valida el token — el front lo llama al iniciar la app
+  @Post('autorizar')
+  async autorizar(@Body('token') token: string) {
+    return this.authService.validarToken(token);
+  }
+
+  // Refresca el token — el front lo llama cuando quedan 5 minutos
+  @Post('refrescar')
+  async refrescar(@Body('token') token: string) {
+    return this.authService.refrescarToken(token);
   }
 
   @Get()
