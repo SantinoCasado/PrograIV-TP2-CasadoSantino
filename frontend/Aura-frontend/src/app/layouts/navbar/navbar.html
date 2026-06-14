@@ -3,10 +3,28 @@
     <a class="navbar-brand brand m-0" routerLink="/"><span>Aura</span></a>
 
     <nav class="menu nav gap-2 flex-wrap">
-      <a class="nav-link" routerLink="/publicaciones" routerLinkActive="active">Publicaciones</a>
-      <a class="nav-link" routerLink="/log-in" routerLinkActive="active">Login</a>
-      <a class="nav-link" routerLink="/registro" routerLinkActive="active">Registro</a>
-      <a class="nav-link" routerLink="/mi-perfil" routerLinkActive="active">Mi Perfil</a>
+      <!-- Logueado -->
+      <ng-container *ngIf="authService.estaLogueado()">
+        <a class="nav-link" routerLink="/publicaciones" routerLinkActive="active">
+          <i class="bi bi-grid"></i> Publicaciones
+        </a>
+        <a class="nav-link" routerLink="/mi-perfil" routerLinkActive="active">
+          <i class="bi bi-person"></i> Mi Perfil
+        </a>
+        <button class="nav-link btn-logout" (click)="authService.cerrarSesion()">
+          <i class="bi bi-box-arrow-right"></i> Salir
+        </button>
+      </ng-container>
+
+      <!-- Sin sesión -->
+      <ng-container *ngIf="!authService.estaLogueado()">
+        <a class="nav-link" routerLink="/log-in" routerLinkActive="active">
+          <i class="bi bi-box-arrow-in-right"></i> Iniciar sesión
+        </a>
+        <a class="nav-link" routerLink="/registro" routerLinkActive="active">
+          <i class="bi bi-person-plus"></i> Registro
+        </a>
+      </ng-container>
     </nav>
   </div>
 </header>
