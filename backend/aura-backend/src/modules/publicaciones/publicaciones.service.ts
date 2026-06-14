@@ -50,11 +50,24 @@ export class PublicacionesService {
     if (query.orden === 'likes') {
       return this.publicacionModel.aggregate([
         { $match: filtro },
-        // Agrego campo virtual cantidadLikes para poder ordenar por el
         { $addFields: { cantidadLikes: { $size: '$likes' } } },
         { $sort: { cantidadLikes: -1 } },
         { $skip: offset },
         { $limit: limit },
+        // populate manual en aggregate
+        { $lookup: {
+          from: 'usuarios',
+          localField: 'usuario',
+          foreignField: '_id',
+          as: 'usuario'
+        }},
+        { $unwind: '$usuario' },
+        // ocultao campos sensibles
+        { $project: {
+          'usuario.contraseña': 0,
+          'usuario.fechaNacimiento': 0,
+          'usuario.descripcion': 0,
+        }}
       ]);
     }
 

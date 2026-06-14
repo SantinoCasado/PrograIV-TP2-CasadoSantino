@@ -63,7 +63,9 @@ export class Publicaciones implements OnInit {
       orden: this.orden,
     }).subscribe({
       next: (data) => {
-        this.publicaciones.update(prev => [...prev, ...data]);
+        // Creo nuevos objetos para forzar la detección de cambios
+        const nuevas = data.map((p: any) => ({ ...p }));
+        this.publicaciones.update(prev => [...prev, ...nuevas]);
         this.hayMas.set(data.length === this.limit);
         this.offset += data.length;
         this.cargando.set(false);
@@ -149,7 +151,11 @@ export class Publicaciones implements OnInit {
   }
 
   agregarNuevaPublicacion(nueva: any): void {
-    // Agrega la nueva publicación al principio de la lista usando update de Signals
-    this.publicaciones.update(prev => [nueva, ...prev]);
+    // Inyectamos el usuario logueado en la nueva publicación para que el template lo muestre
+    const pubConUsuario = {
+      ...nueva,
+      usuario: this.authService.obtenerUsuario()
+    };
+    this.publicaciones.update(prev => [pubConUsuario, ...prev]);
   }
 }
