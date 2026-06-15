@@ -60,7 +60,7 @@ export class Login implements OnInit {
       usuario: (this.form.value.usuario ?? '').trim(),
       contrasena: this.form.value.contrasena ?? '',
     };
-
+    
     this.authService.login(payload)
       .pipe(finalize(() => (this.cargando = false)))
       .subscribe({

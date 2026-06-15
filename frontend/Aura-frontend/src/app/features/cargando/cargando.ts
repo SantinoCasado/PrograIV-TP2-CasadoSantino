@@ -15,7 +15,7 @@ export class Cargando implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const token = this.authService.obtenerToken();
+    const token = this.authService.obtenerToken();  // Obtiene el token del localStorage
 
     if (!token) {
       this.router.navigateByUrl('/log-in');
