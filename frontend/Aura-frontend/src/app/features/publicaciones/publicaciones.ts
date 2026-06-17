@@ -71,7 +71,7 @@ export class Publicaciones implements OnInit {
         this.cargando.set(false);
       },
       error: () => {
-        this.mensajeError.set('No se pudieron cargar las publicaciones.');
+        this.mostrarError('No se pudieron cargar las publicaciones.');
         this.cargando.set(false);
       }
     });
@@ -108,7 +108,7 @@ export class Publicaciones implements OnInit {
           prev.map(p => p._id === pub._id ? { ...pubActualizada, usuario: pub.usuario } : p)  // Mantengo el usuario original para no perder la referencia
         );
       },
-      error: () => this.mensajeError.set('No se pudo procesar el like.')
+      error: () => this.mostrarError('No se pudo procesar el like.')
     });
   }
 
@@ -121,7 +121,7 @@ export class Publicaciones implements OnInit {
         next: () => {
           this.publicaciones.update(prev => prev.filter(p => p._id !== pub._id));
         },
-        error: () => this.mensajeError.set('No se pudo eliminar la publicación.')
+        error: () => this.mostrarError('No se pudo eliminar la publicación.')
       });
   }
 
@@ -157,5 +157,10 @@ export class Publicaciones implements OnInit {
       usuario: this.authService.obtenerUsuario()
     };
     this.publicaciones.update(prev => [pubConUsuario, ...prev]);
+  }
+
+  private mostrarError(mensaje: string): void {
+    this.mensajeError.set(mensaje);
+    setTimeout(() => this.mensajeError.set(''), 3000); // desaparece en 3 segundos
   }
 }
