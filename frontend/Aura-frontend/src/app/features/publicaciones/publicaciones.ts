@@ -105,7 +105,7 @@ export class Publicaciones implements OnInit {
     accion.subscribe({
       next: (pubActualizada) => {
         this.publicaciones.update(prev =>
-          prev.map(p => p._id === pub._id ? pubActualizada : p)
+          prev.map(p => p._id === pub._id ? { ...pubActualizada, usuario: pub.usuario } : p)  // Mantengo el usuario original para no perder la referencia
         );
       },
       error: () => this.mensajeError.set('No se pudo procesar el like.')
