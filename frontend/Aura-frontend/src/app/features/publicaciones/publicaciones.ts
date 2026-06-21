@@ -149,6 +149,10 @@ export class Publicaciones implements OnInit {
   cerrarModal(): void {
     this.mostrarModal.set(false);
   }
+  
+  verPublicacion(id: string): void {
+    this.router.navigateByUrl(`/publicaciones/${id}`);
+  }
 
   agregarNuevaPublicacion(nueva: any): void {
     // Inyectamos el usuario logueado en la nueva publicación para que el template lo muestre
