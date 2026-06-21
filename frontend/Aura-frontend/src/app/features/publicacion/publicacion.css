@@ -108,6 +108,27 @@
   border-top: 1px solid rgba(127, 217, 255, 0.2);
 }
 
+.btn-back {
+  background: transparent;
+  border: 2px solid rgba(127, 217, 255, 0.3);
+  color: #9dcce6;
+  border-radius: 6px;
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: fit-content;
+}
+
+.btn-back:hover {
+  border-color: #7fd9ff;
+  color: #ecf8ff;
+}
+
 .btn-like {
   border: 2px solid #7fd9ff;
   border-radius: 6px;

@@ -2,6 +2,11 @@
 
 <section class="pub-scene">
   <div class="container pub-wrap">
+    <!-- VOLVER -->
+    <button type="button" class="btn-back" (click)="router.navigateByUrl('/publicaciones')">
+      <i class="bi bi-arrow-left"></i> Volver
+    </button>
+
     <!-- CARGANDO -->
     <div *ngIf="cargando()" class="pub-box pub-loading">
       <div class="spinner"></div>

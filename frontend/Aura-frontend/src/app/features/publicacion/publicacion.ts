@@ -33,7 +33,7 @@ export class Publicacion implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
+    public router: Router,
     private fb: FormBuilder,
     private authService: AuthService,
     private publicacionesService: PublicacionesService,
