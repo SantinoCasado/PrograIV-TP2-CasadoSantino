@@ -140,4 +140,15 @@ export class PublicacionesService {
     publicacion.likes.splice(index, 1);
     return publicacion.save();
   }
+
+  // --------------------- OBTENER PUBLICACIÓN POR ID ---------------------
+  async obtenerPorId(id: string) {
+    const publicacion = await this.publicacionModel
+      .findOne({ _id: id, activa: true })
+      .populate('usuario', 'nombre apellido imagenPerfil usuario')
+      .lean();
+
+    if (!publicacion) throw new NotFoundException('Publicación no encontrada.');
+    return publicacion;
+  }
 }

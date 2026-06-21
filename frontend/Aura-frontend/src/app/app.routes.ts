@@ -28,6 +28,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/publicaciones/publicaciones').then((m) => m.Publicaciones)
   },
   {
+    path: 'publicaciones/:id',
+    canActivate: [AuthGuard],
+    loadComponent: () => import('./features/publicacion/publicacion').then(m => m.Publicacion)
+  },
+  {
     path: "mi-perfil",
     canActivate: [AuthGuard],
     loadComponent: () => import('./features/mi-perfil/mi-perfil').then((m) => m.MiPerfil)

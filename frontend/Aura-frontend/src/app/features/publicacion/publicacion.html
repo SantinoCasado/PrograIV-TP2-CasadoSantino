@@ -1,0 +1,198 @@
+<app-navbar></app-navbar>
+
+<section class="pub-scene">
+  <div class="container pub-wrap">
+    <!-- CARGANDO -->
+    <div *ngIf="cargando()" class="pub-box pub-loading">
+      <div class="spinner"></div>
+      <p>Cargando publicación...</p>
+    </div>
+
+    <!-- ERROR -->
+    <div *ngIf="mensajeError()" class="pub-box pub-error">
+      <i class="bi bi-exclamation-triangle"></i>
+      <p>{{ mensajeError() }}</p>
+    </div>
+
+    <ng-container *ngIf="!cargando() && publicacion()">
+      <!-- PUBLICACIÓN -->
+      <article class="pub-box pub-card">
+        <!-- CABECERA -->
+        <div class="pub-top">
+          <div class="pub-autor">
+            <div class="pub-avatar">
+              <img
+                *ngIf="publicacion().usuario?.imagenPerfil"
+                [src]="publicacion().usuario.imagenPerfil"
+                [alt]="publicacion().usuario.usuario"
+              />
+              <span *ngIf="!publicacion().usuario?.imagenPerfil">
+                {{ publicacion().usuario?.nombre?.[0] }}{{ publicacion().usuario?.apellido?.[0] }}
+              </span>
+            </div>
+            <div>
+              <span class="pub-username">&#64;{{ publicacion().usuario?.usuario }}</span>
+              <span class="pub-fecha">{{ formatearFechaRelativa(publicacion().createdAt) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- TÍTULO -->
+        <h1 class="pub-titulo">{{ publicacion().titulo }}</h1>
+
+        <!-- IMAGEN -->
+        <div
+          *ngIf="publicacion().imagenUrl"
+          class="pub-img"
+          [style.backgroundImage]="'url(' + publicacion().imagenUrl + ')'"
+        ></div>
+
+        <!-- MENSAJE -->
+        <p class="pub-mensaje">{{ publicacion().mensaje }}</p>
+
+        <!-- ACCIONES -->
+        <div class="pub-bar">
+          <button type="button" class="btn-like" [class.likeado]="yaLikeo()" (click)="toggleLike()">
+            <i class="bi" [ngClass]="yaLikeo() ? 'bi-heart-fill' : 'bi-heart'"></i>
+            {{ publicacion().likes?.length }}
+          </button>
+          <span class="pub-comentarios-count">
+            <i class="bi bi-chat"></i> {{ comentarios().length }} comentarios
+          </span>
+        </div>
+      </article>
+
+      <!-- FORMULARIO COMENTARIO -->
+      <div class="pub-box comentario-form">
+        <h3 class="form-titulo"><i class="bi bi-chat-dots"></i> Escribir comentario</h3>
+        <div [formGroup]="formComentario" class="form-body">
+          <textarea
+            class="campo-input"
+            formControlName="mensaje"
+            placeholder="Escribí tu comentario..."
+            rows="3"
+            maxlength="300"
+          ></textarea>
+          <div class="form-meta">
+            <span
+              class="campo-error"
+              *ngIf="
+                formComentario.get('mensaje')?.touched &&
+                formComentario.get('mensaje')?.hasError('required')
+              "
+            >
+              El comentario no puede estar vacío.
+            </span>
+            <span class="campo-contador">
+              {{ formComentario.get('mensaje')?.value?.length || 0 }}/300
+            </span>
+          </div>
+          <button
+            type="button"
+            class="btn-enviar"
+            [disabled]="enviandoComentario()"
+            (click)="enviarComentario()"
+          >
+            <span *ngIf="!enviandoComentario()"><i class="bi bi-send"></i> Comentar</span>
+            <span *ngIf="enviandoComentario()"
+              ><div class="spinner-sm"></div>
+              Enviando...</span
+            >
+          </button>
+        </div>
+      </div>
+
+      <!-- COMENTARIOS -->
+      <section class="comentarios-lista">
+        <h3 class="section-titulo"><i class="bi bi-chat-left-text"></i> Comentarios</h3>
+
+        <!-- CARGANDO COMENTARIOS -->
+        <div
+          *ngIf="cargandoComentarios() && comentarios().length === 0"
+          class="pub-box pub-loading"
+        >
+          <div class="spinner"></div>
+          <p>Cargando comentarios...</p>
+        </div>
+
+        <!-- SIN COMENTARIOS -->
+        <div *ngIf="!cargandoComentarios() && comentarios().length === 0" class="pub-box pub-empty">
+          <i class="bi bi-chat-x"></i>
+          <p>Todavía no hay comentarios. ¡Sé el primero!</p>
+        </div>
+
+        <!-- LISTA -->
+        <article *ngFor="let comentario of comentarios()" class="pub-box comentario-card">
+          <div class="comentario-top">
+            <div class="comentario-autor">
+              <div class="com-avatar">
+                <img
+                  *ngIf="comentario.usuario?.imagenPerfil"
+                  [src]="comentario.usuario.imagenPerfil"
+                  [alt]="comentario.usuario.usuario"
+                />
+                <span *ngIf="!comentario.usuario?.imagenPerfil">
+                  {{ comentario.usuario?.nombre?.[0] }}{{ comentario.usuario?.apellido?.[0] }}
+                </span>
+              </div>
+              <div>
+                <span class="com-username">&#64;{{ comentario.usuario?.usuario }}</span>
+                <span class="com-fecha">{{ formatearFechaRelativa(comentario.createdAt) }}</span>
+              </div>
+            </div>
+
+            <!-- BOTÓN EDITAR (solo autor) -->
+            <button
+              *ngIf="esAutorComentario(comentario) && comentarioEditandoId() !== comentario._id"
+              type="button"
+              class="btn-editar"
+              (click)="iniciarEdicion(comentario)"
+            >
+              <i class="bi bi-pencil"></i>
+            </button>
+          </div>
+
+          <!-- MENSAJE O EDICIÓN -->
+          <ng-container *ngIf="comentarioEditandoId() !== comentario._id">
+            <p class="com-mensaje">{{ comentario.mensaje }}</p>
+            <span *ngIf="comentario.modificado" class="com-editado">
+              <i class="bi bi-pencil-square"></i> editado
+            </span>
+          </ng-container>
+
+          <!-- FORMULARIO EDICIÓN -->
+          <ng-container *ngIf="comentarioEditandoId() === comentario._id">
+            <div [formGroup]="formEdicion" class="edicion-body">
+              <textarea
+                class="campo-input"
+                formControlName="mensaje"
+                rows="2"
+                maxlength="300"
+              ></textarea>
+              <div class="edicion-btns">
+                <button type="button" class="btn-cancelar" (click)="cancelarEdicion()">
+                  Cancelar
+                </button>
+                <button type="button" class="btn-guardar" (click)="guardarEdicion(comentario)">
+                  <i class="bi bi-check-lg"></i> Guardar
+                </button>
+              </div>
+            </div>
+          </ng-container>
+        </article>
+
+        <!-- CARGAR MÁS -->
+        <div *ngIf="!cargandoComentarios() && hayMas()" class="pub-cargar-mas">
+          <button type="button" class="btn-cargar-mas" (click)="cargarComentarios()">
+            <i class="bi bi-arrow-down-circle"></i> Cargar más comentarios
+          </button>
+        </div>
+
+        <!-- CARGANDO MÁS -->
+        <div *ngIf="cargandoComentarios() && comentarios().length > 0" class="pub-loading-mas">
+          <div class="spinner-sm"></div>
+        </div>
+      </section>
+    </ng-container>
+  </div>
+</section>

@@ -62,4 +62,11 @@ export class PublicacionesController {
   ) {
     return this.publicacionesService.quitarLike(id, usuarioId);
   }
+
+  // --------------------- OBTENER PUBLICACIÓN POR ID ---------------------
+  // GET /publicaciones/:id
+  @Get(':id')
+    async obtenerPorId(@Param('id') id: string) {
+      return this.publicacionesService.obtenerPorId(id);
+  }
 }

@@ -50,4 +50,9 @@ export class PublicacionesService {
       body: { usuarioId }
     });
   }
+
+  // Obtener publicación por ID
+  obtenerPorId(id: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  }
 }
