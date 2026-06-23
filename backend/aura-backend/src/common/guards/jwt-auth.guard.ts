@@ -19,7 +19,8 @@ export class JwtAuthGuard implements CanActivate {
       const payload = this.jwtService.verify(token);    // Verifica el token usando el servicio JWT y obtiene la carga útil (payload) del token
       request.usuario = payload; // lo adjunta al request para usarlo en los controllers
       return true;
-    } catch {
+    } catch( error) {
+      console.error('Error verificando token:', error);
       throw new UnauthorizedException('Token inválido o expirado.');
     }
   }
