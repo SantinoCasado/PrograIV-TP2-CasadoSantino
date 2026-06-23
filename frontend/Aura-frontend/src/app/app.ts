@@ -17,11 +17,15 @@ export class App {
   // Funcion para extender la sesión
   extenderSesion(): void {
     this.authService.refrescar().subscribe({
-      next: () => {
+      next: (res) => {
+        console.log('Token refrescado:', res);
         this.authService.mostrarModalSesion.set(false);
         this.authService.iniciarContadorSesion(); // reinicia el contador
       },
-      error: () => this.authService.cerrarSesion()
+      error: (err) => {
+        console.error('Error al refrescar:', err);
+        this.authService.cerrarSesion();
+      }
     });
   }
 
