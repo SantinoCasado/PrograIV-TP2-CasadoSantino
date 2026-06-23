@@ -59,10 +59,10 @@
   border-top: 2px solid rgba(127, 217, 255, 0.2);
 }
 
-.btn-cancelar {
+.btn-ignorar {
   background: transparent;
-  border: 2px solid rgba(255, 80, 80, 0.4);
-  color: #ff8080;
+  border: 2px solid rgba(127, 217, 255, 0.2);
+  color: #9dcce6;
   border-radius: 8px;
   padding: 0.4rem 1rem;
   font-size: 0.85rem;
@@ -71,11 +71,10 @@
   transition: all 0.2s;
 }
 
-.btn-cancelar:hover {
-  border-color: #ff5050;
-  color: #ff5050;
+.btn-ignorar:hover {
+  border-color: #7fd9ff;
+  color: #ecf8ff;
 }
-
 .btn-extender {
   background: #114066;
   border: 2px solid #7fd9ff;

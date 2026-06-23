@@ -10,5 +10,5 @@ import { CommonModule } from '@angular/common';
 })
 export class SesionModal {
   @Output() extenderSesion = new EventEmitter<void>();
-  @Output() cerrarSesion = new EventEmitter<void>();
+  @Output() ignorar = new EventEmitter<void>();
 }

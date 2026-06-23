@@ -4,6 +4,6 @@
 @if (authService.mostrarModalSesion()) {
   <app-sesion-modal
     (extenderSesion)="extenderSesion()"
-    (cerrarSesion)="cerrarSesion()"
+    (ignorar)="authService.mostrarModalSesion.set(false)"
   ></app-sesion-modal>
 }

@@ -5,12 +5,10 @@
       <h2 class="modal-titulo">Sesión por vencer</h2>
     </div>
     <div class="modal-body">
-      <p>Tu sesión vence en <strong>5 minutos</strong>. ¿Querés extenderla?</p>
+      <p>Tu sesión se esta por <strong>vencer</strong>. ¿Querés extenderla?</p>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn-cancelar" (click)="cerrarSesion.emit()">
-        Cerrar sesión
-      </button>
+      <button type="button" class="btn-cancelar" (click)="ignorar.emit()">No, gracias</button>
       <button type="button" class="btn-extender" (click)="extenderSesion.emit()">
         <i class="bi bi-arrow-clockwise"></i> Extender sesión
       </button>
