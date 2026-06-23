@@ -2,8 +2,11 @@ import { Controller, Get, Post, Put, Param, Body, Query, HttpCode } from '@nestj
 import { ComentariosService } from './comentarios.service';
 import { CreateComentarioDto } from './dto/create-comentario.dto';
 import { UpdateComentarioDto } from './dto/update-comentario.dto';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 
 @Controller('publicaciones/:publicacionId/comentarios')
+@UseGuards(JwtAuthGuard)
 export class ComentariosController {
   constructor(private readonly comentariosService: ComentariosService) {}
 

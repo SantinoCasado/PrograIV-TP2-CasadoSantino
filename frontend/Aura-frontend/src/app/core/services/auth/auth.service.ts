@@ -77,7 +77,7 @@ export class AuthService {
 
   iniciarContadorSesion(): void {
     this.limpiarContador();
-    // 1 minuto para testeo (en producción serían 10 minutos = 600000ms)
+    // 1 minuto para testeo (en producción serian 10 minutos = 600000ms)
     this.sessionTimer = setTimeout(() => {
       this.mostrarModalSesion.set(true);
     }, 60000);

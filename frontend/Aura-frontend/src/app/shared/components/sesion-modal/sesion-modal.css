@@ -59,7 +59,7 @@
   border-top: 2px solid rgba(127, 217, 255, 0.2);
 }
 
-.btn-ignorar {
+.btn-cancelar {
   background: transparent;
   border: 2px solid rgba(127, 217, 255, 0.2);
   color: #9dcce6;
@@ -71,7 +71,7 @@
   transition: all 0.2s;
 }
 
-.btn-ignorar:hover {
+.btn-cancelar:hover {
   border-color: #7fd9ff;
   color: #ecf8ff;
 }

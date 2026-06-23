@@ -4,9 +4,11 @@ import { memoryStorage } from 'multer';
 import { PublicacionesService } from './publicaciones.service';
 import { CreatePublicacionDto } from './dto/create-publicacion.dto';
 import { QueryPublicacionDto } from './dto/query-publicacion.dto';
-import { Request } from 'express';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 
 @Controller('publicaciones')
+@UseGuards(JwtAuthGuard)
 export class PublicacionesController {
   constructor(private readonly publicacionesService: PublicacionesService) {}
 
