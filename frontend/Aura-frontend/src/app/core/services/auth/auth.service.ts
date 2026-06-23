@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
@@ -11,6 +11,8 @@ export class AuthService {
   private readonly apiUrl = `${environment.apiUrl}/auth`;
   private readonly TOKEN_KEY = 'aura_token';
   private readonly USUARIO_KEY = 'aura_usuario';
+  private sessionTimer: any = null;
+  mostrarModalSesion = signal(false);
 
   constructor(
     private http: HttpClient,
@@ -71,5 +73,20 @@ export class AuthService {
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.USUARIO_KEY);
     this.router.navigateByUrl('/log-in');
+  }
+
+  iniciarContadorSesion(): void {
+    this.limpiarContador();
+    // 1 minuto para testeo (en producción serían 10 minutos = 600000ms)
+    this.sessionTimer = setTimeout(() => {
+      this.mostrarModalSesion.set(true);
+    }, 60000);
+  }
+
+  limpiarContador(): void {
+    if (this.sessionTimer) {
+      clearTimeout(this.sessionTimer);
+      this.sessionTimer = null;
+    }
   }
 }

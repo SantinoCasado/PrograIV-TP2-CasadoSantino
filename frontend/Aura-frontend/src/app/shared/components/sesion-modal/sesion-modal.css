@@ -1,0 +1,97 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 10, 22, 0.82);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 1rem;
+}
+
+.modal-panel {
+  width: 100%;
+  max-width: 420px;
+  background: #0c2d4f;
+  border: 2px solid #7fd9ff;
+  border-radius: 12px;
+  box-shadow: 5px 5px 0 #04203b;
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  border-bottom: 2px solid rgba(127, 217, 255, 0.2);
+}
+
+.modal-icon {
+  font-size: 1.5rem;
+  color: #7fd9ff;
+}
+
+.modal-titulo {
+  margin: 0;
+  font-size: 1rem;
+  color: #ecf8ff;
+  font-family: 'Courier New', monospace;
+}
+
+.modal-body {
+  padding: 1.25rem;
+  color: #d4ecf9;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.modal-body strong {
+  color: #7fd9ff;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-top: 2px solid rgba(127, 217, 255, 0.2);
+}
+
+.btn-cancelar {
+  background: transparent;
+  border: 2px solid rgba(255, 80, 80, 0.4);
+  color: #ff8080;
+  border-radius: 8px;
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cancelar:hover {
+  border-color: #ff5050;
+  color: #ff5050;
+}
+
+.btn-extender {
+  background: #114066;
+  border: 2px solid #7fd9ff;
+  color: #eaf7ff;
+  border-radius: 8px;
+  padding: 0.4rem 1.25rem;
+  font-size: 0.85rem;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 3px 3px 0 #04203b;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-extender:hover {
+  background: #1a5a8a;
+}

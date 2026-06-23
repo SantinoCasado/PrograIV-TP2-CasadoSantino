@@ -1,1 +1,9 @@
 <router-outlet></router-outlet>
+
+<!-- Mostrar el modal de sesión si la señal es verdadera -->
+@if (authService.mostrarModalSesion()) {
+  <app-sesion-modal
+    (extender)="extenderSesion()"
+    (cerrarSesion)="cerrarSesion()"
+  ></app-sesion-modal>
+}

@@ -64,7 +64,10 @@ export class Login implements OnInit {
     this.authService.login(payload)
       .pipe(finalize(() => (this.cargando = false)))
       .subscribe({
-        next: () => this.router.navigateByUrl('/publicaciones'),
+        next: () =>{
+          this.authService.iniciarContadorSesion();
+          this.router.navigateByUrl('/publicaciones');
+        },
         error: (error) => {
           this.mensajeError =
             error?.error?.message?.[0] ??

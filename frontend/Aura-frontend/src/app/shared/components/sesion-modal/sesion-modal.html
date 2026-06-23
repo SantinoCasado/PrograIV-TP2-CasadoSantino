@@ -1,0 +1,19 @@
+<div class="modal-overlay">
+  <div class="modal-panel ani-fade-up">
+    <div class="modal-header">
+      <i class="bi bi-clock-history modal-icon"></i>
+      <h2 class="modal-titulo">Sesión por vencer</h2>
+    </div>
+    <div class="modal-body">
+      <p>Tu sesión vence en <strong>5 minutos</strong>. ¿Querés extenderla?</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn-cancelar" (click)="cerrarSesion.emit()">
+        Cerrar sesión
+      </button>
+      <button type="button" class="btn-extender" (click)="extenderSesion.emit()">
+        <i class="bi bi-arrow-clockwise"></i> Extender sesión
+      </button>
+    </div>
+  </div>
+</div>
