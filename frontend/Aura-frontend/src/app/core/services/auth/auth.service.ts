@@ -70,6 +70,8 @@ export class AuthService {
   }
 
   cerrarSesion(): void {
+    this.limpiarContador();
+    this.mostrarModalSesion.set(false); 
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.USUARIO_KEY);
     this.router.navigateByUrl('/log-in');
@@ -80,7 +82,7 @@ export class AuthService {
     // 1 minuto para testeo (en producción serian 10 minutos = 600000ms)
     this.sessionTimer = setTimeout(() => {
       this.mostrarModalSesion.set(true);
-    }, 60000);
+    }, 30000);
   }
 
   limpiarContador(): void {
