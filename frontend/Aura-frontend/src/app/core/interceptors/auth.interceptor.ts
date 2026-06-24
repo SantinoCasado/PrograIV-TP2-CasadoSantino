@@ -17,9 +17,12 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   return next(reqConToken).pipe(
     catchError((error) => {
       if (error instanceof HttpErrorResponse && error.status === 401) { // Si la respuesta es un error 401 (no autorizado)
-        authService.limpiarContador();  // Limpia el contador de sesión
-        authService.cerrarSesion();     // Cierra la sesión del usuario
-        router.navigateByUrl('/log-in');    // Redirige al usuario a la página de inicio de sesión
+        const esRefrescar = req.url.includes('/auth/refrescar');  // Verifica si la solicitud es para refrescar el token
+        if(!esRefrescar) {  // Si no es una solicitud de refresco, significa que el token ha expirado o es inválido
+          authService.limpiarContador();  // Limpia el contador de sesión
+          authService.cerrarSesion();     // Cierra la sesión del usuario
+          router.navigateByUrl('/log-in');    // Redirige al usuario a la página de inicio de sesión
+        }
       }
       return throwError(() => error);
     })
