@@ -11,7 +11,7 @@ import { StorageModule } from '../../common/storage/storage.module';
     StorageModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET ?? 'miclavesupersecreta',  // Clave secreta para firmar los tokens JWT, se recomienda usar una variable de entorno
-      signOptions: { expiresIn: '1m' },  // El token expirará en 1 minuto
+      signOptions: { expiresIn: '15m' },  // El token expirará en 15 minutos
     }),
   ],
   controllers: [AuthController],
