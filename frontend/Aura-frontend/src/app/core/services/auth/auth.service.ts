@@ -102,10 +102,10 @@ export class AuthService {
 
   iniciarContadorSesion(): void {
     this.limpiarContador();
-    // 1 minuto para testeo (en producción serian 10 minutos = 600000ms)
+    // 10 minutos para que aparezca el modal (token se vence a los 15)
     this.sessionTimer = setTimeout(() => {
       this.mostrarModalSesion.set(true);
-    }, 30000);
+    }, 600000);  // 10 minutos = 600000ms
   }
 
   limpiarContador(): void {
