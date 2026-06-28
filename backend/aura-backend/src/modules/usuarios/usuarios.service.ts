@@ -52,6 +52,8 @@ export class UsuariosService {
   async deshabilitar(id: string) {
     const usuario = await this.usuarioModel.findById(id);
     if (!usuario) throw new NotFoundException('Usuario no encontrado.');
+    // Funcion para deshabilitar usuarios viejos que no tienen el campo activa, si el campo activa es true o undefined, lanza un error
+    if (usuario.activa === false) throw new BadRequestException('El usuario ya está deshabilitado.');
     if (!usuario.activa) throw new BadRequestException('El usuario ya está deshabilitado.');
     usuario.activa = false;
     return usuario.save();
@@ -60,7 +62,12 @@ export class UsuariosService {
   // POST /usuarios/:id/habilitar — alta lógica
   async habilitar(id: string) {
     const usuario = await this.usuarioModel.findById(id); // Buscar el usuario por su ID en la base de datos
-    if (!usuario) throw new NotFoundException('Usuario no encontrado.'); 
+    if (!usuario) throw new NotFoundException('Usuario no encontrado.');
+
+    // Funcio para habilitar usuarios viejos que no tienen el campo activa, si el campo activa es true o undefined, lanza un error
+    if (usuario.activa === true || usuario.activa === undefined) {
+      throw new BadRequestException('El usuario ya está habilitado.');
+    } 
     if (usuario.activa) throw new BadRequestException('El usuario ya está habilitado.');
     usuario.activa = true;  // Habilitar el usuario
     return usuario.save();
