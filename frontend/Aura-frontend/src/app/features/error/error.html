@@ -1,1 +1,22 @@
-<p>error works!</p>
+<app-navbar></app-navbar>
+
+<div class="error-container">
+  <div class="error-content">
+    <div class="error-code">{{ errorCode }}</div>
+    <h1 class="error-title">{{ errorMessage }}</h1>
+    <p class="error-description">{{ errorDescription }}</p>
+
+    <div class="error-actions">
+      <button class="btn btn-primary" (click)="volverAtras()">
+        <i class="bi bi-arrow-left"></i> Volver a Publicaciones
+      </button>
+      <button class="btn btn-secondary" (click)="irAlInicio()">
+        <i class="bi bi-house"></i> Ir al Inicio
+      </button>
+    </div>
+
+    <div class="error-icon">
+      <i class="bi bi-exclamation-triangle"></i>
+    </div>
+  </div>
+</div>
