@@ -66,7 +66,24 @@ export class AuthService {
   }
 
   esAdmin(): boolean {
-    return this.obtenerPerfil() === 'admin';
+    // Primero intenta obtener del usuario guardado en localStorage
+    const perfil = this.obtenerPerfil();
+    if (perfil === 'admin') {
+      return true;
+    }
+
+    // Si no está en localStorage, decodifica el token JWT
+    try {
+      const token = this.obtenerToken();
+      if (token) {
+        const decoded: any = JSON.parse(atob(token.split('.')[1]));
+        return decoded.role === 'admin' || decoded.rol === 'admin' || decoded.perfil === 'admin';
+      }
+    } catch (error) {
+      console.error('Error decodificando token:', error);
+    }
+
+    return false;
   }
 
   estaLogueado(): boolean {
