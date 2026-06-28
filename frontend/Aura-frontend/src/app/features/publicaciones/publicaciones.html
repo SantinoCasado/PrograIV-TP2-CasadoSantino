@@ -48,9 +48,9 @@
               <span class="post-fecha">{{ formatearFechaRelativa(pub.createdAt) }}</span>
             </div>
           </div>
-
+          <!-- Boton de eliminar sea autor O administrador -->
           <button
-            *ngIf="esAutor(pub)"
+            *ngIf="esAutor(pub) || usuario?.perfil === 'administrador'"
             type="button"
             class="btn-eliminar"
             (click)="abrirConfirmar(pub)"

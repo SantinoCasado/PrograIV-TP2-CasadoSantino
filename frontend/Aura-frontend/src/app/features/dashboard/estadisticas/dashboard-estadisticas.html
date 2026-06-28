@@ -1,0 +1,75 @@
+<app-navbar></app-navbar>
+
+<section class="dash-scene">
+  <div class="container dash-wrap">
+    <!-- HEADER -->
+    <div class="dash-header ani-fade-up ani-d1">
+      <div>
+        <h1 class="dash-titulo"><i class="bi bi-bar-chart"></i> Estadísticas</h1>
+        <p class="dash-subtitulo">Panel de administración</p>
+      </div>
+    </div>
+
+    <!-- FILTRO DE FECHAS -->
+    <div class="dash-box dash-filtro ani-fade-up ani-d2">
+      <form [formGroup]="form" class="filtro-form">
+        <div class="campo">
+          <label class="campo-label">Desde</label>
+          <input type="date" class="campo-input" formControlName="desde" />
+        </div>
+        <div class="campo">
+          <label class="campo-label">Hasta</label>
+          <input type="date" class="campo-input" formControlName="hasta" />
+        </div>
+        <button
+          type="button"
+          class="btn-filtrar"
+          (click)="cargarEstadisticas()"
+          [disabled]="cargando()"
+        >
+          <span *ngIf="!cargando()"><i class="bi bi-search"></i> Aplicar</span>
+          <span *ngIf="cargando()"
+            ><div class="spinner-sm"></div>
+            Cargando...</span
+          >
+        </button>
+      </form>
+    </div>
+
+    <!-- ERROR -->
+    <div *ngIf="mensajeError()" class="dash-box dash-error ani-fade">
+      <i class="bi bi-exclamation-triangle"></i> {{ mensajeError() }}
+    </div>
+
+    <!-- GRÁFICOS -->
+    <ng-container *ngIf="!cargando()">
+      <!-- BARRAS: publicaciones por usuario -->
+      <div class="dash-box grafico-box ani-fade-up ani-d3">
+        <h2 class="grafico-titulo">
+          <i class="bi bi-bar-chart-fill"></i> Publicaciones por usuario
+        </h2>
+        <div class="grafico-wrap">
+          <canvas id="chartPubUsuario"></canvas>
+        </div>
+      </div>
+
+      <!-- LÍNEAS: comentarios por lapso -->
+      <div class="dash-box grafico-box ani-fade-up ani-d4">
+        <h2 class="grafico-titulo"><i class="bi bi-graph-up"></i> Comentarios en el tiempo</h2>
+        <div class="grafico-wrap">
+          <canvas id="chartComentariosLapso"></canvas>
+        </div>
+      </div>
+
+      <!-- TORTA: comentarios por publicación -->
+      <div class="dash-box grafico-box ani-fade-up ani-d5">
+        <h2 class="grafico-titulo">
+          <i class="bi bi-pie-chart-fill"></i> Comentarios por publicación
+        </h2>
+        <div class="grafico-wrap grafico-wrap-sm">
+          <canvas id="chartComentariosPub"></canvas>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</section>

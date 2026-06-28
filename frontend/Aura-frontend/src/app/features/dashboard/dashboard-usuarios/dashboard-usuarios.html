@@ -1,0 +1,279 @@
+<app-navbar></app-navbar>
+
+<section class="dash-scene">
+  <div class="container dash-wrap">
+    <!-- HEADER -->
+    <div class="dash-header ani-fade-up ani-d1">
+      <div>
+        <h1 class="dash-titulo"><i class="bi bi-people"></i> Gestión de usuarios</h1>
+        <p class="dash-subtitulo">Panel de administración</p>
+      </div>
+      <button type="button" class="btn-nuevo" (click)="mostrarFormulario.set(!mostrarFormulario())">
+        <i class="bi" [ngClass]="mostrarFormulario() ? 'bi-x-lg' : 'bi-person-plus'"></i>
+        {{ mostrarFormulario() ? 'Cancelar' : 'Nuevo usuario' }}
+      </button>
+    </div>
+
+    <!-- MENSAJES -->
+    <div *ngIf="mensajeExito()" class="dash-box dash-exito ani-fade">
+      <i class="bi bi-check-circle"></i> {{ mensajeExito() }}
+    </div>
+    <div *ngIf="mensajeError()" class="dash-box dash-error ani-fade">
+      <i class="bi bi-exclamation-triangle"></i> {{ mensajeError() }}
+    </div>
+
+    <!-- FORMULARIO NUEVO USUARIO -->
+    @if (mostrarFormulario()) {
+      <div class="dash-box dash-form ani-fade-up">
+        <h2 class="form-titulo"><i class="bi bi-person-plus"></i> Nuevo usuario</h2>
+
+        <form [formGroup]="form" (ngSubmit)="crearUsuario()" class="form-grid">
+          <div class="campo">
+            <label class="campo-label">Nombre</label>
+            <input
+              type="text"
+              class="campo-input"
+              formControlName="nombre"
+              [class.error]="intentoEnvio && form.get('nombre')?.invalid"
+            />
+            <span
+              class="campo-error"
+              *ngIf="intentoEnvio && form.get('nombre')?.hasError('required')"
+            >
+              Requerido.
+            </span>
+          </div>
+
+          <div class="campo">
+            <label class="campo-label">Apellido</label>
+            <input
+              type="text"
+              class="campo-input"
+              formControlName="apellido"
+              [class.error]="intentoEnvio && form.get('apellido')?.invalid"
+            />
+            <span
+              class="campo-error"
+              *ngIf="intentoEnvio && form.get('apellido')?.hasError('required')"
+            >
+              Requerido.
+            </span>
+          </div>
+
+          <div class="campo">
+            <label class="campo-label">Correo</label>
+            <input
+              type="email"
+              class="campo-input"
+              formControlName="correo"
+              [class.error]="intentoEnvio && form.get('correo')?.invalid"
+            />
+            <span
+              class="campo-error"
+              *ngIf="intentoEnvio && form.get('correo')?.hasError('required')"
+            >
+              Requerido.
+            </span>
+            <span class="campo-error" *ngIf="intentoEnvio && form.get('correo')?.hasError('email')">
+              Correo inválido.
+            </span>
+          </div>
+
+          <div class="campo">
+            <label class="campo-label">Usuario</label>
+            <input
+              type="text"
+              class="campo-input"
+              formControlName="usuario"
+              [class.error]="intentoEnvio && form.get('usuario')?.invalid"
+            />
+            <span
+              class="campo-error"
+              *ngIf="intentoEnvio && form.get('usuario')?.hasError('required')"
+            >
+              Requerido.
+            </span>
+          </div>
+
+          <div class="campo">
+            <label class="campo-label">Contraseña</label>
+            <input
+              type="password"
+              class="campo-input"
+              formControlName="contrasena"
+              [class.error]="intentoEnvio && form.get('contrasena')?.invalid"
+            />
+            <span
+              class="campo-error"
+              *ngIf="intentoEnvio && form.get('contrasena')?.hasError('required')"
+            >
+              Requerido.
+            </span>
+            <span
+              class="campo-error"
+              *ngIf="intentoEnvio && form.get('contrasena')?.hasError('minlength')"
+            >
+              Mínimo 8 caracteres.
+            </span>
+            <span
+              class="campo-error"
+              *ngIf="intentoEnvio && form.get('contrasena')?.hasError('pattern')"
+            >
+              Debe tener al menos una mayúscula y un número.
+            </span>
+          </div>
+
+          <div class="campo">
+            <label class="campo-label">Repetir contraseña</label>
+            <input
+              type="password"
+              class="campo-input"
+              formControlName="repetirContrasena"
+              [class.error]="intentoEnvio && form.get('repetirContrasena')?.invalid"
+            />
+            <span
+              class="campo-error"
+              *ngIf="intentoEnvio && form.get('repetirContrasena')?.hasError('required')"
+            >
+              Requerido.
+            </span>
+          </div>
+
+          <div class="campo">
+            <label class="campo-label">Fecha de nacimiento</label>
+            <input
+              type="date"
+              class="campo-input"
+              formControlName="fechaNacimiento"
+              [class.error]="intentoEnvio && form.get('fechaNacimiento')?.invalid"
+            />
+            <span
+              class="campo-error"
+              *ngIf="intentoEnvio && form.get('fechaNacimiento')?.hasError('required')"
+            >
+              Requerido.
+            </span>
+          </div>
+
+          <div class="campo campo-full">
+            <label class="campo-label">Descripción</label>
+            <textarea
+              class="campo-input"
+              formControlName="descripcion"
+              rows="2"
+              [class.error]="intentoEnvio && form.get('descripcion')?.invalid"
+            ></textarea>
+            <span
+              class="campo-error"
+              *ngIf="intentoEnvio && form.get('descripcion')?.hasError('required')"
+            >
+              Requerido.
+            </span>
+          </div>
+
+          <!-- RADIO BUTTONS PERFIL -->
+          <div class="campo campo-full">
+            <label class="campo-label">Perfil</label>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" formControlName="perfil" value="usuario" />
+                <span>Usuario</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" formControlName="perfil" value="administrador" />
+                <span>Administrador</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- IMAGEN -->
+          <div class="campo campo-full">
+            <label class="campo-label"
+              >Imagen de perfil <span class="opcional">(opcional)</span></label
+            >
+            <label class="campo-file" for="img-input">
+              <i class="bi bi-image"></i>
+              <span>{{ imagenFile ? imagenFile.name : 'Seleccionar imagen' }}</span>
+              <input
+                id="img-input"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                (change)="onImagenSeleccionada($event)"
+                hidden
+              />
+            </label>
+          </div>
+
+          <div class="campo-full form-actions">
+            <button type="submit" class="btn-crear" [disabled]="enviando()">
+              <span *ngIf="!enviando()"><i class="bi bi-person-check"></i> Crear usuario</span>
+              <span *ngIf="enviando()"
+                ><div class="spinner-sm"></div>
+                Creando...</span
+              >
+            </button>
+          </div>
+        </form>
+      </div>
+    }
+
+    <!-- LISTADO -->
+    <div *ngIf="cargando()" class="dash-box dash-loading ani-fade">
+      <div class="spinner"></div>
+      <p>Cargando usuarios...</p>
+    </div>
+
+    <div class="usuarios-lista" *ngIf="!cargando()">
+      <article
+        *ngFor="let u of usuarios()"
+        class="dash-box usuario-card ani-fade-up"
+        [class.deshabilitado]="u.activa === false"
+      >
+        <div class="usuario-info">
+          <div class="usuario-avatar">
+            <img *ngIf="u.imagenPerfil" [src]="u.imagenPerfil" [alt]="u.usuario" />
+            <span *ngIf="!u.imagenPerfil">{{ obtenerIniciales(u) }}</span>
+          </div>
+          <div>
+            <p class="usuario-nombre">{{ u.nombre }} {{ u.apellido }}</p>
+            <p class="usuario-user">&#64;{{ u.usuario }}</p>
+            <p class="usuario-correo"><i class="bi bi-envelope"></i> {{ u.correo }}</p>
+          </div>
+        </div>
+
+        <div class="usuario-acciones">
+          <span class="badge-perfil" [class.admin]="u.perfil === 'administrador'">
+            {{ u.perfil }}
+          </span>
+          <span class="badge-estado" [class.inactivo]="u.activa === false">
+            {{ u.activa === false ? 'Deshabilitado' : 'Activo' }}
+          </span>
+          <button
+            *ngIf="u.activa !== false"
+            type="button"
+            class="btn-deshabilitar"
+            (click)="abrirConfirmar(u)"
+          >
+            <i class="bi bi-person-dash"></i> Deshabilitar
+          </button>
+          <button
+            *ngIf="u.activa === false"
+            type="button"
+            class="btn-habilitar"
+            (click)="habilitar(u)"
+          >
+            <i class="bi bi-person-check"></i> Habilitar
+          </button>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+@if (mostrarConfirmar()) {
+  <app-confirmar-modal
+    mensaje="¿Seguro que querés deshabilitar este usuario? No podrá ingresar a la aplicación."
+    (confirmar)="confirmarDeshabilitar()"
+    (cancelar)="mostrarConfirmar.set(false)"
+  ></app-confirmar-modal>
+}

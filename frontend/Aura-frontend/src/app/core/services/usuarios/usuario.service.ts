@@ -6,13 +6,28 @@ import { environment } from '../../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class UsuarioService {
-  private readonly apiUrl = `${environment.apiUrl}/auth`;
+export class UsuariosService {
+  private readonly apiUrl = `${environment.apiUrl}/usuarios`;
 
   constructor(private http: HttpClient) {}
 
-  // Trae todos los datos del usuario por su ID
-  obtenerUsuario(id: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/usuario/${id}`);
+  // Listar todos los usuarios (GET /usuarios)
+  listar(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl);
+  }
+
+  // Crear un nuevo usuario (POST /usuarios)
+  crear(formData: FormData): Observable<any> {
+    return this.http.post(this.apiUrl, formData);
+  }
+
+  // Baja lógica de un usuario (DELETE /usuarios/:id)
+  deshabilitar(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
+  // Alta lógica de un usuario (POST /usuarios/:id/habilitar)
+  habilitar(id: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${id}/habilitar`, {});
   }
 }
