@@ -46,7 +46,7 @@ export const routes: Routes = [
   {
     path: "dashboard/estadisticas",
     canActivate: [AdminGuard],
-    loadComponent: () => import('./features/dashboard/estadisticas/dashboard-estadisticas').then((m) => m.DashboardEstadisticas)
+    loadComponent: () => import('./features/dashboard/dashboard-estadisticas/dashboard-estadisticas').then((m) => m.DashboardEstadisticas)
   },
   {
     path: "**",
