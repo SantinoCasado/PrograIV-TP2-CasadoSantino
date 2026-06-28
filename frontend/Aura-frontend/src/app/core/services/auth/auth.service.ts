@@ -66,9 +66,10 @@ export class AuthService {
   }
 
   esAdmin(): boolean {
-    // Primero intenta obtener del usuario guardado en localStorage
-    const perfil = this.obtenerPerfil();
-    if (perfil === 'admin') {
+    // Obtiene el perfil en minúsculas para comparación insensible a mayúsculas
+    const perfil = this.obtenerPerfil().toLowerCase();
+    
+    if (perfil === 'admin' || perfil === 'administrador') {
       return true;
     }
 
@@ -77,7 +78,8 @@ export class AuthService {
       const token = this.obtenerToken();
       if (token) {
         const decoded: any = JSON.parse(atob(token.split('.')[1]));
-        return decoded.role === 'admin' || decoded.rol === 'admin' || decoded.perfil === 'admin';
+        const role = (decoded.role || decoded.rol || decoded.perfil || '').toLowerCase();
+        return role === 'admin' || role === 'administrador';
       }
     } catch (error) {
       console.error('Error decodificando token:', error);
