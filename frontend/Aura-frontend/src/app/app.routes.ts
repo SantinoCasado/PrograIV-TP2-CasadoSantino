@@ -39,12 +39,12 @@ export const routes: Routes = [
     loadComponent: () => import('./features/mi-perfil/mi-perfil').then((m) => m.MiPerfil)
   },
   {
-    path: "dashboard/dashboard-usuarios",
+    path: "dashboard/usuarios",
     canActivate: [AdminGuard],
     loadComponent: () => import('./features/dashboard/dashboard-usuarios/dashboard-usuarios').then((m) => m.DashboardUsuarios)
   },
   {
-    path: "dashboard/dashboard-estadisticas",
+    path: "dashboard/estadisticas",
     canActivate: [AdminGuard],
     loadComponent: () => import('./features/dashboard/dashboard-estadisticas/dashboard-estadisticas').then((m) => m.DashboardEstadisticas)
   },
