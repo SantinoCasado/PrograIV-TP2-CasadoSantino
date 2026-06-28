@@ -56,7 +56,13 @@ export class UsuariosService {
     if (usuario.activa === false) throw new BadRequestException('El usuario ya está deshabilitado.');
     if (!usuario.activa) throw new BadRequestException('El usuario ya está deshabilitado.');
     usuario.activa = false;
-    return usuario.save();
+    
+    // Actualizar el usuario en la base de datos y devolver el usuario actualizado sin la contraseña
+    return this.usuarioModel.findByIdAndUpdate(
+      id,
+      { activa: false },
+      { new: true, select: '-contraseña' }
+    );
   }
 
   // POST /usuarios/:id/habilitar — alta lógica
@@ -70,6 +76,12 @@ export class UsuariosService {
     } 
     if (usuario.activa) throw new BadRequestException('El usuario ya está habilitado.');
     usuario.activa = true;  // Habilitar el usuario
-    return usuario.save();
+
+    // Actualizar el usuario en la base de datos y devolver el usuario actualizado sin la contraseña
+    return this.usuarioModel.findByIdAndUpdate(
+      id,
+      { activa: true },
+      { new: true, select: '-contraseña' }
+    );
   }
 }
