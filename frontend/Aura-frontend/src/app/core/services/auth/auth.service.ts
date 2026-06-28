@@ -65,6 +65,10 @@ export class AuthService {
     return this.obtenerUsuario()?.perfil ?? 'usuario';
   }
 
+  esAdmin(): boolean {
+    return this.obtenerPerfil() === 'admin';
+  }
+
   estaLogueado(): boolean {
     return !!this.obtenerToken();
   }

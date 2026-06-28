@@ -11,6 +11,17 @@
         <a class="nav-link" routerLink="/mi-perfil" routerLinkActive="active">
           <i class="bi bi-person"></i> Mi Perfil
         </a>
+
+        <!-- Dashboard solo para admins -->
+        <ng-container *ngIf="authService.esAdmin()">
+          <a class="nav-link" routerLink="/dashboard/usuarios" routerLinkActive="active">
+            <i class="bi bi-people"></i> Usuarios
+          </a>
+          <a class="nav-link" routerLink="/dashboard/estadisticas" routerLinkActive="active">
+            <i class="bi bi-graph-up"></i> Estadísticas
+          </a>
+        </ng-container>
+
         <button class="nav-link btn-logout" (click)="authService.cerrarSesion()">
           <i class="bi bi-box-arrow-right"></i> Salir
         </button>
