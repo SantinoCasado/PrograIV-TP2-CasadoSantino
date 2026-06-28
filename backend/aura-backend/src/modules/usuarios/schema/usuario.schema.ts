@@ -29,6 +29,9 @@ export class Usuario extends Document {
 
   @Prop({ required: true })
   imagenPerfil: string;
+
+  @Prop({ default: true })
+  activa: boolean; // false = usuario dado de baja
 }
 
 export const UsuarioSchema = SchemaFactory.createForClass(Usuario);

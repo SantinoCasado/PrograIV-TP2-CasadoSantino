@@ -5,11 +5,12 @@ import { AuthService } from '../../core/services/auth/auth.service';
 import { PublicacionesService } from '../../core/services/publicaciones/publicaciones.service';
 import { Navbar } from '../../layouts/navbar/navbar';
 import { NuevaPublicacion } from '../../shared/components/nueva-publicacion/nueva-publicacion';
+import { ConfirmarModal } from '../../shared/components/confirmar-modal/confirmar-modal';
 
 @Component({
   selector: 'app-publicaciones',
   standalone: true,
-  imports: [CommonModule, Navbar, NuevaPublicacion],
+  imports: [CommonModule, Navbar, NuevaPublicacion, ConfirmarModal],
   templateUrl: './publicaciones.html',
   styleUrl: './publicaciones.css',
 })
@@ -19,6 +20,8 @@ export class Publicaciones implements OnInit {
   cargando = signal(true);
   mensajeError = signal('');
   mostrarModal = signal(false); //Formulario de nueva publicación modal
+  mostrarConfirmar = signal(false);
+  publicacionAEliminar: any = null;
 
   // Paginación
   offset = 0;
@@ -112,18 +115,32 @@ export class Publicaciones implements OnInit {
     });
   }
 
-  // Elimina una publicación si el usuario es el autor
-  eliminarPublicacion(pub: any): void {
-    if (!confirm('¿Seguro que querés eliminar esta publicación?')) return;
-
-    this.publicacionesService.eliminar(pub._id, this.usuario._id, this.usuario.perfil)
-      .subscribe({
-        next: () => {
-          this.publicaciones.update(prev => prev.filter(p => p._id !== pub._id));
-        },
-        error: () => this.mostrarError('No se pudo eliminar la publicación.')
-      });
+  // -------------- Funciones para el manejo de eliminar publicaciones -----------------
+  abrirConfirmar(pub: any): void {
+    this.publicacionAEliminar = pub;
+    this.mostrarConfirmar.set(true);
   }
+
+  confirmarEliminar(): void {
+    this.mostrarConfirmar.set(false);
+    if (!this.publicacionAEliminar) return;
+
+    this.publicacionesService.eliminar(
+      this.publicacionAEliminar._id,
+      this.usuario._id,
+      this.usuario.perfil
+    ).subscribe({
+      next: () => {
+        this.publicaciones.update(prev =>
+          prev.filter(p => p._id !== this.publicacionAEliminar._id)
+        );
+        this.publicacionAEliminar = null;
+      },
+      error: () => this.mostrarError('No se pudo eliminar la publicación.')
+    });
+  }
+  
+  // --------------------- Funciones aleternativas ----------------------
 
   // Verifica si el usuario actual es el autor de la publicación
   esAutor(pub: any): boolean {

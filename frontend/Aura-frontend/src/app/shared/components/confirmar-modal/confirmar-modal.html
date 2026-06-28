@@ -1,0 +1,17 @@
+<div class="modal-overlay" (click)="cancelar.emit()">
+  <div class="modal-panel ani-fade-up" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <i class="bi bi-exclamation-triangle modal-icon"></i>
+      <h2 class="modal-titulo">Confirmar acción</h2>
+    </div>
+    <div class="modal-body">
+      <p>{{ mensaje }}</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn-cancelar" (click)="cancelar.emit()">Cancelar</button>
+      <button type="button" class="btn-confirmar" (click)="confirmar.emit()">
+        <i class="bi bi-trash3"></i> Eliminar
+      </button>
+    </div>
+  </div>
+</div>

@@ -15,20 +15,23 @@ export class Cargando implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const token = this.authService.obtenerToken();  // Obtiene el token del localStorage
+    const token = this.authService.obtenerToken();
+    const timerMinimo = new Promise(resolve => setTimeout(resolve, 2000)); // ✅ mínimo 2 segundos
 
     if (!token) {
-      this.router.navigateByUrl('/log-in');
+      timerMinimo.then(() => this.router.navigateByUrl('/log-in'));
       return;
     }
 
-    // Valida el token contra el back
-    this.authService.autorizar().subscribe({
-      next: () => this.router.navigateByUrl('/publicaciones'),
-      error: () => {
+    // Espera el timer mínimo Y la validación del token en paralelo
+    Promise.all([
+      timerMinimo,
+      this.authService.autorizar().toPromise()
+    ])
+      .then(() => this.router.navigateByUrl('/publicaciones'))
+      .catch(() => {
         this.authService.cerrarSesion();
         this.router.navigateByUrl('/log-in');
-      }
-    });
+      });
   }
 }

@@ -145,10 +145,16 @@ export class PublicacionesService {
   async obtenerPorId(id: string) {
     const publicacion = await this.publicacionModel
       .findOne({ _id: id, activa: true })
-      .populate('usuario', 'nombre apellido imagenPerfil usuario')
-      .lean();
+      .populate('usuario', 'nombre apellido imagenPerfil usuario activa')
+      .lean() as any;
 
     if (!publicacion) throw new NotFoundException('Publicación no encontrada.');
+
+    const usuario = publicacion.usuario as any;
+    if (usuario?.activa === false) {
+      throw new NotFoundException('Esta publicación ya no está disponible. Consultá con un administrador.');
+    }
+
     return publicacion;
   }
 }
