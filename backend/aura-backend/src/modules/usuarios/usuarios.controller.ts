@@ -1,34 +1,39 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Param, Body, UploadedFile, UseInterceptors, UseGuards, HttpCode } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { memoryStorage } from 'multer';
 import { UsuariosService } from './usuarios.service';
-import { CreateUsuarioDto } from './dto/create-usuario.dto';
-import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { AdminGuard } from '../../common/guards/admin.guard';
 
 @Controller('usuarios')
+@UseGuards(AdminGuard) // todas las rutas requieren ser administrador
 export class UsuariosController {
   constructor(private readonly usuariosService: UsuariosService) {}
 
-  @Post()
-  create(@Body() createUsuarioDto: CreateUsuarioDto) {
-    return this.usuariosService.create(createUsuarioDto);
-  }
-
+  // Lista todos los usuarios (GET /usuarios)
   @Get()
-  findAll() {
-    return this.usuariosService.findAll();
+  async listar() {
+    return this.usuariosService.listar();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usuariosService.findOne(+id);
+  // Crea un nuevo usuario (POST /usuarios)
+  @Post()
+  @HttpCode(201)
+  @UseInterceptors(FileInterceptor('imagen', { storage: memoryStorage() }))
+  async crear(@Body() dto: any, @UploadedFile() imagen?: Express.Multer.File) {
+    return this.usuariosService.crear(dto, imagen);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUsuarioDto: UpdateUsuarioDto) {
-    return this.usuariosService.update(+id, updateUsuarioDto);
-  }
-
+  // Baja lógica de un usuario (DELETE /usuarios/:id)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usuariosService.remove(+id);
+  @HttpCode(200)
+  async deshabilitar(@Param('id') id: string) {
+    return this.usuariosService.deshabilitar(id);
+  }
+
+  // Alta lógica de un usuario (POST /usuarios/:id/habilitar)
+  @Post(':id/habilitar')
+  @HttpCode(200)
+  async habilitar(@Param('id') id: string) {
+    return this.usuariosService.habilitar(id);
   }
 }
