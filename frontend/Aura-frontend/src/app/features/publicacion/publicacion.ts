@@ -6,11 +6,12 @@ import { AuthService } from '../../core/services/auth/auth.service';
 import { PublicacionesService } from '../../core/services/publicaciones/publicaciones.service';
 import { ComentariosService } from '../../core/services/comentarios/cometarios.service';
 import { Navbar } from '../../layouts/navbar/navbar';
+import { FechaRelativaPipe } from '../../shared/pipes/fecha-relativa.pipe';
 
 @Component({
   selector: 'app-publicacion',
   standalone: true,
-  imports: [CommonModule, Navbar, ReactiveFormsModule],
+  imports: [CommonModule, Navbar, ReactiveFormsModule, FechaRelativaPipe],
   templateUrl: './publicacion.html',
   styleUrl: './publicacion.css',
 })
@@ -196,15 +197,4 @@ export class Publicacion implements OnInit {
     });
   }
 
-  // Función para formatear la fecha de los comentarios y publicaciones en un formato relativo (hace X minutos, hace X horas, etc.)
-  formatearFechaRelativa(fecha: string): string {
-    const diff = Date.now() - new Date(fecha).getTime();
-    const minutos = Math.floor(diff / 60000);
-    if (minutos < 1) return 'ahora';
-    if (minutos < 60) return `hace ${minutos} min`;
-    const horas = Math.floor(minutos / 60);
-    if (horas < 24) return `hace ${horas} h`;
-    const dias = Math.floor(horas / 24);
-    return `hace ${dias} d`;
-  }
 }

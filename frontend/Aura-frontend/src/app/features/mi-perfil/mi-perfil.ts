@@ -4,11 +4,13 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth/auth.service';
 import { PublicacionesService } from '../../core/services/publicaciones/publicaciones.service';
 import { Navbar } from '../../layouts/navbar/navbar';
+import { FechaRelativaPipe } from '../../shared/pipes/fecha-relativa.pipe';
+import { InicialesPipe } from '../../shared/pipes/iniciales.pipe';
 
 @Component({
   selector: 'app-mi-perfil',
   standalone: true,
-  imports: [CommonModule, Navbar],
+  imports: [CommonModule, Navbar, FechaRelativaPipe, InicialesPipe],
   templateUrl: './mi-perfil.html',
   styleUrl: './mi-perfil.css',
 })
@@ -58,23 +60,6 @@ export class MiPerfil implements OnInit {
         this.mensajeError.set('No se pudieron cargar las publicaciones.');
         this.cargandoPublicaciones.set(false);
       }
-    });
-  }
-
-  // Devuelve las iniciales del usuario para el avatar si no tiene imagen
-  obtenerIniciales(): string {
-    const n = this.usuario?.nombre?.[0] ?? '';  // primera letra del nombre
-    const a = this.usuario?.apellido?.[0] ?? '';  // primera letra del apellido
-    return (n + a).toUpperCase();
-  }
-
-  // Formatea la fecha de nacimiento para mostrarla
-  formatearFecha(fecha: string): string {
-    if (!fecha) return '';
-    return new Date(fecha).toLocaleDateString('es-AR', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric',
     });
   }
 

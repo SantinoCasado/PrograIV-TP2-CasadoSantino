@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { PublicacionesService } from '../../../core/services/publicaciones/publicaciones.service';
 import { AuthService } from '../../../core/services/auth/auth.service';
+import { AutoResizeDirective } from '../../directivas/auto-resize.directive';
 
 @Component({
   selector: 'app-nueva-publicacion',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, AutoResizeDirective],
   templateUrl: './nueva-publicacion.html',
   styleUrl: './nueva-publicacion.css',
 })

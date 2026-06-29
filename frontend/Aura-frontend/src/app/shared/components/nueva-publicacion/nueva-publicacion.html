@@ -32,12 +32,14 @@
         <div class="campo">
           <label class="campo-label">Mensaje</label>
           <textarea
+            AutoResizeDirective
             class="campo-input campo-textarea"
             [class.error]="intentoEnvio && mensajeControl?.invalid"
             formControlName="mensaje"
             placeholder="Contá lo que quieras..."
             rows="4"
-          ></textarea>
+          ></textarea
+          ><!-- Implementacion de directiva propia -->
           <div class="campo-meta">
             <span class="campo-error" *ngIf="intentoEnvio && mensajeControl?.hasError('required')">
               El mensaje es obligatorio.

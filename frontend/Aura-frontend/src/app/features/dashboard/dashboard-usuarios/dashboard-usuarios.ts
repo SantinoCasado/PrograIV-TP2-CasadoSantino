@@ -4,11 +4,13 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { Navbar } from '../../../layouts/navbar/navbar';
 import { UsuariosService } from '../../../core/services/usuarios/usuario.service';
 import { ConfirmarModal } from '../../../shared/components/confirmar-modal/confirmar-modal';
-
+import { InicialesPipe } from '../../../shared/pipes/iniciales.pipe';
+import { TruncarPipe } from '../../../shared/pipes/truncar.pipe';
+import { HighlightAdminDirective } from '../../../shared/directivas/highlight-admin.directive';
 @Component({
   selector: 'app-dashboard-usuarios',
   standalone: true,
-  imports: [CommonModule, Navbar, ReactiveFormsModule, ConfirmarModal],
+  imports: [CommonModule, Navbar, ReactiveFormsModule, ConfirmarModal, InicialesPipe, TruncarPipe, HighlightAdminDirective],
   templateUrl: './dashboard-usuarios.html',
   styleUrl: './dashboard-usuarios.css',
 })
@@ -148,9 +150,5 @@ export class DashboardUsuarios implements OnInit {
       },
       error: (err) => this.mensajeError.set(err?.error?.message ?? 'No se pudo habilitar.')
     });
-  }
-
-  obtenerIniciales(usuario: any): string {
-    return ((usuario?.nombre?.[0] ?? '') + (usuario?.apellido?.[0] ?? '')).toUpperCase();
   }
 }

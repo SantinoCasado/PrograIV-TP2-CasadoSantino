@@ -6,11 +6,12 @@ import { PublicacionesService } from '../../core/services/publicaciones/publicac
 import { Navbar } from '../../layouts/navbar/navbar';
 import { NuevaPublicacion } from '../../shared/components/nueva-publicacion/nueva-publicacion';
 import { ConfirmarModal } from '../../shared/components/confirmar-modal/confirmar-modal';
-
+import { FechaRelativaPipe } from '../../shared/pipes/fecha-relativa.pipe';
+import { TruncarPipe } from '../../shared/pipes/truncar.pipe';
 @Component({
   selector: 'app-publicaciones',
   standalone: true,
-  imports: [CommonModule, Navbar, NuevaPublicacion, ConfirmarModal],
+  imports: [CommonModule, Navbar, NuevaPublicacion, ConfirmarModal,  FechaRelativaPipe, TruncarPipe],
   templateUrl: './publicaciones.html',
   styleUrl: './publicaciones.css',
 })
@@ -145,18 +146,6 @@ export class Publicaciones implements OnInit {
   // Verifica si el usuario actual es el autor de la publicación
   esAutor(pub: any): boolean {
     return pub.usuario?._id === this.usuario._id;
-  }
-
-  // Formatea la fecha relativa (hace X minutos/horas/días)
-  formatearFechaRelativa(fecha: string): string {
-    const diff = Date.now() - new Date(fecha).getTime();
-    const minutos = Math.floor(diff / 60000);
-    if (minutos < 1) return 'ahora';
-    if (minutos < 60) return `hace ${minutos} min`;
-    const horas = Math.floor(minutos / 60);
-    if (horas < 24) return `hace ${horas} h`;
-    const dias = Math.floor(horas / 24);
-    return `hace ${dias} d`;
   }
 
   abrirModal(): void {

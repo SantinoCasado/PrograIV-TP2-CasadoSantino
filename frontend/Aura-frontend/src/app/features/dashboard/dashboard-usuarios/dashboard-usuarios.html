@@ -228,16 +228,21 @@
         *ngFor="let u of usuarios()"
         class="dash-box usuario-card ani-fade-up"
         [class.deshabilitado]="u.activa === false"
+        [appHighlightAdmin]="u.perfil"
       >
+        <!-- Implementacion de directiva propia -->
         <div class="usuario-info">
           <div class="usuario-avatar">
             <img *ngIf="u.imagenPerfil" [src]="u.imagenPerfil" [alt]="u.usuario" />
-            <span *ngIf="!u.imagenPerfil">{{ obtenerIniciales(u) }}</span>
+            <span *ngIf="!u.imagenPerfil">{{ u | iniciales }}</span>
+            <!-- Implementacion de pipe propio -->
           </div>
           <div>
             <p class="usuario-nombre">{{ u.nombre }} {{ u.apellido }}</p>
             <p class="usuario-user">&#64;{{ u.usuario }}</p>
             <p class="usuario-correo"><i class="bi bi-envelope"></i> {{ u.correo }}</p>
+            <p class="usuario-desc">{{ u.descripcion | truncar: 80 }}</p>
+            <!-- Implementacion de pipe propio -->
           </div>
         </div>
 

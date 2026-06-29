@@ -13,7 +13,8 @@
       <article class="perfil-box perfil-head ani-fade-up ani-d1">
         <div class="avatar">
           <img *ngIf="usuario.imagenPerfil" [src]="usuario.imagenPerfil" [alt]="usuario.usuario" />
-          <span *ngIf="!usuario.imagenPerfil">{{ obtenerIniciales() }}</span>
+          <span *ngIf="!usuario.imagenPerfil">{{ usuario | iniciales }}</span>
+          <!-- Implementacion de pipe propio -->
         </div>
 
         <div class="info">
@@ -32,7 +33,7 @@
         <h2><i class="bi bi-person-lines-fill"></i> Bio</h2>
         <p>{{ usuario.descripcion || 'Sin descripción.' }}</p>
         <small class="fecha">
-          <i class="bi bi-cake2"></i> {{ formatearFecha(usuario.fechaNacimiento) }}
+          <i class="bi bi-cake2"></i> {{ usuario.createdAt | fechaRelativa }}
         </small>
       </article>
 

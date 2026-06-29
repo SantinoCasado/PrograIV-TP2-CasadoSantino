@@ -37,7 +37,8 @@
             </div>
             <div>
               <span class="pub-username">&#64;{{ publicacion().usuario?.usuario }}</span>
-              <span class="pub-fecha">{{ formatearFechaRelativa(publicacion().createdAt) }}</span>
+              <span class="pub-fecha">{{ publicacion().createdAt | fechaRelativa }}</span>
+              <!-- Implementacion de pipe propio -->
             </div>
           </div>
         </div>
@@ -142,7 +143,8 @@
               </div>
               <div>
                 <span class="com-username">&#64;{{ comentario.usuario?.usuario }}</span>
-                <span class="com-fecha">{{ formatearFechaRelativa(comentario.createdAt) }}</span>
+                <span class="com-fecha">{{ comentario.createdAt | fechaRelativa }}</span>
+                <!-- Implementacion de pipe propio -->
               </div>
             </div>
 

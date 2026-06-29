@@ -36,16 +36,19 @@
             <div class="post-avatar">
               <img
                 *ngIf="pub.usuario?.imagenPerfil"
-                [src]="pub.usuario.imagenPerfil"
+                [src]="pub.usuario?.imagenPerfil"
+                appImgFallback
                 [alt]="pub.usuario.usuario"
               />
+              <!-- Implementacion de directiva propia -->
               <span *ngIf="!pub.usuario?.imagenPerfil">
                 {{ pub.usuario?.nombre?.[0] }}{{ pub.usuario?.apellido?.[0] }}
               </span>
             </div>
             <div>
               <span class="post-username">&#64;{{ pub.usuario?.usuario }}</span>
-              <span class="post-fecha">{{ formatearFechaRelativa(pub.createdAt) }}</span>
+              <span class="post-fecha">{{ pub.createdAt | fechaRelativa }}</span>
+              <!-- Implementacion de pipe propio -->
             </div>
           </div>
           <!-- Boton de eliminar sea autor O administrador -->
@@ -60,7 +63,8 @@
           </button>
         </div>
 
-        <h2 class="post-titulo">{{ pub.titulo }}</h2>
+        <h2 class="post-titulo">{{ pub.titulo | truncar: 50 }}</h2>
+        <!-- Implementacion de pipe propio -->
 
         <div
           *ngIf="pub.imagenUrl"
@@ -116,9 +120,11 @@
         <div class="side-avatar">
           <img
             *ngIf="usuario?.imagenPerfil"
-            [src]="usuario.imagenPerfil"
+            [src]="usuario.usuario?.imagenPerfil"
+            appImgFallback
             [alt]="usuario?.usuario"
           />
+          <!-- Implementacion de directiva propia -->
           <span *ngIf="!usuario?.imagenPerfil">
             {{ usuario?.nombre?.[0] }}{{ usuario?.apellido?.[0] }}
           </span>
