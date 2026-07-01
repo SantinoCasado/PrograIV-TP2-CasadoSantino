@@ -40,7 +40,7 @@ export class AuthService {
   // Realiza el login y guarda el token y usuario en localStorage
   login(payload: { usuario: string; contrasena: string }) {
     return this.http.post<{ token: string; usuario: any }>(`${this.apiUrl}/login`, payload).pipe(
-      timeout(8000),  // Timer de 8 segundos para la respuesta del servidor
+      timeout(3000),  // Timer de 3 segundos para la respuesta del servidor
       tap(respuesta => {
         localStorage.setItem(this.TOKEN_KEY, respuesta.token);
         localStorage.setItem(this.USUARIO_KEY, JSON.stringify(respuesta.usuario));
