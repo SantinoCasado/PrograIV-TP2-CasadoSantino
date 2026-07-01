@@ -44,7 +44,7 @@ export class Publicaciones implements OnInit {
 
     // Si no hay usuario logueado, redirigimos al login
     if (!this.usuario) {
-      this.router.navigateByUrl('/login');
+      this.router.navigateByUrl('/log-in');
       return;
     }
 

@@ -41,8 +41,17 @@ export class AuthService {
       if (!usuario) {
         throw new UnauthorizedException('Usuario no encontrado.');
       }
+
+      // Verifica si el usuario está activo antes de devolverlo
+      if (usuario.activa === false) {
+        throw new UnauthorizedException('Usuario deshabilitado.');  // Si el usuario está deshabilitado, lanza una excepción de no autorizado
+      }
+
       return usuario; // Devuelve el usuario encontrado si el token es válido
     } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      }
       throw new UnauthorizedException('Token no válido o expirado.');
     }
   }
@@ -126,6 +135,10 @@ export class AuthService {
     const passwordValida = await bcrypt.compare(loginAuthDto.contrasena, usuarioObj.contraseña);
     if (!passwordValida) {
       throw new BadRequestException('Contraseña incorrecta.');
+    }
+
+    if (usuarioObj.activa === false) {
+      throw new BadRequestException('Usuario deshabilitado.');
     }
 
     // Si el login es exitoso, devuelve un mensaje de éxito (en un caso real, aquí se generaría un token JWT o similar)
