@@ -120,7 +120,7 @@
         <div class="side-avatar">
           <img
             *ngIf="usuario?.imagenPerfil"
-            [src]="usuario.usuario?.imagenPerfil"
+            [src]="usuario?.imagenPerfil"
             appImgFallback
             [alt]="usuario?.usuario"
           />
@@ -166,4 +166,3 @@
     (cancelar)="mostrarConfirmar.set(false)"
   ></app-confirmar-modal>
 }
-s
