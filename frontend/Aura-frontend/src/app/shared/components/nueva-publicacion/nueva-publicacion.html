@@ -1,5 +1,5 @@
-<div class="modal-overlay" (click)="cerrarForm()">
-  <div class="modal-panel ani-fade-up" (click)="$event.stopPropagation()">
+<div class="modal-overlay">
+  <div class="modal-panel ani-fade-up">
     <div class="modal-header">
       <h2 class="modal-titulo"><i class="bi bi-pencil-square"></i> Nueva publicación</h2>
       <button type="button" class="btn-cerrar" (click)="cerrarForm()">
@@ -14,18 +14,18 @@
           <input
             type="text"
             class="campo-input"
-            [class.error]="intentoEnvio && tituloControl?.invalid"
+            [class.error]="intentoEnvio && tituloControl.invalid"
             formControlName="titulo"
             placeholder="¿De qué trata tu publicación?"
           />
           <div class="campo-meta">
-            <span class="campo-error" *ngIf="intentoEnvio && tituloControl?.hasError('required')">
+            <span class="campo-error" *ngIf="intentoEnvio && tituloControl.hasError('required')">
               El título es obligatorio.
             </span>
-            <span class="campo-error" *ngIf="intentoEnvio && tituloControl?.hasError('maxlength')">
+            <span class="campo-error" *ngIf="intentoEnvio && tituloControl.hasError('maxlength')">
               Máximo 70 caracteres.
             </span>
-            <span class="campo-contador"> {{ tituloControl?.value?.length || 0 }}/70 </span>
+            <span class="campo-contador"> {{ tituloControl.value.length || 0 }}/70 </span>
           </div>
         </div>
 
@@ -34,20 +34,20 @@
           <textarea
             AutoResizeDirective
             class="campo-input campo-textarea"
-            [class.error]="intentoEnvio && mensajeControl?.invalid"
+            [class.error]="intentoEnvio && mensajeControl.invalid"
             formControlName="mensaje"
             placeholder="Contá lo que quieras..."
             rows="4"
           ></textarea
           ><!-- Implementacion de directiva propia -->
           <div class="campo-meta">
-            <span class="campo-error" *ngIf="intentoEnvio && mensajeControl?.hasError('required')">
+            <span class="campo-error" *ngIf="intentoEnvio && mensajeControl.hasError('required')">
               El mensaje es obligatorio.
             </span>
-            <span class="campo-error" *ngIf="intentoEnvio && mensajeControl?.hasError('maxlength')">
+            <span class="campo-error" *ngIf="intentoEnvio && mensajeControl.hasError('maxlength')">
               Máximo 500 caracteres.
             </span>
-            <span class="campo-contador"> {{ mensajeControl?.value?.length || 0 }}/500 </span>
+            <span class="campo-contador"> {{ mensajeControl.value.length || 0 }}/500 </span>
           </div>
         </div>
 
