@@ -8,10 +8,11 @@ import { NuevaPublicacion } from '../../shared/components/nueva-publicacion/nuev
 import { ConfirmarModal } from '../../shared/components/confirmar-modal/confirmar-modal';
 import { FechaRelativaPipe } from '../../shared/pipes/fecha-relativa.pipe';
 import { TruncarPipe } from '../../shared/pipes/truncar.pipe';
+import { ImgFallbackDirective } from '../../shared/directivas/img-fallback.directive';
 @Component({
   selector: 'app-publicaciones',
   standalone: true,
-  imports: [CommonModule, Navbar, NuevaPublicacion, ConfirmarModal,  FechaRelativaPipe, TruncarPipe],
+  imports: [CommonModule, Navbar, NuevaPublicacion, ConfirmarModal,  FechaRelativaPipe, TruncarPipe, ImgFallbackDirective],
   templateUrl: './publicaciones.html',
   styleUrl: './publicaciones.css',
 })
