@@ -40,17 +40,17 @@ export class AuthService {
   // Realiza el login y guarda el token y usuario en localStorage
   login(payload: { usuario: string; contrasena: string }) {
     return this.http.post<{ token: string; usuario: any }>(`${this.apiUrl}/login`, payload).pipe(
-      timeout(3000),  // Timer de 3 segundos para la respuesta del servidor
+      timeout(3000),
       tap(respuesta => {
         localStorage.setItem(this.TOKEN_KEY, respuesta.token);
         localStorage.setItem(this.USUARIO_KEY, JSON.stringify(respuesta.usuario));
       }),
       catchError((error: HttpErrorResponse | Error) => {
         const mensaje = error instanceof HttpErrorResponse
-          ? (error.error?.message?.[0] ?? error.error?.message ?? error.message ?? 'No se pudo iniciar sesión.') // Si el error es de HttpErrorResponse, intenta obtener el mensaje del backend
-          : (error.message || 'No se pudo iniciar sesión.');  // Si es un error genérico, usa el mensaje del error o un mensaje por defecto
+          ? (error.error?.message?.[0] ?? error.error?.message ?? error.message ?? 'No se pudo iniciar sesión.')
+          : (error.message || 'No se pudo iniciar sesión.');
 
-        return throwError(() => ({ ...error, message: mensaje }));
+        return throwError(() => new Error(mensaje));
       })
     );
   }

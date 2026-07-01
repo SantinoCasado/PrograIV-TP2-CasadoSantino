@@ -60,9 +60,19 @@ export class Login implements OnInit {
       usuario: (this.form.value.usuario ?? '').trim(),
       contrasena: this.form.value.contrasena ?? '',
     };
-    
+
+    const fallbackTimer = window.setTimeout(() => {
+      if (this.cargando) {
+        this.cargando = false;
+        this.mensajeError = 'No se pudo iniciar sesión. Verificá tu conexión e intentá nuevamente.';
+      }
+    }, 5000);
+
     this.authService.login(payload)
-      .pipe(finalize(() => (this.cargando = false)))
+      .pipe(finalize(() => {
+        this.cargando = false;
+        window.clearTimeout(fallbackTimer);
+      }))
       .subscribe({
         next: () => {
           this.authService.iniciarContadorSesion();
@@ -74,10 +84,10 @@ export class Login implements OnInit {
       });
   }
 
-  private obtenerMensajeError(error: any): string {
-    const mensajeBase = Array.isArray(error?.error?.message)
-      ? error.error.message[0]
-      : error?.error?.message ?? error?.message ?? 'No se pudo iniciar sesión.';
+  private obtenerMensajeError(error: unknown): string {
+    const mensajeBase = error instanceof Error
+      ? error.message
+      : (error as any)?.message ?? 'No se pudo iniciar sesión.';
 
     if (typeof mensajeBase === 'string' && /deshabilit|banead/i.test(mensajeBase)) {
       return 'Este usuario está deshabilitado o baneado.';
