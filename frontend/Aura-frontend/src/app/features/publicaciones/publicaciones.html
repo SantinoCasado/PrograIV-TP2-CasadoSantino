@@ -119,7 +119,8 @@
       <div class="side-perfil">
         <div class="side-avatar">
           <img
-            [src]="'https://url-invalida.com/imagen.jpg'"
+            *ngIf="usuario?.imagenPerfil"
+            [src]="usuario?.imagenPerfil"
             appImgFallback
             [alt]="usuario?.usuario"
           />
