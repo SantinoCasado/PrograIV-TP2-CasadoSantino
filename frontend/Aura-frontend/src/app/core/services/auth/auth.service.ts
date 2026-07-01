@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs';
+import { catchError, tap, throwError, timeout } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
@@ -40,9 +40,17 @@ export class AuthService {
   // Realiza el login y guarda el token y usuario en localStorage
   login(payload: { usuario: string; contrasena: string }) {
     return this.http.post<{ token: string; usuario: any }>(`${this.apiUrl}/login`, payload).pipe(
+      timeout(8000),  // Timer de 8 segundos para la respuesta del servidor
       tap(respuesta => {
         localStorage.setItem(this.TOKEN_KEY, respuesta.token);
         localStorage.setItem(this.USUARIO_KEY, JSON.stringify(respuesta.usuario));
+      }),
+      catchError((error: HttpErrorResponse | Error) => {
+        const mensaje = error instanceof HttpErrorResponse
+          ? (error.error?.message?.[0] ?? error.error?.message ?? error.message ?? 'No se pudo iniciar sesión.') // Si el error es de HttpErrorResponse, intenta obtener el mensaje del backend
+          : (error.message || 'No se pudo iniciar sesión.');  // Si es un error genérico, usa el mensaje del error o un mensaje por defecto
+
+        return throwError(() => ({ ...error, message: mensaje }));
       })
     );
   }

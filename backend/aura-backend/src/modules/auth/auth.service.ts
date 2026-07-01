@@ -138,7 +138,7 @@ export class AuthService {
     }
 
     if (usuarioObj.activa === false) {
-      throw new BadRequestException('Usuario deshabilitado.');
+      throw new BadRequestException('Este usuario está deshabilitado o baneado.');
     }
 
     // Si el login es exitoso, devuelve un mensaje de éxito (en un caso real, aquí se generaría un token JWT o similar)
