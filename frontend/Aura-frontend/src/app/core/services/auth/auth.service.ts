@@ -46,11 +46,25 @@ export class AuthService {
         localStorage.setItem(this.USUARIO_KEY, JSON.stringify(respuesta.usuario));
       }),
       catchError((error: HttpErrorResponse | Error) => {
-        const mensaje = error instanceof HttpErrorResponse
-          ? (error.error?.message?.[0] ?? error.error?.message ?? error.message ?? 'No se pudo iniciar sesión.')
-          : (error.message || 'No se pudo iniciar sesión.');
+        let mensaje = 'No se pudo iniciar sesión.'; 
 
-        return throwError(() => new Error(mensaje));
+        if (error instanceof HttpErrorResponse) {
+          // Si el backend devuelve un objeto con la propiedad message ("Usuario deshabilitado")
+          if (error.error && typeof error.error.message === 'string') {
+            mensaje = error.error.message;
+          } else if (error.error && Array.isArray(error.error.message)) {
+            mensaje = error.error.message[0]; // Si es un array de mensajes, toma el primero
+          } else if (typeof error.error === 'string') {
+            mensaje = error.error;
+          } else {
+            mensaje = error.message || mensaje;
+          }
+        } else {
+          mensaje = error.message || mensaje;
+        }
+
+        // Devuelve el string limpio directamente
+        return throwError(() => mensaje);
       })
     );
   }

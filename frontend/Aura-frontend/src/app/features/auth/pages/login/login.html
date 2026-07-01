@@ -94,16 +94,16 @@
                 }
               </div>
 
-              @if (mensajeError) {
-                <div class="invalid-feedback d-block text-start">{{ mensajeError }}</div>
+              @if (mensajeError()) {
+                <div class="invalid-feedback d-block text-start">{{ mensajeError() }}</div>
               }
 
               <button
                 type="submit"
-                [disabled]="cargando"
+                [disabled]="cargando()"
                 class="btn btn-info btn-lg w-100 fw-semibold text-white mt-1 ani-fade-up ani-d5"
               >
-                {{ cargando ? 'Ingresando...' : 'Ingresar' }}
+                {{ cargando() ? 'Ingresando...' : 'Ingresar' }}
               </button>
 
               <p
