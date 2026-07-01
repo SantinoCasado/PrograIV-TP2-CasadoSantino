@@ -22,7 +22,8 @@ export class ImgFallbackDirective {
 
   @HostListener('error')
   onError(): void {
-    // Ocultamos la imagen rota
+    // Oculta la imagen rota
+    console.log('imagen falló');
     this.el.nativeElement.style.display = 'none';
   }
 }
