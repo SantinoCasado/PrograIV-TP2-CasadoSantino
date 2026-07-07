@@ -27,7 +27,7 @@ export class Usuario extends Document {
   @Prop({ default: 'usuario' })
   perfil: string;
 
-  @Prop({ required: true })
+  @Prop({ default: '' })
   imagenPerfil: string;
 
   @Prop({ default: true })

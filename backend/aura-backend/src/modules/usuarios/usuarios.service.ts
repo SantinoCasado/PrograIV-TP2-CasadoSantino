@@ -27,8 +27,10 @@ export class UsuariosService {
     if (existe) throw new BadRequestException('El usuario o correo ya existe.');
 
     const hash = await bcrypt.hash(dto.contrasena, 10); // Hash de la contraseña antes de guardarla en la base de datos
-    let imagenPerfil = '';
-    if (imagen) imagenPerfil = await this.storageService.uploadProfileImage(imagen);
+
+    const imagenPerfil = imagen 
+    ? await this.storageService.uploadProfileImage(imagen) 
+    : undefined;
 
     // Crear el nuevo usuario con los datos proporcionados y la contraseña hasheada
     const nuevo = new this.usuarioModel({
