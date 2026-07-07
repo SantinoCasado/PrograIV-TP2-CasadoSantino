@@ -85,7 +85,7 @@
             {{ pub.likes?.length }}
           </button>
           <button type="button" class="btn-comentar" (click)="verPublicacion(pub._id)">
-            <i class="bi bi-chat"></i> Comentar
+            <i class="bi bi-chat"></i> {{ pub.totalComentarios || 0 }}
           </button>
         </div>
       </article>

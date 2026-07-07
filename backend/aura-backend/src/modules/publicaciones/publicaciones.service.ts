@@ -54,31 +54,92 @@ export class PublicacionesService {
         { $sort: { cantidadLikes: -1 } },
         { $skip: offset },
         { $limit: limit },
-        // populate manual en aggregate
-        { $lookup: {
-          from: 'usuarios',
-          localField: 'usuario',
-          foreignField: '_id',
-          as: 'usuario'
-        }},
+        {
+          $lookup: {
+            from: 'usuarios',
+            localField: 'usuario',
+            foreignField: '_id',
+            as: 'usuario'
+          }
+        },
         { $unwind: '$usuario' },
-        // ocultao campos sensibles
-        { $project: {
-          'usuario.contraseña': 0,
-          'usuario.fechaNacimiento': 0,
-          'usuario.descripcion': 0,
-        }}
+        {
+          $lookup: {
+            from: 'comentarios',
+            let: { pubId: '$_id' },
+            pipeline: [
+              { $match: { $expr: { $and: [
+                { $eq: ['$publicacion', '$$pubId'] },
+                { $eq: ['$activa', true] }
+              ]}}},
+              { $count: 'total' }
+            ],
+            as: 'comentariosInfo'
+          }
+        },
+        {
+          $addFields: {
+            totalComentarios: {
+              $ifNull: [{ $arrayElemAt: ['$comentariosInfo.total', 0] }, 0]
+            }
+          }
+        },
+        {
+          $project: {
+            'usuario.contraseña': 0,
+            'usuario.fechaNacimiento': 0,
+            'usuario.descripcion': 0,
+            comentariosInfo: 0,
+          }
+        }
       ]);
     }
 
     // Orden por fecha descendente (mas recientes primero)
-    return this.publicacionModel
-      .find(filtro)
-      .sort({ createdAt: -1 })
-      .skip(offset)
-      .limit(limit)
-      .populate('usuario', 'nombre apellido imagenPerfil usuario') // trae solo los datos necesarios del autor
-      .lean();
+    return this.publicacionModel.aggregate([
+      { $match: filtro }, // Filtrar por activa: true y por usuarioId si viene
+      { $sort: { createdAt: -1 } }, // Mas recientes primero
+      { $skip: offset },  // Saltar registros
+      { $limit: limit },  // Limitar cantidad de registros
+      {
+        $lookup: {        // Populate manual de usuario
+          from: 'usuarios',
+          localField: 'usuario',
+          foreignField: '_id',
+          as: 'usuario'
+        }
+      },
+      { $unwind: '$usuario' },  // Desenrollar el array de usuario para acceder a sus campos
+      {
+        $lookup: {  // Unir con la colección de comentarios para contar la cantidad de comentarios por publicación
+          from: 'comentarios',
+          let: { pubId: '$_id' },
+          pipeline: [
+            { $match: { $expr: { $and: [
+              { $eq: ['$publicacion', '$$pubId'] },
+              { $eq: ['$activa', true] }
+            ]}}},
+            { $count: 'total' }
+          ],
+          as: 'comentariosInfo'
+        }
+      },
+      {
+        $addFields: { // Agregar un campo totalComentarios con la cantidad de comentarios (0 si no hay)
+          totalComentarios: {
+            $ifNull: [{ $arrayElemAt: ['$comentariosInfo.total', 0] }, 0]
+          }
+        }
+      },
+      {
+        $project: { // Proyectar los campos que se incluiran en el resultado final
+          'usuario.contraseña': 0,
+          'usuario.fechaNacimiento': 0,
+          'usuario.descripcion': 0,
+          comentariosInfo: 0,
+        }
+      }
+    ]);
   }
 
   // --------------------- BAJA LÓGICA ---------------------
