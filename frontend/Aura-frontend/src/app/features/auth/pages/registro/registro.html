@@ -207,6 +207,12 @@
                     ) {
                       <div class="invalid-feedback d-block">Debes tener al menos 15 años.</div>
                     }
+                    @if (
+                      (intentoEnvio || f['fechaNacimiento'].touched) &&
+                      f['fechaNacimiento'].hasError('fechaInvalida')
+                    ) {
+                      <div class="invalid-feedback d-block">La fecha ingresada no es válida.</div>
+                    }
                   </div>
                 </div>
               </div>

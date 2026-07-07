@@ -8,6 +8,10 @@ export function edadMinima(minAnios: number) {
 
     if (fechaNac > hoy) return { menorEdad: true };
 
+    if (isNaN(fechaNac.getTime()) || fechaNac.getFullYear() < 1900) {
+      return { fechaInvalida: true };
+    }
+
     const edad = hoy.getFullYear() - fechaNac.getFullYear();
     const cumplioEsteAnio =
       hoy.getMonth() > fechaNac.getMonth() ||
