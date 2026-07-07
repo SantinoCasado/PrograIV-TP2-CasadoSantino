@@ -157,6 +157,15 @@
               class="campo-error"
               *ngIf="
                 (intentoEnvio || form.get('fechaNacimiento')?.touched) &&
+                form.get('fechaNacimiento')?.hasError('fechaInvalida')
+              "
+            >
+              La fecha ingresada no es válida.
+            </span>
+            <span
+              class="campo-error"
+              *ngIf="
+                (intentoEnvio || form.get('fechaNacimiento')?.touched) &&
                 form.get('fechaNacimiento')?.hasError('menorEdad')
               "
             >
