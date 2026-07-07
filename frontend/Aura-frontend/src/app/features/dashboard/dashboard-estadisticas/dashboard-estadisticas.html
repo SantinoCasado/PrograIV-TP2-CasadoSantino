@@ -43,31 +43,33 @@
 
     <!-- GRÁFICOS -->
     <ng-container *ngIf="!cargando()">
-      <!-- BARRAS: publicaciones por usuario -->
-      <div class="dash-box grafico-box ani-fade-up ani-d3">
-        <h2 class="grafico-titulo">
-          <i class="bi bi-bar-chart-fill"></i> Publicaciones por usuario
-        </h2>
-        <div class="grafico-wrap">
-          <canvas id="chartPubUsuario"></canvas>
+      <div class="graficos-layout">
+        <!-- TORTA: columna izquierda, alto completo -->
+        <div class="dash-box grafico-pastel ani-fade-up ani-d3">
+          <h2 class="grafico-titulo">
+            <i class="bi bi-pie-chart-fill"></i> Comentarios por publicación
+          </h2>
+          <div class="grafico-wrap">
+            <canvas id="chartComentariosPub"></canvas>
+          </div>
         </div>
-      </div>
 
-      <!-- LÍNEAS: comentarios por lapso -->
-      <div class="dash-box grafico-box ani-fade-up ani-d4">
-        <h2 class="grafico-titulo"><i class="bi bi-graph-up"></i> Comentarios en el tiempo</h2>
-        <div class="grafico-wrap">
-          <canvas id="chartComentariosLapso"></canvas>
+        <!-- BARRAS: columna derecha arriba -->
+        <div class="dash-box grafico-derecha ani-fade-up ani-d4">
+          <h2 class="grafico-titulo">
+            <i class="bi bi-bar-chart-fill"></i> Publicaciones por usuario
+          </h2>
+          <div class="grafico-wrap">
+            <canvas id="chartPubUsuario"></canvas>
+          </div>
         </div>
-      </div>
 
-      <!-- TORTA: comentarios por publicación -->
-      <div class="dash-box grafico-box ani-fade-up ani-d5">
-        <h2 class="grafico-titulo">
-          <i class="bi bi-pie-chart-fill"></i> Comentarios por publicación
-        </h2>
-        <div class="grafico-wrap grafico-wrap-sm">
-          <canvas id="chartComentariosPub"></canvas>
+        <!-- LÍNEAS: columna derecha abajo -->
+        <div class="dash-box grafico-derecha ani-fade-up ani-d5">
+          <h2 class="grafico-titulo"><i class="bi bi-graph-up"></i> Comentarios en el tiempo</h2>
+          <div class="grafico-wrap">
+            <canvas id="chartComentariosLapso"></canvas>
+          </div>
         </div>
       </div>
     </ng-container>

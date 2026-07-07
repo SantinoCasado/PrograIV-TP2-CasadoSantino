@@ -146,6 +146,43 @@
   margin: 0 auto;
 }
 
+/* -- LAYOUT GRÁFICOS ----------------------------------- */
+.graficos-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 1rem;
+  align-items: start;
+}
+
+/* Torta: ocupa toda la columna izquierda en alto */
+.grafico-pastel {
+  grid-column: 1;
+  grid-row: 1 / 3; /* ocupa las dos filas */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Barras y líneas: columna derecha, una arriba y otra abajo */
+.grafico-derecha {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.grafico-pastel .grafico-wrap {
+  flex: 1;
+  max-height: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grafico-derecha .grafico-wrap {
+  max-height: 220px;
+}
+
 /* -- SPINNER ---------------------------------------------*/
 .spinner-sm {
   width: 16px;
@@ -171,5 +208,15 @@
   .btn-filtrar {
     width: 100%;
     justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .graficos-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .grafico-pastel {
+    grid-row: auto;
   }
 }
