@@ -7,6 +7,7 @@ import { finalize } from 'rxjs';
 import { contrasenaCoincide } from '../../../../shared/utils/contraseñasCoinciden';
 import { Footer } from '../../../../layouts/footer/footer';
 import { Navbar } from '../../../../layouts/navbar/navbar';
+import { edadMinima } from '../../../../shared/utils/mayorAQuince';
 
 @Component({
   selector: 'app-registro',
@@ -45,7 +46,7 @@ export class Registro implements OnInit {
         correo: ['', [Validators.required, Validators.email]],
         contrasena: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20), Validators.pattern(/^(?=.*[A-Z])(?=.*\d).+$/)]],
         repetirContrasena: ['', [Validators.required, Validators.maxLength(20)]],
-        fechaNacimiento: ['', [Validators.required]],
+        fechaNacimiento: ['', [Validators.required, edadMinima(15)]],
         descripcion: ['', [Validators.required, Validators.maxLength(200)]],
       },
       { validators: contrasenaCoincide },

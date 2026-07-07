@@ -201,6 +201,12 @@
                         La fecha de nacimiento es obligatoria.
                       </div>
                     }
+                    @if (
+                      (intentoEnvio || f['fechaNacimiento'].touched) &&
+                      f['fechaNacimiento'].hasError('menorEdad')
+                    ) {
+                      <div class="invalid-feedback d-block">Debes tener al menos 15 años.</div>
+                    }
                   </div>
                 </div>
               </div>

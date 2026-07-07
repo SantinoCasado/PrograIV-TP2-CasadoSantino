@@ -71,9 +71,21 @@ export class AuthService {
   // --------------------- REGISTRO DE USUARIOS ----------------------
   async registro(createAuthDto: CreateAuthDto, imagen: Express.Multer.File) {
     // --------- Validacion de la contraseña ----------
-      // Si las contraseñas no coinciden, lanza una excepción
     if (createAuthDto.contrasena !== createAuthDto.repetirContrasena) {
       throw new BadRequestException('Las contraseñas no coinciden.');
+    }
+
+    // --------- Validacion de edad mínima (15 años) ----------
+    const fechaNac = new Date(createAuthDto.fechaNacimiento);
+    const hoy = new Date();
+    const edad = hoy.getFullYear() - fechaNac.getFullYear();
+    const cumplioEsteAnio =
+      hoy.getMonth() > fechaNac.getMonth() ||
+      (hoy.getMonth() === fechaNac.getMonth() && hoy.getDate() >= fechaNac.getDate());
+    const edadReal = cumplioEsteAnio ? edad : edad - 1;
+
+    if (edadReal < 15) {
+      throw new BadRequestException('El usuario debe tener al menos 15 años.');
     }
 
     // --------- Validacion de unicidad del usuario o correo ----------
@@ -88,7 +100,6 @@ export class AuthService {
     }
 
     // --------- Encriptar la contraseña antes de guardarla ----------
-      // Encripta la contraseña usando bcrypt con un salt de 10 rondas (salts = encriptación adicional para hacer el hash más seguro)
     const hash = await bcrypt.hash(createAuthDto.contrasena, 10);
 
     // --------- Guardar imagen ----------
@@ -109,9 +120,8 @@ export class AuthService {
 
     await nuevoUsuario.save();
     const { contraseña, ...usuarioSinPassword } = nuevoUsuario.toObject() as any;
-    const token = this.generarToken(usuarioSinPassword);  // Genera un token JWT para el nuevo usuario registrado
+    const token = this.generarToken(usuarioSinPassword);
 
-    // Devuelve el usuario sin la contraseña y el token de autenticación
     return { usuario: usuarioSinPassword, token };
   }
 

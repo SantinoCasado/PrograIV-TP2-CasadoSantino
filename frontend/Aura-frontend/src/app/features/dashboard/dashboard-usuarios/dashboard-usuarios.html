@@ -153,6 +153,15 @@
             >
               Requerido.
             </span>
+            <span
+              class="campo-error"
+              *ngIf="
+                (intentoEnvio || form.get('fechaNacimiento')?.touched) &&
+                form.get('fechaNacimiento')?.hasError('menorEdad')
+              "
+            >
+              Debe tener al menos 15 años.
+            </span>
           </div>
 
           <div class="campo campo-full">

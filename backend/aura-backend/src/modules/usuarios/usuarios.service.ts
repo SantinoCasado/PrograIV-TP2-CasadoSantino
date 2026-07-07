@@ -26,13 +26,25 @@ export class UsuariosService {
     });
     if (existe) throw new BadRequestException('El usuario o correo ya existe.');
 
-    const hash = await bcrypt.hash(dto.contrasena, 10); // Hash de la contraseña antes de guardarla en la base de datos
+    // Validación de edad mínima (15 años)  antes de hashear y subir imagen
+    const fechaNac = new Date(dto.fechaNacimiento);
+    const hoy = new Date();
+    const edad = hoy.getFullYear() - fechaNac.getFullYear();
+    const cumplioEsteAnio =
+      hoy.getMonth() > fechaNac.getMonth() ||
+      (hoy.getMonth() === fechaNac.getMonth() && hoy.getDate() >= fechaNac.getDate());
+    const edadReal = cumplioEsteAnio ? edad : edad - 1;
+
+    if (edadReal < 15) {
+      throw new BadRequestException('El usuario debe tener al menos 15 años.');
+    }
+
+    const hash = await bcrypt.hash(dto.contrasena, 10);
 
     const imagenPerfil = imagen 
-    ? await this.storageService.uploadProfileImage(imagen) 
-    : undefined;
+      ? await this.storageService.uploadProfileImage(imagen) 
+      : undefined;
 
-    // Crear el nuevo usuario con los datos proporcionados y la contraseña hasheada
     const nuevo = new this.usuarioModel({
       nombre: dto.nombre,
       apellido: dto.apellido,
@@ -46,7 +58,7 @@ export class UsuariosService {
     });
 
     await nuevo.save();
-    const { contraseña, ...sinPassword } = nuevo.toObject() as any; // Excluir la contraseña del objeto devuelto para no exponerla
+    const { contraseña, ...sinPassword } = nuevo.toObject() as any;
     return sinPassword;
   }
 

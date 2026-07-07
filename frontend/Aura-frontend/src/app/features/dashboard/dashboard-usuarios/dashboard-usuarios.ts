@@ -7,6 +7,7 @@ import { ConfirmarModal } from '../../../shared/components/confirmar-modal/confi
 import { InicialesPipe } from '../../../shared/pipes/iniciales.pipe';
 import { TruncarPipe } from '../../../shared/pipes/truncar.pipe';
 import { HighlightAdminDirective } from '../../../shared/directivas/highlight-admin.directive';
+import { edadMinima } from '../../../shared/utils/mayorAQuince';
 @Component({
   selector: 'app-dashboard-usuarios',
   standalone: true,
@@ -45,7 +46,7 @@ export class DashboardUsuarios implements OnInit {
         Validators.pattern(/^(?=.*[A-Z])(?=.*\d).+$/),
       ]],
       repetirContrasena: ['', Validators.required],
-      fechaNacimiento: ['', Validators.required],
+      fechaNacimiento: ['', Validators.required, edadMinima(15)],
       descripcion: ['', Validators.required],
       perfil: ['usuario', Validators.required], // radio buttons
     });
