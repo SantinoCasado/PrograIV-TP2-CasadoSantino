@@ -181,6 +181,8 @@
 
 .grafico-derecha .grafico-wrap {
   max-height: 220px;
+  height: 220px;
+  position: relative;
 }
 
 /* -- SPINNER ---------------------------------------------*/

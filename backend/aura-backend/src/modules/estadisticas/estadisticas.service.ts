@@ -108,9 +108,20 @@ export class EstadisticasService {
       },
       { $unwind: '$publicacion' },  // Desenrollar el array de publicación para acceder a sus campos
       {
-        $project: { // Proyectar los campos que se incluiran en el resultado final
+        $project: {
           _id: 0,
-          titulo: '$publicacion.titulo',
+          titulo: {
+            $cond: {
+              if: { $gt: [{ $strLenCP: '$publicacion.titulo' }, 20] },
+              then: {
+                $concat: [
+                  { $substrCP: ['$publicacion.titulo', 0, 20] },
+                  '...'
+                ]
+              },
+              else: '$publicacion.titulo'
+            }
+          },
           cantidad: 1,
         },
       },

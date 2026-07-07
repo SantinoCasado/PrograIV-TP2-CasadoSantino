@@ -94,6 +94,7 @@ export class DashboardEstadisticas implements OnInit {
       },
       options: {  // Opciones del gráfico
         responsive: true, // Hace que el gráfico sea responsivo
+        maintainAspectRatio: false, // Mantiene la relación de aspecto del gráfico
         plugins: {  // Configuración de plugins
           legend: { labels: { color: '#c8eaf8' } },
         },
@@ -127,6 +128,7 @@ export class DashboardEstadisticas implements OnInit {
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: { labels: { color: '#c8eaf8' } },
         },
