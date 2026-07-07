@@ -239,9 +239,3 @@ También me siento satisfecho con las decisiones de diseño que tomé: usar `fin
 Por último, implementar las **pipes y directivas propias** de forma que realmente reemplazaran código duplicado — en lugar de ser features forzadas — fue algo que me dio mucha satisfacción. Ver `pub.createdAt | fechaRelativa` en el template en lugar de llamar a `formatearFechaRelativa()` en cada componente es exactamente el tipo de abstracción que hace que el código escale bien.
 
 **Aura** me demostró que puedo construir una aplicación real desde cero, tomar decisiones técnicas fundamentadas y superar los obstáculos que aparecen en el camino. Estoy orgulloso del resultado.
-
----
-
-## Autor
-
-**Santino Casado** — Programación IV, UTN
