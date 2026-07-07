@@ -5,6 +5,9 @@ export function edadMinima(minAnios: number) {
     if (!control.value) return null;
     const fechaNac = new Date(control.value);
     const hoy = new Date();
+
+    if (fechaNac > hoy) return { menorEdad: true };
+
     const edad = hoy.getFullYear() - fechaNac.getFullYear();
     const cumplioEsteAnio =
       hoy.getMonth() > fechaNac.getMonth() ||
