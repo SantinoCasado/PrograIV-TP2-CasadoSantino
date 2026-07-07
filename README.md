@@ -6,7 +6,7 @@
 
 ## 🚀 Demo en vivo
 
-[![Ver demo](https://img.shields.io/badge/Demo-Live-brightgreen?style=for-the-badge)](https://prograiv-saladejuegos.web.app)
+[![Ver demo](https://img.shields.io/badge/Demo-Live-brightgreen?style=for-the-badge)](https://progra-iv-tp-2-casado-santino-angul.vercel.app/)
 
 ---
 
@@ -39,32 +39,31 @@
 
 ### 🔐 Login
 
-![Login](./SalaDeJuegos/src/assets/images/readme/login.png)
+![Login](./img/login.png)
 
 ### 📝 Registro
 
-![Registro](./SalaDeJuegos/src/assets/images/readme/registro.png)
+![Registro](./img/registro.png)
 
 ### 🏠 Home o Publicaciones
 
-![Home](./SalaDeJuegos/src/assets/images/readme/home.png)
+![Home](./img/home.png)
 
 ### 💬 Acceder a Publicacion
 
-![Chat](./SalaDeJuegos/src/assets/images/readme/chat.png)
+![Chat](./img/comentar.png)
 
 ### 👤 Mi perfil
 
-![Quien Soy](./SalaDeJuegos/src/assets/images/readme/quien-soy.png)
+![Quien Soy](./img/mi-perfil.png)
 
 ### 📊 Estadisticas
 
-![RankingPersonal](./SalaDeJuegos/src/assets/images/readme/estadisticas.png)
-![RankingGeneral](./SalaDeJuegos/src/assets/images/readme/reanking.png)
+![RankingPersonal](./img/estadisticas.png)
 
 ### 🌍 Administracion de Usuarios
 
-![Preguntados](./SalaDeJuegos/src/assets/images/readme/preguntados.png)
+![Preguntados](./img/usuarios.png)
 
 ---
 
